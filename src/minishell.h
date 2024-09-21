@@ -8,6 +8,7 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <limits.h>
 # include "../lib/libft/libft.h"
 
 #endif
