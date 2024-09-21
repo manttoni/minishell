@@ -54,6 +54,7 @@ int	run_command(char *input)
 int main(void)
 {
 	char	*input;
+	char	cwd[PATH_MAX];
 
 	while (1)
 	{
@@ -65,6 +66,18 @@ int main(void)
 		{
 			add_history(input);
 			run_command(input);
+		}
+		if (getcwd(cwd, sizeof(cwd)) == NULL)
+		{
+			printf("cwd error\n");
+			free(input);
+			return (1);
+		}
+		if (ft_strnstr(cwd, "minishell", ft_strlen(cwd)) == NULL)
+		{
+			printf("Don't go out!\n");
+			free(input);
+			return (0);
 		}
 		free(input);
 	}
