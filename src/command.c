@@ -40,36 +40,68 @@ int	count_commands(char *input)
 	return (cmds);
 }
 
-int	run_command(char **cmd, char *exe)
+void	ignore_redirs(char **command)
 {
-	execve(exe, cmd, NULL);
-	return (error_return("execve"));
+	int		redir_found;
+	char	*current;
+
+	redir_found = 0;
+	while (*command)
+	{
+		current = *command;
+		while (*current)
+		{
+			if (ft_strchr("<>", *current))
+				redir_found = 1;
+			if (redir_found)
+				*current = '\0';
+			current++;
+		}
+		command++;
+	}
 }
 
-int	create_pipes(int *pipefds, int cmds)
+int	set_io(char **command, int *pipefds, int i, int cmds)
 {
-	int	i;
+	char	*file_in;
+	char	*file_out;
+	int		fdin;
+	int		fdout;
 
-	i = 0;
-	while (i < cmds - 1)
+	file_in = extract_filename(command, "<");
+	file_out = extract_filename(command, ">");
+	if (file_in != NULL)
 	{
-		if (pipe(pipefds + 2 * i) == -1)
-			return (error_return("pipe"));
-		i++;
+		fdin = open(file_in, O_RDONLY);
+		if (fdin < 0)
+		{
+			free(file_in);
+			return (error_return("open fdin"));
+		}
+		dup2(fdin, STDIN_FILENO);
+		close(fdin);
 	}
+	else if (i > 0)
+		dup2(pipefds[2 * (i - 1)], STDIN_FILENO);
+	if (file_out != NULL)
+	{
+		fdout = open(file_out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fdout < 0)
+		{
+			if (fdin >= 0)
+				close(fdin);
+			free(file_out);
+			return (error_return("open fdout"));
+		}
+		dup2(fdout, STDOUT_FILENO);
+		close(fdout);
+	}
+	else if (i < cmds - 1)
+		dup2(pipefds[2 * i + 1], STDOUT_FILENO);
+	close_pipes(pipefds, cmds);
+	free(file_in);
+	free(file_out);
 	return (1);
-}
-
-void	close_pipes(int *pipefds, int cmds)
-{
-	int	i;
-
-	i = 0;
-	while (i < 2 * (cmds - 1))
-	{
-		close(pipefds[i]);
-		i++;
-	}
 }
 
 int	run_pipeline(char *input)
@@ -94,15 +126,13 @@ int	run_pipeline(char *input)
 		exe = ft_strjoin("/bin/", command[0]);
 		if (id == 0)
 		{
-			if (i > 0)
-				dup2(pipefds[2 * (i - 1)], STDIN_FILENO);
-			if (i < cmds - 1)
-				dup2(pipefds[2 * i + 1], STDOUT_FILENO);
-			close_pipes(pipefds, cmds);
-			run_command(command, exe);
+			if (set_io(command, pipefds, i, cmds) == 0)
+				return (error_return("set_io"));
+			ignore_redirs(command);
+			execve(exe, command, NULL);
 			free(exe);
 			free_split(command);
-			return(error_return("run_command"));
+			return(error_return("execve"));
 		}
 		free(exe);
 		free_split(command);
