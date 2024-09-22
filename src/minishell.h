@@ -12,6 +12,7 @@
 # include <limits.h>
 # include "../lib/libft/libft.h"
 
+void	ignore_redirs(char **command);
 int		error_return(char *error_message);
 void	free_split(char **s);
 int		run_pipeline(char *input);

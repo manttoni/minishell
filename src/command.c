@@ -42,18 +42,20 @@ int	count_commands(char *input)
 
 void	ignore_redirs(char **command)
 {
-	int	redir_found;
+	int		redir_found;
+	char	*current;
 
 	redir_found = 0;
 	while (*command)
 	{
-		while (**command)
+		current = *command;
+		while (*current)
 		{
-			if (ft_strchr("<>", **command))
+			if (ft_strchr("<>", *current))
 				redir_found = 1;
 			if (redir_found)
-				**command = '\0';
-			(*command)++;
+				*current = '\0';
+			current++;
 		}
 		command++;
 	}
@@ -126,7 +128,7 @@ int	run_pipeline(char *input)
 		{
 			if (set_io(command, pipefds, i, cmds) == 0)
 				return (error_return("set_io"));
-			//ignore_redirs(command);
+			ignore_redirs(command);
 			execve(exe, command, NULL);
 			free(exe);
 			free_split(command);
