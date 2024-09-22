@@ -126,7 +126,7 @@ int	run_pipeline(char *input)
 		{
 			if (set_io(command, pipefds, i, cmds) == 0)
 				return (error_return("set_io"));
-			ignore_redirs(command);
+			//ignore_redirs(command);
 			execve(exe, command, NULL);
 			free(exe);
 			free_split(command);
