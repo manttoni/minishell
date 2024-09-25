@@ -40,27 +40,6 @@ int	count_commands(char *input)
 	return (cmds);
 }
 
-void	ignore_redirs(char **command)
-{
-	int		redir_found;
-	char	*current;
-
-	redir_found = 0;
-	while (*command)
-	{
-		current = *command;
-		while (*current)
-		{
-			if (ft_strchr("<>", *current))
-				redir_found = 1;
-			if (redir_found)
-				*current = '\0';
-			current++;
-		}
-		command++;
-	}
-}
-
 int	set_io(char **command, int *pipefds, int i, int cmds)
 {
 	char	*file_in;

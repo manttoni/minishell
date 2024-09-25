@@ -22,3 +22,35 @@ char	*extract_filename(char **command, char *redir)
 	}
 	return (NULL);
 }
+
+void	ignore_redirs(char **command)
+{
+	int		redir_found;
+	char	*current;
+	char	**ptr;
+
+	redir_found = 0;
+	ptr = command;
+	while (*ptr)
+	{
+		current = *ptr;
+		while (*current)
+		{
+			if (ft_strchr("<>", *current))
+				redir_found = 1;
+			if (redir_found)
+				*current = '\0';
+			current++;
+		}
+		ptr++;
+	}
+	while (*command)
+	{
+		if (**command == '\0')
+		{
+			free(*command);
+			*command = NULL;
+		}
+		command++;
+	}
+}
