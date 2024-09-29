@@ -24,7 +24,7 @@ char	*get_next_command(char *input)
 	if (*ptr == '\0')
 		ft_memset(input, 0, ft_strlen(input));
 	else
-		ft_memmove(ptr + 1, input, ft_strlen(ptr + 1));
+		ft_memmove(input, ptr + 1, ft_strlen(input));
 	return (cmd);
 }
 
