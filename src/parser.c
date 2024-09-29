@@ -5,14 +5,16 @@ int	heredoc(char *delimiter)
 	int		fd;
 	char	*input;
 
+	printf("Delimiter: %s\n", delimiter);
 	fd = open(".tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	input = "";
 	while (1)
 	{
 		input = readline("> ");
 		fflush(stdout);
-		if (ft_strncmp(input, delimiter, ft_strlen(delimiter) + 1) == 0)
-			break ;
+		if (ft_strncmp(input, delimiter, ft_strlen(delimiter)) == 0)
+			if (ft_strlen(input) == ft_strlen(delimiter))
+				break ;
 		write(fd, input, ft_strlen(input));
 	}
 	close(fd);

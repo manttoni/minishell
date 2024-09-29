@@ -24,7 +24,10 @@ char	**extract_filein(char *cmd)
 		{
 			cmd++;
 			if (*cmd == '<')
+			{
 				file_info[1] = ft_strdup("<<");
+				cmd++;
+			}
 			else
 				file_info[1] = ft_strdup("<");
 			if (*cmd == ' ')
@@ -50,7 +53,10 @@ char	**extract_fileout(char *cmd)
 		{
 			cmd++;
 			if (*cmd == '>')
+			{
 				file_info[1] = ft_strdup(">>");
+				cmd++;
+			}
 			else
 				file_info[1] = ft_strdup(">");
 			if (*cmd == ' ')

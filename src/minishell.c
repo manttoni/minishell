@@ -69,10 +69,6 @@ int main(void)
 				printf("create_list\n");
 				return (1);
 			}
-			printf("Command:\n");
-			for (int i = 0; list->args[i]; ++i)
-				printf("%s\n", list->args[i]);
-			printf("\n");
 			run(list);
 			free_list(list);
 		}
