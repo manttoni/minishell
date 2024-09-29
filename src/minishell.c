@@ -1,31 +1,5 @@
 #include "minishell.h"
 
-char	*get_next_command(char *input)
-{
-	char	*cmd;
-	char	*ptr;
-	
-	if (*input == '\0')
-		return (NULL);
-	ptr = input;
-	while (ft_strchr("|\0", *ptr) == NULL)
-	{
-		ptr++;
-	}
-	cmd = ft_substr(input, 0, ptr - input);
-	if (*ptr == '\0')
-	{
-		printf("ASDASDASDASD\n");
-		ft_memset(input, '\0', ft_strlen(input));
-	}
-	else
-	{
-		printf("QWEQWEQWE\n");
-		ft_memmove(input, ptr + 1, ft_strlen(ptr + 1));
-	}
-	return (cmd);
-}
-
 t_command	*create_list(char *input)
 {
 	char		*ptr;
