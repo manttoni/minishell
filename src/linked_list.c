@@ -35,6 +35,7 @@ void	add_node(t_command **list, t_command *new)
 	t_command	*current;
 
 	current = *list;
+	new->index = list_len(*list) - 1;
 	if (current == NULL)
 	{
 		*list = new;
@@ -43,7 +44,6 @@ void	add_node(t_command **list, t_command *new)
 	while (current->next)
 		current = current->next;
 	current->next = new;
-	new->index = list_len(*list) - 1;
 }
 
 void	free_node(t_command *node)

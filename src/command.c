@@ -36,15 +36,16 @@ int	set_io(t_command *command, int *pipefds)
 		dup2(command->fdout, STDOUT_FILENO);
 	else if (list_len(command) != 1) //command is not the last one
 		dup2(pipefds[2 * command->index + 1], STDOUT_FILENO);
-	close(command->fdin);
-	close(command->fdout);
+	if (command->fdin > 1)
+		close(command->fdin);
+	if (command->fdout > 1)
+		close(command->fdout);
 	return (1);
 }
 
 
 int	run(t_command *list)
 {
-	printf("test\n");
 	t_command	*current;
 	int			id;
 	int			pipefds[2 * (list_len(list) - 1)];
@@ -60,13 +61,16 @@ int	run(t_command *list)
 		if (id == 0)
 		{
 			set_io(current, pipefds);
-			printf("Command: \n\texe: %s\n\targs[0]:%s\n", current->exe, current->args[0]);
+			close_pipes(pipefds, list_len(list));
 			execve(current->exe, current->args, NULL);
 			free_list(list);
 			return (error_return("execve"));
 		}
-		wait(NULL);
 		current = current->next;
+	}
+	for (int i = 0; i < list_len(list); ++i)
+	{
+		wait(NULL);
 	}
 	close_pipes(pipefds, list_len(list));
 	return (1);

@@ -68,7 +68,9 @@ int	set_fdout(t_command *command, char *cmd)
 int	set_args(t_command *command, char *cmd)
 {
 	int		space;
+	char	*ptr;
 
+	ptr = cmd;
 	while (*cmd)
 	{
 		if (ft_strchr("<>", *cmd))
@@ -86,7 +88,7 @@ int	set_args(t_command *command, char *cmd)
 		}
 		cmd++;
 	}
-	command->args = ft_split(cmd, ' ');
+	command->args = ft_split(ptr, ' ');
 	return (1);
 }
 
