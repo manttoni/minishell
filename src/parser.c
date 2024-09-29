@@ -1,30 +1,49 @@
 #include "minishell.h"
 
+int	heredoc(char *delimiter)
+{
+	int		fd;
+	char	*input;
+
+	fd = open(".tmp", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	input = "";
+	while (1)
+	{
+		input = readline("> ");
+		fflush(stdout);
+		if (ft_strncmp(input, delimiter, ft_strlen(delimiter) + 1) == 0)
+			break ;
+		write(fd, input, ft_strlen(input));
+	}
+	close(fd);
+	return (open(".tmp", O_RDONLY));
+}
+
 int	set_fdin(t_command *command, char *cmd)
 {
-	char	*file_in[2];
+	char	**file_in;
 
 	file_in = extract_filein(cmd); //returns info of last redirection
 	if (file_in)
 	{
-		if (ft_strcmp(file_in[1], "<", 2) == 0)
-			command->fdin = open(file_in, O_RDONLY);
-		else if (ft_strcmp(file_in[1], "<<", 2) == 0)
+		if (ft_strncmp(file_in[1], "<", 2) == 0)
+			command->fdin = open(file_in[0], O_RDONLY);
+		else if (ft_strncmp(file_in[1], "<<", 2) == 0)
 			command->fdin = heredoc(file_in[0]); // give delimiter
 		if (command->fdin < 0)
 		{
-			free_file_info(file_in);
+			free_split(file_in);
 			return (error_return("opening file in"));
 		}
 	}
-	free_file_info(file_in);
+	free_split(file_in);
 	command->fdin = 0;
 	return (1);
 }
 
 int	set_fdout(t_command *command, char *cmd)
 {
-	char	*file_out[2];
+	char	**file_out;
 
 	file_out = extract_fileout(cmd); //returns info of last redirection
 	if (file_out)
@@ -33,15 +52,15 @@ int	set_fdout(t_command *command, char *cmd)
 			command->fdout = open(file_out[0], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (ft_strncmp(file_out[1], ">>", 2) == 0)
 			command->fdout = open(file_out[0], O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (fdout < 0)
+		if (command->fdout < 0)
 		{
 			if (command->fdin >= 0)
 				close(command->fdin);
-			free_file_info(file_out);
+			free_split(file_out);
 			return (error_return("opening file out"));
 		}
 	}
-	free_file_info(file_out);
+	free_split(file_out);
 	command->fdout = 1;
 	return (1);
 }
@@ -49,9 +68,7 @@ int	set_fdout(t_command *command, char *cmd)
 int	set_args(t_command *command, char *cmd)
 {
 	int		space;
-	char	*ptr;
 
-	ptr = cmd;
 	while (*cmd)
 	{
 		if (ft_strchr("<>", *cmd))

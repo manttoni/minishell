@@ -11,13 +11,15 @@
 # include <readline/history.h>
 # include <limits.h>
 # include "../lib/libft/libft.h"
+# include "linked_list.h"
 
-void	ignore_redirs(char **command);
+int		parse_cmd(t_command *command, char *cmd);
 int		error_return(char *error_message);
 void	free_split(char **s);
-int		run_pipeline(char *input);
+int		run(t_command *list);
 int		create_pipes(int *pipefds, int cmds);
 void	close_pipes(int *pipefds, int cmds);
-char	*extract_filename(char **command, char *redir);
+char	**extract_filein(char *cmd);
+char	**extract_fileout(char *cmd);
 
 #endif

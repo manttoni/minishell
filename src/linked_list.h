@@ -5,12 +5,18 @@
 
 typedef struct s_command
 {
-	t_command	*next;
-	char		**args;
-	char		*exe;
-	int			fdin;
-	int			fdout;
+	struct s_command	*next;
+	int					index;
+	char				**args;
+	char				*exe;
+	int					fdin;
+	int					fdout;
 }	t_command;
+
+int			list_len(t_command *list);
+void		free_list(t_command *list);
+t_command	*create_node(char *cmd);
+void		add_node(t_command **list, t_command *command);
 
 #endif
 

@@ -4,6 +4,8 @@ void	free_split(char **s)
 {
 	char	**ptr;
 
+	if (s == NULL)
+		return ;
 	ptr = s;
 	while (*ptr)
 	{

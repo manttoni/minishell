@@ -13,8 +13,10 @@ int	filename_len(char *cmd)
 // returns the last "<" or "<<" + filename/delimiter
 char	**extract_filein(char *cmd)
 {
-	char	file_info[2];
+	char	**file_info;
 
+	if (ft_strchr(cmd, '<') == NULL)
+		return (NULL);
 	file_info = malloc(2 * sizeof(char*));
 	file_info[1] = malloc(2 * sizeof(char));
 	while (*cmd)
@@ -28,7 +30,7 @@ char	**extract_filein(char *cmd)
 				file_info[1] = "<";
 			if (*cmd == ' ')
 				cmd++;
-			file_info[0] = ft_strdup(cmd, 0, filename_len(cmd));
+			file_info[0] = ft_substr(cmd, 0, filename_len(cmd));
 		}
 		cmd++;
 	}
@@ -36,10 +38,12 @@ char	**extract_filein(char *cmd)
 }
 
 // returns the last ">" or ">>" + filename
-char	**extract_filein(char *cmd)
+char	**extract_fileout(char *cmd)
 {
-	char	file_info[2];
+	char	**file_info;
 
+	if (ft_strchr(cmd, '>') == NULL)
+		return (NULL);
 	file_info = malloc(2 * sizeof(char*));
 	file_info[1] = malloc(2 * sizeof(char));
 	while (*cmd)
@@ -53,7 +57,7 @@ char	**extract_filein(char *cmd)
 				file_info[1] = ">";
 			if (*cmd == ' ')
 				cmd++;
-			file_info[0] = ft_strdup(cmd, 0, filename_len(cmd));
+			file_info[0] = ft_substr(cmd, 0, filename_len(cmd));
 		}
 		cmd++;
 	}
