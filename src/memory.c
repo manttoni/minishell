@@ -6,6 +6,8 @@ void	free_split(char **s)
 
 	if (s == NULL)
 		return ;
+	if (*s == NULL)
+		return ;
 	ptr = s;
 	while (*ptr)
 	{

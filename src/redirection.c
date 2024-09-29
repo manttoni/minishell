@@ -18,16 +18,15 @@ char	**extract_filein(char *cmd)
 	if (ft_strchr(cmd, '<') == NULL)
 		return (NULL);
 	file_info = malloc(2 * sizeof(char*));
-	file_info[1] = malloc(2 * sizeof(char));
 	while (*cmd)
 	{
 		if (*cmd == '<')
 		{
 			cmd++;
 			if (*cmd == '<')
-				file_info[1] = "<<";
+				file_info[1] = ft_strdup("<<");
 			else
-				file_info[1] = "<";
+				file_info[1] = ft_strdup("<");
 			if (*cmd == ' ')
 				cmd++;
 			file_info[0] = ft_substr(cmd, 0, filename_len(cmd));
@@ -45,16 +44,15 @@ char	**extract_fileout(char *cmd)
 	if (ft_strchr(cmd, '>') == NULL)
 		return (NULL);
 	file_info = malloc(2 * sizeof(char*));
-	file_info[1] = malloc(2 * sizeof(char));
 	while (*cmd)
 	{
 		if (*cmd == '>')
 		{
 			cmd++;
 			if (*cmd == '>')
-				file_info[1] = ">>";
+				file_info[1] = ft_strdup(">>");
 			else
-				file_info[1] = ">";
+				file_info[1] = ft_strdup(">");
 			if (*cmd == ' ')
 				cmd++;
 			file_info[0] = ft_substr(cmd, 0, filename_len(cmd));

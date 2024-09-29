@@ -32,12 +32,11 @@ int	set_fdin(t_command *command, char *cmd)
 			command->fdin = heredoc(file_in[0]); // give delimiter
 		if (command->fdin < 0)
 		{
-			free_split(file_in);
 			return (error_return("opening file in"));
 		}
 	}
-	free_split(file_in);
-	command->fdin = 0;
+	else
+		command->fdin = 0;
 	return (1);
 }
 
@@ -56,12 +55,11 @@ int	set_fdout(t_command *command, char *cmd)
 		{
 			if (command->fdin >= 0)
 				close(command->fdin);
-			free_split(file_out);
 			return (error_return("opening file out"));
 		}
 	}
-	free_split(file_out);
-	command->fdout = 1;
+	else
+		command->fdout = 1;
 	return (1);
 }
 
@@ -71,6 +69,7 @@ int	set_args(t_command *command, char *cmd)
 	char	*ptr;
 
 	ptr = cmd;
+	printf("cmd = %s\n", cmd);
 	while (*cmd)
 	{
 		if (ft_strchr("<>", *cmd))
@@ -86,7 +85,8 @@ int	set_args(t_command *command, char *cmd)
 				cmd++;
 			}
 		}
-		cmd++;
+		if (*cmd)
+			cmd++;
 	}
 	command->args = ft_split(ptr, ' ');
 	return (1);
