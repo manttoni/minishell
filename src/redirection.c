@@ -1,56 +1,61 @@
 #include "minishell.h"
 
-/* returns file name (or delimiter in case of "<<") 
- * or NULL if no redir found ("<", ">", "<<" or ">>") */
-char	*extract_filename(char **command, char *redir)
+int	filename_len(char *cmd)
 {
-	char	*redir_ptr;
+	int len;
 
-	while (*command)
-	{
-		redir_ptr = ft_strnstr(*command, redir, ft_strlen(*command));
-		if (redir_ptr != NULL)
-		{
-			redir_ptr += ft_strlen(redir);
-			if (*redir_ptr != '\0' && ft_strchr("<>", *redir_ptr) == NULL)
-				return (ft_strdup(redir_ptr));
-			if (*(command + 1) != NULL && ft_strchr("<>", **(command + 1)) == NULL)
-				return (ft_strdup(*(command + 1)));
-			printf("syntax error\n");
-		}
-		command++;
-	}
-	return (NULL);
+	len = 0;
+	while (ft_strchr("<>\0 ", cmd[len]) == NULL) // add non-allowed chars
+		len++;
+	return (len);
 }
 
-void	ignore_redirs(char **command)
+// returns the last "<" or "<<" + filename/delimiter
+char	**extract_filein(char *cmd)
 {
-	int		redir_found;
-	char	*current;
-	char	**ptr;
+	char	file_info[2];
 
-	redir_found = 0;
-	ptr = command;
-	while (*ptr)
+	file_info = malloc(2 * sizeof(char*));
+	file_info[1] = malloc(2 * sizeof(char));
+	while (*cmd)
 	{
-		current = *ptr;
-		while (*current)
+		if (*cmd == '<')
 		{
-			if (ft_strchr("<>", *current))
-				redir_found = 1;
-			if (redir_found)
-				*current = '\0';
-			current++;
+			cmd++;
+			if (*cmd == '<')
+				file_info[1] = "<<";
+			else
+				file_info[1] = "<";
+			if (*cmd == ' ')
+				cmd++;
+			file_info[0] = ft_strdup(cmd, 0, filename_len(cmd));
 		}
-		ptr++;
+		cmd++;
 	}
-	while (*command)
+	return (file_info);
+}
+
+// returns the last ">" or ">>" + filename
+char	**extract_filein(char *cmd)
+{
+	char	file_info[2];
+
+	file_info = malloc(2 * sizeof(char*));
+	file_info[1] = malloc(2 * sizeof(char));
+	while (*cmd)
 	{
-		if (**command == '\0')
+		if (*cmd == '>')
 		{
-			free(*command);
-			*command = NULL;
+			cmd++;
+			if (*cmd == '>')
+				file_info[1] = ">>";
+			else
+				file_info[1] = ">";
+			if (*cmd == ' ')
+				cmd++;
+			file_info[0] = ft_strdup(cmd, 0, filename_len(cmd));
 		}
-		command++;
+		cmd++;
 	}
+	return (file_info);
 }
