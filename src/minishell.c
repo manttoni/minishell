@@ -5,47 +5,46 @@ char	*get_next_command(char *input)
 	char	*cmd;
 	char	*ptr;
 	
-	cmd = NULL;
+	if (*input == '\0')
+		return (NULL);
 	ptr = input;
-	while (*ptr)
+	while (ft_strchr("|\0", *ptr) == NULL)
 	{
-		if (*ptr == '\"')
-		{
-			ptr++;
-			while (*ptr != '\"')
-				ptr++;
-		}
-		else if (*ptr == '|' || *ptr == '\0')
-			break ;
 		ptr++;
 	}
-	if (input != ptr)
-		cmd = ft_substr(input, 0, ptr - input);
+	cmd = ft_substr(input, 0, ptr - input);
 	if (*ptr == '\0')
-		ft_memset(input, 0, ft_strlen(input));
+	{
+		printf("ASDASDASDASD\n");
+		ft_memset(input, '\0', ft_strlen(input));
+	}
 	else
-		ft_memmove(input, ptr + 1, ft_strlen(input));
+	{
+		printf("QWEQWEQWE\n");
+		ft_memmove(input, ptr + 1, ft_strlen(ptr + 1));
+	}
 	return (cmd);
 }
 
 t_command	*create_list(char *input)
 {
-	char		*cmd;
+	char		*ptr;
 	t_command	*new;
 	t_command	*list;
 
 	list = NULL;
-	cmd = get_next_command(input);
-	while (cmd)
+	ptr = input;
+	while (*input)
 	{
-		new = create_node(cmd);
-		if (new == NULL)
-		{
-			printf("create_node\n");
-			return (NULL);
-		}
+		ptr = ft_strchr(input, '|');
+		if (ptr)
+			new = create_node(ft_substr(input, 0, ptr - input));
+		else
+			new = create_node(ft_strdup(input));
 		add_node(&list, new);
-		cmd = get_next_command(input);
+		if (!ptr)
+			break;
+		input = ptr + 1;
 	}
 	return (list);
 }
@@ -70,6 +69,10 @@ int main(void)
 				printf("create_list\n");
 				return (1);
 			}
+			printf("Command:\n");
+			for (int i = 0; list->args[i]; ++i)
+				printf("%s\n", list->args[i]);
+			printf("\n");
 			run(list);
 			free_list(list);
 		}

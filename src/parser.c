@@ -69,7 +69,6 @@ int	set_args(t_command *command, char *cmd)
 	char	*ptr;
 
 	ptr = cmd;
-	printf("cmd = %s\n", cmd);
 	while (*cmd)
 	{
 		if (ft_strchr("<>", *cmd))

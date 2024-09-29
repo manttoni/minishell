@@ -35,7 +35,7 @@ void	add_node(t_command **list, t_command *new)
 	t_command	*current;
 
 	current = *list;
-	new->index = list_len(*list) - 1;
+	new->index = list_len(current);
 	if (current == NULL)
 	{
 		*list = new;
