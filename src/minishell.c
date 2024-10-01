@@ -23,14 +23,11 @@ t_command	*create_list(char *input)
 	return (list);
 }
 
-int main(int argc, char **argv, char **env)
+int main(void)
 {
 	char		*input;
 	t_command	*list;
 
-	if (argc != 1)
-		return (1);
-	(void) argv;
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -46,7 +43,7 @@ int main(int argc, char **argv, char **env)
 				printf("create_list\n");
 				return (1);
 			}
-			run(list, env);
+			run(list);
 			free_list(list);
 		}
 		free(input);

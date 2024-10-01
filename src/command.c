@@ -49,7 +49,7 @@ int	set_io(t_command *command, int pipefds[][2])
 }
 
 
-int	run(t_command *list, char **env)
+int	run(t_command *list)
 {
 	t_command	*current;
 	int			id;
@@ -67,7 +67,7 @@ int	run(t_command *list, char **env)
 		{
 			set_io(current, pipefds);
 			close_pipes(pipefds, list_len(list));
-			execve(current->exe, current->args, env);
+			execve(current->exe, current->args, NULL);
 			free_list(list);
 			return (error_return("execve"));
 		}

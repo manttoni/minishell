@@ -16,7 +16,7 @@
 int		parse_cmd(t_command *command, char *cmd);
 int		error_return(char *error_message);
 void	free_split(char **s);
-int		run(t_command *list, char **env);
+int		run(t_command *list);
 char	**extract_filein(char *cmd);
 char	**extract_fileout(char *cmd);
 

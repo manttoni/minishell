@@ -93,6 +93,39 @@ int	set_args(t_command *command, char *cmd)
 	return (1);
 }
 
+void	expand(char **args, int i)
+{
+	char	*value;
+
+	value = getenv(args[i] + 1);
+	free(args[i]);
+	if (value != NULL)
+	{
+		args[i] = value;
+		return ;
+	}
+	while (args[i])
+	{
+		args[i] = args[i+1];
+		i++;
+	}
+}
+	
+
+int	replace_env_vars(char **args)
+{
+	int		i;
+
+	i = 0;
+	while (args[i])
+	{
+		if (args[i][0] == '$')
+			expand(args, i);
+		i++;
+	}
+	return (1);
+}
+
 int	parse_cmd(t_command *command, char *cmd)
 {
 	if (set_fdin(command, cmd) == 0)
@@ -101,6 +134,8 @@ int	parse_cmd(t_command *command, char *cmd)
 		return (error_return("set_fdout"));
 	if (set_args(command, cmd) == 0)
 		return (error_return("set_args"));
+	if (replace_env_vars(command->args) == 0)
+		return (error_return("replace_env_vars"));
 	command->exe = ft_strjoin("/bin/", command->args[0]);
 	return (1);
 }
