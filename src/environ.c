@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 17:05:34 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/01 17:37:26 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/01 17:50:15 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,15 @@ char	*ft_getenv(char	*key)
 	{
 		if (ft_strnstr(line, key, len))
 		{
-			ret = ft_substr(line, len + 1, ft_strlen(line + len) - 2);
+			ret = ft_substr(line, len + 1, ft_strlen(line + len) - 1);
 			free(line);
+			close(fd);
 			return (ret);
 		}
 		free(line);
 		line = get_next_line(fd);
 	}
+	close(fd);
 	return (NULL);
 }
 

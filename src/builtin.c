@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 15:44:57 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/01 17:13:42 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/01 17:48:14 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,24 @@ int	ft_cd(char **args)
 
 int	ft_export(char **args)
 {
-	(void) args;
-	printf("Not ready\n");
-	return (0);
+	int	fd;
+	int	i;
+
+	i = 1;
+	fd = open(".env", O_WRONLY | O_APPEND);
+	if (fd < 0)
+		return (error_return("open .env"));
+	while (args[i])
+	{
+		if (write(fd, args[i], ft_strlen(args[i])) < 0)
+		{
+			close(fd);
+			return (error_return("write"));
+		}
+		i++;
+	}
+	close(fd);
+	return (1);
 }
 
 int	run_builtin(char **args)
