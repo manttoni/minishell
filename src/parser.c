@@ -10,11 +10,10 @@ int	heredoc(char *delimiter)
 	input = "";
 	while (1)
 	{
-		input = readline("> ");
+		input = readline("heredoc> ");
 		fflush(stdout);
-		if (ft_strncmp(input, delimiter, ft_strlen(delimiter)) == 0)
-			if (ft_strlen(input) == ft_strlen(delimiter))
-				break ;
+		if (ft_strcmp(input, delimiter) == 0)
+			break ;
 		write(fd, input, ft_strlen(input));
 	}
 	close(fd);
