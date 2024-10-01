@@ -55,7 +55,7 @@ int	run(t_command *list)
 	int			id;
 	int			pipefds[list_len(list)][2];
 
-	if (ft_strcmp("cd", list->args[0]) == 0 || ft_strcmp("export", list->args[0]) == 0)
+	if (ft_strcmp("cd", list->args[0]) == 0 || ft_strcmp("export", list->args[0]) == 0 || ft_strcmp("unset", list->args[0]) == 0)
 	{
 		run_builtin(list->args);
 		return (1);

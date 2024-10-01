@@ -14,6 +14,7 @@
 # include "../lib/get_next_line/get_next_line.h"
 # include "linked_list.h"
 
+char	**read_file(char *file);
 int		replace_env_vars(char **args);
 int		init_env(char **env);
 int		run_builtin(char **args);
