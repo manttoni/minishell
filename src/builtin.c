@@ -24,45 +24,6 @@ int	ft_cd(char **args)
 		return (error_return("chdir"));
 	return (1);
 }
-
-int	ft_export(char **args)
-{
-	int	fd;
-	int	i;
-
-	i = 1;
-	fd = open(".env", O_WRONLY | O_APPEND);
-	if (fd < 0)
-		return (error_return("open .env"));
-	while (args[i])
-	{
-		if (write(fd, args[i], ft_strlen(args[i])) < 0 || write(fd, "\n", 1) < 0)
-		{
-			close(fd);
-			return (error_return("write"));
-		}
-		i++;
-	}
-	close(fd);
-	return (1);
-}
-int	ft_unset(char **args)
-{
-	char	**env;
-	int		fd;
-
-	env = read_file(".env");
-	if (env == NULL)
-		return (error_return("read_file"));
-	close(open(".env", O_WRONLY | O_CREAT | O_TRUNC, 0777));
-	fd = open(".env", O_WRONLY | O_APPEND, 0644);
-	if (fd < 0)
-		return (error_return("open file failed"));
-//not ready
-	close(fd);
-	return (1);
-}
-
 int	run_builtin(char **args)
 {
 	if (ft_strcmp("cd", args[0]) == 0)

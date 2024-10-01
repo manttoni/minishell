@@ -11,49 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	init_env(char **env)
-{
-	int		fd;
-
-	fd = open(".env", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd < 0)
-		return (error_return("open .env"));
-	while (*env)
-	{
-		write(fd, *env, ft_strlen(*env));
-		write(fd, "\n", 1);
-		env++;
-	}
-	close(fd);
-	return (1);
-}
-
-char	*ft_getenv(char *key)
-{
-	char	**env;
-	int		i;
-	int		len;
-	char	*value;
-
-	env = read_file(".env");
-	i = 0;
-	len = ft_strlen(key);
-	while (env[i])
-	{
-		len = ft_strchr(env[i], '=') - env[i];
-		if (ft_strnstr(env[i], key, len))
-		{
-			value = ft_substr(env[i], len + 1, ft_strlen(env[i] + len) - 1);
-			free_split(env);
-			return (value);
-		}
-		i++;
-	}
-	free_split(env);
-	return (NULL);
-}
-
 void	expand(char **args, int i)
 {
 	char	*value;
