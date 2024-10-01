@@ -35,7 +35,8 @@ SRCS = 	ft_isalpha.c \
 		ft_putendl_fd.c \
 		ft_putnbr_fd.c \
 		ft_strtol.c \
-		ft_countchar.c
+		ft_countchar.c \
+		ft_strcmp.c
 
 BONUS = ft_lstnew_bonus.c \
 		ft_lstadd_front_bonus.c \
