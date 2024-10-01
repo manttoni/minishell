@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 15:44:57 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/01 19:05:33 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/01 19:38:51 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,25 +46,6 @@ int	ft_export(char **args)
 	close(fd);
 	return (1);
 }
-
-int	find_key(char **env, char **keys)
-{
-	int	i;
-
-	while (*env)
-	{
-		i = 0;
-		while (keys[i])
-		{
-			if (ft_strnstr(*env, keys[i], ft_strchr(*env, '=') - *env) != NULL)
-				return (1);
-			i++;
-		}
-		env++;
-	}
-	return (0);
-}
-
 int	ft_unset(char **args)
 {
 	char	**env;
@@ -73,16 +54,11 @@ int	ft_unset(char **args)
 	env = read_file(".env");
 	if (env == NULL)
 		return (error_return("read_file"));
-	fd = open(".env", O_WRONLY | O_TRUNC, 0644);
+	close(open(".env", O_WRONLY | O_CREAT | O_TRUNC, 0777));
+	fd = open(".env", O_WRONLY | O_APPEND, 0644);
 	if (fd < 0)
 		return (error_return("open file failed"));
-	while (*env)
-	{
-		if (find_key(env, args + 1) == 0)
-			if (write(fd, *env, ft_strlen(*env)) < 0 || write(fd, "\n", 1) < 0)
-				return (error_return("write failed"));
-		env++;
-	}
+//not ready
 	close(fd);
 	return (1);
 }

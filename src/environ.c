@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 17:05:34 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/01 17:50:15 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/01 19:17:56 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,34 +29,28 @@ int	init_env(char **env)
 	return (1);
 }
 
-char	*ft_getenv(char	*key)
+char	*ft_getenv(char *key)
 {
-	int		fd;
-	char	*line;
+	char	**env;
+	int		i;
 	int		len;
-	char	*ret;
+	char	*value;
 
+	env = read_file(".env");
+	i = 0;
 	len = ft_strlen(key);
-	fd = open(".env", O_RDONLY);
-	if (fd < 0)
+	while (env[i])
 	{
-		printf("open .env\n");
-		return (NULL); // this is wrong
-	}
-	line = get_next_line(fd);
-	while (line)
-	{
-		if (ft_strnstr(line, key, len))
+		len = ft_strchr(env[i], '=') - env[i];
+		if (ft_strnstr(env[i], key, len))
 		{
-			ret = ft_substr(line, len + 1, ft_strlen(line + len) - 1);
-			free(line);
-			close(fd);
-			return (ret);
+			value = ft_substr(env[i], len + 1, ft_strlen(env[i] + len) - 1);
+			free_split(env);
+			return (value);
 		}
-		free(line);
-		line = get_next_line(fd);
+		i++;
 	}
-	close(fd);
+	free_split(env);
 	return (NULL);
 }
 
