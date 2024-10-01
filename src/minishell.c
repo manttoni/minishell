@@ -23,11 +23,18 @@ t_command	*create_list(char *input)
 	return (list);
 }
 
-int main(void)
+int main(int argc, char **argv, char **env)
 {
 	char		*input;
 	t_command	*list;
 
+	if (argc != 1)
+	{
+		printf("Too many arguments\n");
+		return (1);
+	}
+	(void) argv;
+	init_env(env);
 	while (1)
 	{
 		input = readline("minishell> ");

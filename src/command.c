@@ -55,6 +55,11 @@ int	run(t_command *list)
 	int			id;
 	int			pipefds[list_len(list)][2];
 
+	if (ft_strcmp("cd", list->args[0]) == 0 || ft_strcmp("export", list->args[0]) == 0)
+	{
+		run_builtin(list->args);
+		return (1);
+	}
 	if (create_pipes(pipefds, list_len(list)) == 0)
 		return (error_return("create_pipes"));
 	current = list;
