@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 14:56:52 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/02 17:19:20 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/02 17:38:56 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**add(char **ar, char *str)
 		new[i] = ar[i];
 		i++;
 	}
-	new[i] = str;
+	new[i] = ft_strdup(str);
 	new[i + 1] = NULL;
 	free_array(ar);
 	return (new);

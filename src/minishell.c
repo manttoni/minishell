@@ -34,7 +34,7 @@ char	**copy_array(char **ar)
 	i = 0;
 	while (ar[i])
 	{
-		env[i] = ar[i];
+		env[i] = ft_strdup(ar[i]);
 		i++;
 	}
 	env[i] = NULL;
