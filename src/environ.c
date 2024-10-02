@@ -6,16 +6,27 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 17:05:34 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/01 19:17:56 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/02 17:20:41 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-void	expand(char **args, int i)
+
+char	*ft_getenv(char *key, char **env)
+{
+	char	**assignment;
+	int		key_len;
+	
+	assignment = find(env, key);
+	key_len = ft_strlen(key);
+	return (ft_substr(*assignment, key_len + 1, ft_strlen(*assignment + key_len + 1)));
+}
+
+void	expand(char **args, int i, char **env)
 {
 	char	*value;
 
-	value = ft_getenv(args[i] + 1);
+	value = ft_getenv(args[i] + 1, env);
 	free(args[i]);
 	if (value != NULL)
 	{
@@ -28,19 +39,3 @@ void	expand(char **args, int i)
 		i++;
 	}
 }
-	
-
-int	replace_env_vars(char **args)
-{
-	int		i;
-
-	i = 0;
-	while (args[i])
-	{
-		if (args[i][0] == '$')
-			expand(args, i);
-		i++;
-	}
-	return (1);
-}
-

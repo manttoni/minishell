@@ -15,7 +15,7 @@ typedef struct s_command
 
 int			list_len(t_command *list);
 void		free_list(t_command *list);
-t_command	*create_node(char *cmd);
+t_command	*create_node(char *cmd, char **env);
 void		add_node(t_command **list, t_command *command);
 
 #endif

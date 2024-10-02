@@ -13,8 +13,12 @@ int	heredoc(char *delimiter)
 		input = readline("heredoc> ");
 		fflush(stdout);
 		if (ft_strcmp(input, delimiter) == 0)
+		{
+			free(input);
 			break ;
+		}
 		write(fd, input, ft_strlen(input));
+		free(input);
 	}
 	close(fd);
 	return (open(".tmp", O_RDONLY));
@@ -92,16 +96,15 @@ int	set_args(t_command *command, char *cmd)
 	return (1);
 }
 
-int	parse_cmd(t_command *command, char *cmd)
+int	parse_cmd(t_command *command, char *cmd, char **env)
 {
+	(void) env;
 	if (set_fdin(command, cmd) == 0)
 		return (error_return("set_fdin"));
 	if (set_fdout(command, cmd) == 0)
 		return (error_return("set_fdout"));
-	if (set_args(command, cmd) == 0)
-		return (error_return("set_args"));
-	if (replace_env_vars(command->args) == 0)
-		return (error_return("replace_env_vars"));
-	command->exe = ft_strjoin("/bin/", command->args[0]);
+	if (set_args(command, cmd) == 0) // replace this with new split
+		return (error_return("set_args")); 
+	command->exe = ft_strjoin("/bin/", command->args[0]); //lets make it check all paths in PATH instead of just /bin/
 	return (1);
 }

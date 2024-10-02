@@ -14,14 +14,16 @@
 # include "../lib/get_next_line/get_next_line.h"
 # include "linked_list.h"
 
-char	**read_file(char *file);
-int		replace_env_vars(char **args);
-int		init_env(char **env);
-int		run_builtin(char **args);
-int		parse_cmd(t_command *command, char *cmd);
+int		len(char **ar);
+char	**find(char **ar, char *str);
+int		ft_remove(char **ar, char *str);
+char	**add(char **ar, char *str);
+char	*ft_getenv(char	*key, char **env);
+int		run_builtin(char **args, char **env);
+int		parse_cmd(t_command *command, char *cmd, char **env);
 int		error_return(char *error_message);
-void	free_split(char **s);
-int		run(t_command *list);
+void	free_array(char **s);
+int		run(t_command *list, char **env);
 char	**extract_filein(char *cmd);
 char	**extract_fileout(char *cmd);
 

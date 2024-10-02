@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_command	*create_list(char *input)
+t_command	*create_list(char *input, char **env)
 {
 	char		*ptr;
 	t_command	*new;
@@ -12,15 +12,33 @@ t_command	*create_list(char *input)
 	{
 		ptr = ft_strchr(input, '|');
 		if (ptr)
-			new = create_node(ft_substr(input, 0, ptr - input));
+			new = create_node(ft_substr(input, 0, ptr - input), env);
 		else
-			new = create_node(ft_strdup(input));
+			new = create_node(ft_strdup(input), env);
 		add_node(&list, new);
 		if (!ptr)
 			break;
 		input = ptr + 1;
 	}
 	return (list);
+}
+
+char	**copy_array(char **ar)
+{
+	char	**env;
+	int		i;
+
+	env = malloc((len(ar) + 1) * sizeof(char *));
+	if (env == NULL)
+		return (NULL);
+	i = 0;
+	while (ar[i])
+	{
+		env[i] = ar[i];
+		i++;
+	}
+	env[i] = NULL;
+	return (env);
 }
 
 int main(int argc, char **argv, char **env)
@@ -34,7 +52,9 @@ int main(int argc, char **argv, char **env)
 		return (1);
 	}
 	(void) argv;
-	init_env(env);
+	env = copy_array(env);
+	if (env == NULL)
+		return (1);
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -44,13 +64,13 @@ int main(int argc, char **argv, char **env)
 		if (*input)
 		{
 			add_history(input);
-			list = create_list(input);
+			list = create_list(input, env);
 			if (list == NULL)
 			{
 				printf("create_list\n");
 				return (1);
 			}
-			run(list);
+			run(list, env);
 			free_list(list);
 		}
 		free(input);

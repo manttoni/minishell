@@ -5,7 +5,7 @@ int	filename_len(char *cmd)
 	int len;
 
 	len = 0;
-	while (ft_strchr("<> \0", cmd[len]) == NULL) // add non-allowed chars
+	while (ft_strchr("<>|;\\\"\' \0", cmd[len]) == NULL) // add non-allowed chars
 		len++;
 	return (len);
 }

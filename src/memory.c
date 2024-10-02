@@ -1,13 +1,9 @@
 #include "minishell.h"
 
-void	free_split(char **s)
+void	free_array(char **s)
 {
 	char	**ptr;
 
-	if (s == NULL)
-		return ;
-	if (*s == NULL)
-		return ;
 	ptr = s;
 	while (*ptr)
 	{
