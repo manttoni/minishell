@@ -34,7 +34,7 @@ char	**add(char **ar, char *str)
 		new[i] = ar[i];
 		i++;
 	}
-	new[i] = ft_strdup(str);
+	new[i] = str;
 	new[i + 1] = NULL;
 	free_array(ar);
 	return (new);
@@ -58,6 +58,7 @@ int	ft_remove(char **ar, char *str)
 	remove_pointer = find(ar, str);
 	if (remove_pointer == NULL)
 		return (0);
+	free(*remove_pointer);
 	while (*remove_pointer)
 	{
 		*remove_pointer = *(remove_pointer + 1);
