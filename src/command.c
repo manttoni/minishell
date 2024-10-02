@@ -1,128 +1,84 @@
 #include "minishell.h"
 
-/* Like GNL, gets commands between pipes,
- * then moves the next command to input.
- * input is still freed in main */
-char	**get_next_command(char *input)
+int	create_pipes(int pipefds[][2], int cmds)
 {
-	char	**command;
-	char	*sub;
-	int		cmd_len;
-	char	*pipe;
-	
-	if (*input == '\0')
-		return (NULL);
-	pipe = ft_strchr(input, '|');
-	if (pipe == NULL)
-	{
-		command = ft_split(input, ' ');
-		ft_bzero(input, ft_strlen(input));
-		return (command);
-	}
-	cmd_len = pipe - input;
-	sub = ft_substr(input, 0, cmd_len);
-	command = ft_split(sub, ' ');
-	ft_memmove(input, pipe + 1, ft_strlen(input) - cmd_len + 1);
-	free(sub);
-	return (command);
-}
+	int	i;
 
-int	count_commands(char *input)
-{
-	int	cmds;
-	
-	cmds = 1;
-	while (ft_strchr(input, '|'))
+	i = 0;
+	while (i < cmds - 1)
 	{
-		cmds++;
-		input = ft_strchr(input, '|') + 1;
+		if (pipe(pipefds[i]) == -1)
+			return (error_return("pipe"));
+		i++;
 	}
-	return (cmds);
-}
-
-int	set_io(char **command, int *pipefds, int i, int cmds)
-{
-	char	*file_in;
-	char	*file_out;
-	int		fdin;
-	int		fdout;
-
-	file_in = extract_filename(command, "<");
-	file_out = extract_filename(command, ">");
-	if (file_in != NULL)
-	{
-		fdin = open(file_in, O_RDONLY);
-		if (fdin < 0)
-		{
-			free(file_in);
-			return (error_return("open fdin"));
-		}
-		dup2(fdin, STDIN_FILENO);
-		close(fdin);
-	}
-	else if (i > 0)
-		dup2(pipefds[2 * (i - 1)], STDIN_FILENO);
-	if (file_out != NULL)
-	{
-		fdout = open(file_out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fdout < 0)
-		{
-			if (fdin >= 0)
-				close(fdin);
-			free(file_out);
-			return (error_return("open fdout"));
-		}
-		dup2(fdout, STDOUT_FILENO);
-		close(fdout);
-	}
-	else if (i < cmds - 1)
-		dup2(pipefds[2 * i + 1], STDOUT_FILENO);
-	close_pipes(pipefds, cmds);
-	free(file_in);
-	free(file_out);
 	return (1);
 }
 
-int	run_pipeline(char *input)
+void	close_pipes(int pipefds[][2], int cmds)
 {
-	int		cmds;
-	int		i;
-	int		pipefds[2 * (count_commands(input) - 1)];
-	int		id;
-	char	**command;
-	char	*exe;
+	int	i;
 
-	cmds = count_commands(input);
-	if (create_pipes(pipefds, cmds) == 0)
-		return (error_return("create_pipes"));
 	i = 0;
-	while (i < cmds)
+	while (i < cmds - 1)
+	{
+		close(pipefds[i][1]);
+		close(pipefds[i][0]);
+		i++;
+	}
+}
+
+int	set_io(t_command *command, int pipefds[][2])
+{
+	if (command->fdin != 0) // command gets input from file
+		dup2(command->fdin, STDIN_FILENO);
+	else if (command->index != 0) // command is not the first one
+		dup2(pipefds[command->index - 1][0], STDIN_FILENO);
+	if (command->fdout != 1) // command outputs into file
+		dup2(command->fdout, STDOUT_FILENO);
+	else if (list_len(command) != 1) //command is not the last one
+		dup2(pipefds[command->index][1], STDOUT_FILENO);
+	if (command->fdin > 1)
+		close(command->fdin);
+	if (command->fdout > 1)
+		close(command->fdout);
+	return (1);
+}
+
+
+int	run(t_command *list, char **env)
+{
+	t_command	*current;
+	int			id;
+	int			pipefds[list_len(list)][2];
+
+	if (ft_strcmp("cd", list->args[0]) == 0 || ft_strcmp("export", list->args[0]) == 0 || ft_strcmp("unset", list->args[0]) == 0)
+	{
+		run_builtin(list->args, env);
+		return (1);
+	}
+	if (create_pipes(pipefds, list_len(list)) == 0)
+		return (error_return("create_pipes"));
+	current = list;
+	while (current)
 	{
 		id = fork();
 		if (id == -1)
 			return (error_return("fork"));
-		command = get_next_command(input);
-		exe = ft_strjoin("/bin/", command[0]);
 		if (id == 0)
 		{
-			if (set_io(command, pipefds, i, cmds) == 0)
-				return (error_return("set_io"));
-			ignore_redirs(command);
-			execve(exe, command, NULL);
-			free(exe);
-			free_split(command);
-			return(error_return("execve"));
+			set_io(current, pipefds);
+			close_pipes(pipefds, list_len(list));
+			execve(current->exe, current->args, NULL);
+			free_list(list);
+			return (error_return("execve"));
 		}
-		free(exe);
-		free_split(command);
-		i++;
+		current = current->next;
 	}
-	close_pipes(pipefds, cmds);
-	i = 0;
-	while (i < cmds)
+	close_pipes(pipefds, list_len(list));
+	int asd;
+	for (int i = 0; i < list_len(list); ++i)
 	{
-		wait(NULL);
-		i++;
+		wait(&asd);
 	}
-	return (1);
+	return (asd);
 }

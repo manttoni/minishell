@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 14:07:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/08/27 11:37:55 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/01 15:40:55 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+int		ft_strcmp(const char *s1, const char *s2);
 int		ft_countchar(char *str, char c);
 long	ft_strtol(const char *str);
 int		ft_isalpha(int c);
