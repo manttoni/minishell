@@ -46,7 +46,7 @@ int	get_arg(char **arg, char *cmd, char **env)
 			ft_memmove(ptr, ptr + 1, ft_strlen(ptr + 1)); // hide quote
 			ptr[ft_strlen(ptr) - 1] = '\0';
 		}
-		if (*ptr == '\'' || *ptr == '\"') // quote opens
+		if (inside == 0 && (*ptr == '\'' || *ptr == '\"')) // quote opens
 		{
 			inside = *ptr;
 			ft_memmove(ptr, ptr + 1, ft_strlen(ptr + 1)); // hide quote
@@ -61,9 +61,9 @@ int	get_arg(char **arg, char *cmd, char **env)
 		if (*ptr == '$' && inside != '\'') // dollar that is not in single quotes
 		{
 			result = append(result, ft_getenv(get_key(ptr), env));
-			ptr += ft_strlen(get_key(ptr));
+			ptr += ft_strlen(get_key(ptr)) + 1;
 		}
-		else
+		if (*ptr != inside)
 		{
 			chrstr = malloc(2);
 			chrstr[0] = *ptr;
@@ -91,7 +91,6 @@ char	**cmd_split(char *cmd, char **env)
 		if (*cmd == '\0')
 			break ;
 		len = get_arg(&arg, cmd, env);
-		printf("arg = %s\n", arg);
 		ar = add(ar, arg);
 		cmd += len;
 	}
