@@ -50,7 +50,7 @@ int	run(t_command *list, char **env)
 	int			id;
 	int			pipefds[list_len(list)][2];
 
-	if (ft_strcmp("cd", list->args[0]) == 0 || ft_strcmp("export", list->args[0]) == 0 || ft_strcmp("unset", list->args[0]) == 0)
+	if (list->args[0] && (ft_strcmp("cd", list->args[0]) == 0 || ft_strcmp("export", list->args[0]) == 0 || ft_strcmp("unset", list->args[0]) == 0))
 	{
 		run_builtin(list->args, env);
 		return (1);
@@ -65,8 +65,14 @@ int	run(t_command *list, char **env)
 			return (error_return("fork"));
 		if (id == 0)
 		{
+			if (current->args[0] == NULL)
+			{
+				close_pipes(pipefds, list_len(list));
+				exit(1);
+			}
 			set_io(current, pipefds);
 			close_pipes(pipefds, list_len(list));
+
 			execve(current->exe, current->args, NULL);
 			free_list(list);
 			return (error_return("execve"));
