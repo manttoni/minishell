@@ -22,20 +22,12 @@ char	*ft_getenv(char *key, char **env)
 	return (ft_substr(*assignment, key_len + 1, ft_strlen(*assignment + key_len + 1)));
 }
 
-void	expand(char **args, int i, char **env)
+char	*get_key(char *dollar)
 {
-	char	*value;
+	char	*key_end;
 
-	value = ft_getenv(args[i] + 1, env);
-	free(args[i]);
-	if (value != NULL)
-	{
-		args[i] = value;
-		return ;
-	}
-	while (args[i])
-	{
-		args[i] = args[i+1];
-		i++;
-	}
+	key_end = ft_strchr(dollar, ' ');
+	if (key_end == NULL)
+		return (ft_strdup(dollar + 1));
+	return (ft_substr(dollar + 1, 0, key_end - dollar - 1));
 }

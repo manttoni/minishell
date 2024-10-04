@@ -68,7 +68,7 @@ int	set_fdout(t_command *command, char *cmd)
 	return (1);
 }
 
-int	set_args(t_command *command, char *cmd)
+int	set_args(t_command *command, char *cmd, char **env)
 {
 	int		space;
 	char	*ptr;
@@ -92,7 +92,7 @@ int	set_args(t_command *command, char *cmd)
 		if (*cmd)
 			cmd++;
 	}
-	command->args = cmd_split(ptr);
+	command->args = cmd_split(ptr, env);
 	return (1);
 }
 
@@ -103,7 +103,7 @@ int	parse_cmd(t_command *command, char *cmd, char **env)
 		return (error_return("set_fdin"));
 	if (set_fdout(command, cmd) == 0)
 		return (error_return("set_fdout"));
-	if (set_args(command, cmd) == 0) // replace this with new split
+	if (set_args(command, cmd, env) == 0)
 		return (error_return("set_args")); 
 	command->exe = ft_strjoin("/bin/", command->args[0]); //lets make it check all paths in PATH instead of just /bin/
 	return (1);
