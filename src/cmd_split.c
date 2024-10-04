@@ -51,6 +51,7 @@ int	get_arg(char **arg, char *cmd, char **env)
 			inside = *ptr;
 			ft_memmove(ptr, ptr + 1, ft_strlen(ptr + 1)); // hide quote
 			ptr[ft_strlen(ptr) - 1] = '\0';
+			continue ;
 		}
 		if (*ptr == ' ' && inside == 0) // space that is not in quotes
 		{
