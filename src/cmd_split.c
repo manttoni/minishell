@@ -44,11 +44,13 @@ int	get_arg(char **arg, char *cmd, char **env)
 		{
 			inside = 0;
 			ft_memmove(ptr, ptr + 1, ft_strlen(ptr + 1)); // hide quote
+			ptr[ft_strlen(ptr) - 1] = '\0';
 		}
 		if (*ptr == '\'' || *ptr == '\"') // quote opens
 		{
 			inside = *ptr;
-			ft_memmove(ptr, ptr + 1, ft_strlen(ptr + 1));
+			ft_memmove(ptr, ptr + 1, ft_strlen(ptr + 1)); // hide quote
+			ptr[ft_strlen(ptr) - 1] = '\0';
 		}
 		if (*ptr == ' ' && inside == 0) // space that is not in quotes
 		{
@@ -60,7 +62,7 @@ int	get_arg(char **arg, char *cmd, char **env)
 			result = append(result, ft_getenv(get_key(ptr), env));
 			ptr += ft_strlen(get_key(ptr));
 		}
-		else if (*ptr != inside)
+		else
 		{
 			chrstr = malloc(2);
 			chrstr[0] = *ptr;
