@@ -44,17 +44,6 @@ int	set_io(t_command *command, int pipefds[][2])
 	return (1);
 }
 
-char	*exitchar(int asd)
-{
-	char	*itoa;
-	char	*ret;
-
-	itoa = ft_itoa(asd);
-	ret = ft_strjoin("?=", itoa);
-	free(itoa);
-	return (ret);
-}
-
 int	run(t_command *list, char **env)
 {
 	t_command	*current;
@@ -90,6 +79,5 @@ int	run(t_command *list, char **env)
 	{
 		wait(&asd);
 	}
-	env = add(env, exitchar(asd));
 	return (asd);
 }

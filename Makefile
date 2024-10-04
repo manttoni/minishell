@@ -7,13 +7,11 @@ CFLAGS = -g -Wall -Wextra -Werror
 # Directories
 SRC_DIR = src
 LIBFT_DIR = lib/libft
-GNL_DIR = lib/get_next_line
 OBJ_DIR = obj
 
 # Source files
 SRCS = $(wildcard $(SRC_DIR)/*.c)
 LIBFT = $(LIBFT_DIR)/libft.a
-GNL = $(GNL_DIR)/get_next_line.a
 
 # Object files
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
@@ -28,8 +26,8 @@ NAME = minishell
 all: $(NAME)
 
 # Linking the executable
-$(NAME): $(OBJS) $(LIBFT) $(GNL)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(GNL) -lreadline
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) -lreadline
 
 # Compile source files into object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
