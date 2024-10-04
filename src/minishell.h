@@ -11,7 +11,6 @@
 # include <readline/history.h>
 # include <limits.h>
 # include "../lib/libft/libft.h"
-# include "../lib/get_next_line/get_next_line.h"
 # include "linked_list.h"
 
 int		len(char **ar);
