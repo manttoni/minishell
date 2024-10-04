@@ -92,7 +92,7 @@ int	set_args(t_command *command, char *cmd)
 		if (*cmd)
 			cmd++;
 	}
-	command->args = ft_split(ptr, ' ');
+	command->args = cmd_split(ptr);
 	return (1);
 }
 

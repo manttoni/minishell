@@ -13,6 +13,7 @@
 # include "../lib/libft/libft.h"
 # include "linked_list.h"
 
+char	**cmd_split(char *cmd);
 int		len(char **ar);
 char	**find(char **ar, char *str);
 int		ft_remove(char **ar, char *str);
