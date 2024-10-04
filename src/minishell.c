@@ -15,6 +15,11 @@ t_command	*create_list(char *input, char **env)
 			new = create_node(ft_substr(input, 0, ptr - input), env);
 		else
 			new = create_node(ft_strdup(input), env);
+		if (new == NULL)
+		{
+			printf("Error creating node\n");
+			return (NULL);
+		}
 		add_node(&list, new);
 		if (!ptr)
 			break;
@@ -68,7 +73,7 @@ int main(int argc, char **argv, char **env)
 			if (list == NULL)
 			{
 				printf("create_list\n");
-				return (1);
+				continue ;
 			}
 			run(list, env);
 			free_list(list);

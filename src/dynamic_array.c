@@ -36,7 +36,7 @@ char	**add(char **ar, char *str)
 	}
 	new[i] = str;
 	new[i + 1] = NULL;
-	free_array(ar);
+	free(ar);
 	return (new);
 }
 
