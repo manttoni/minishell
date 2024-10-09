@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	ft_cd(char **args, char **env)
+int	ft_cd(char **args, t_env *env)
 {
 	char	*path;
 
@@ -25,7 +25,7 @@ int	ft_cd(char **args, char **env)
 	return (1);
 }
 
-int	ft_export(char **args, char **env)
+int	ft_export(char **args, t_env *env)
 {
 	int i;
 
@@ -37,29 +37,49 @@ int	ft_export(char **args, char **env)
 			i++;
 			continue ;
 		}
-		env = add(env, args[i]);
-		if (env == NULL)
+		env->arr = add(env->arr, args[i]);
+		if (env->arr == NULL)
 			return (error_return("add"));
 		i++;
 	}
 	return (1);
 }
 
-int	ft_unset(char **args, char **env)
+int	ft_unset(char **args, t_env *env)
 {
-	int	i;
+	int		i;
+	char	**str;
 
 	i = 1;
 	while (args[i])
 	{
-		if (ft_remove(env, args[i]) == 0)
+		str = find(env->arr, args[i]);
+		if (*str[ft_strlen(args[i])] != '=')
+		{
+			i++;
+			continue ;
+		}
+		if (ft_remove(env->arr, args[i]) == 0)
 			return (error_return("remove"));
 		i++;
 	}
 	return (1);
 }
 
-int	run_builtin(char **args, char **env)
+int	ft_env(t_env *env)
+{
+	int	i;
+
+	i = 0;
+	while (i < len(env->arr))
+	{
+		printf("%s\n", env->arr[i]);
+		i++;
+	}
+	return (1);
+}
+
+int	run_builtin(char **args, t_env *env)
 {
 	if (ft_strcmp("cd", args[0]) == 0)
 		if (ft_cd(args, env) == 0)
@@ -70,5 +90,8 @@ int	run_builtin(char **args, char **env)
 	if (ft_strcmp("unset", args[0]) == 0)
 		if (ft_unset(args, env) == 0)
 			return (error_return("ft_unset"));
+	if (ft_strcmp("env", args[0]) == 0)
+		if (ft_env(env) == 0)
+			return (error_return("ft_env"));
 	return (1);
 }
