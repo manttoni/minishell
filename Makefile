@@ -1,47 +1,28 @@
-# Makefile for the minishell project
-
-# Compiler and flags
-CC = gcc
-CFLAGS = -g -Wall -Wextra -Werror
-
-# Directories
-SRC_DIR = src
-LIBFT_DIR = lib/libft
-OBJ_DIR = obj
-
-# Source files
-SRCS = $(wildcard $(SRC_DIR)/*.c)
-LIBFT = $(LIBFT_DIR)/libft.a
-
-# Object files
-OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
-
-# Output binary
 NAME = minishell
+FLAGS = -g -Wall -Wextra -Werror
+LIBFT_DIR = /lib/libft
+LIBFT = lib/libft/libft.a
+SRC = $(wildcard src/*.c)
+OBJ = $(SRC:.c=.o)
+CC = cc
 
-# Phony targets
-.PHONY: all clean fclean re
+all: $(LIBFT) $(OBJ)
+	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(NAME)
 
-# Default target
-all: $(NAME)
-
-# Linking the executable
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) -lreadline
-
-# Compile source files into object files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)  # Create object directory if it doesn't exist
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Clean up object files
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR) all
+
 clean:
-	rm -rf $(OBJ_DIR)/*.o
+	rm $(OBJ)
+	$(MAKE) -C $(LIBFT_DIR) clean
 
-# Clean up the library and executable
 fclean: clean
-	rm -f $(NAME)
+	rm $(NAME)
+	$(MAKE) -C fclean
 
-# Rebuild the project
 re: fclean all
 
+.PHONY: all clean fclean re

@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 15:44:57 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/02 17:17:40 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/10 13:18:07 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,13 @@ int	ft_cd(char **args, t_env *env)
 	if (args[1] == NULL || ft_strcmp(args[1], "") == 0)
 		path = ft_getenv("HOME", env);
 	else
-		path = args[1];
+		path = ft_strdup(args[1]);
 	if (chdir(path) != 0)
+	{
+		free(path);
 		return (error_return("chdir"));
+	}
+	free(path);
 	return (1);
 }
 
