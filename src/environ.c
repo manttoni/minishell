@@ -6,22 +6,26 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 17:05:34 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/02 17:20:41 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/10 13:28:50 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_getenv(char *key, char **env)
+char	*ft_getenv(char *key, t_env *env)
 {
-	char	**assignment;
-	char	*value;
-	int		key_len;
-	
-	assignment = find(env, key);
+	int	i;
+	int	key_len;
+
 	key_len = ft_strlen(key);
-	value = ft_strdup(*assignment + key_len + 1);
-	return (value);
+	i = 0;
+	while (env->arr[i])
+	{
+		if (ft_strncmp(env->arr[i], key, key_len) == 0 && env->arr[i][key_len] == '=')
+			return (ft_strdup(env->arr[i] + key_len + 1));
+		i++;
+	}
+	return (NULL);
 }
 
 char	*get_key(char *dollar)
