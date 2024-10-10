@@ -13,6 +13,12 @@
 # include "../lib/libft/libft.h"
 # include "linked_list.h"
 
+typedef struct s_env
+{
+	char	**arr;
+	int		exit_value;
+}	t_env;
+
 char	*get_key(char *dollar);
 char	**cmd_split(char *cmd, char **env);
 int		len(char **ar);

@@ -2,7 +2,7 @@
 
 // gets a command as char *cmd for example: command = "a | b | c" cmd would be a b or c
 // redirection and filename/delimiter for << can be anywhere
-t_command	*create_node(char *cmd, char **env)
+t_command	*create_node(char *cmd, t_env *env)
 {
 	t_command	*command;
 

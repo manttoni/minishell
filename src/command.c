@@ -44,7 +44,7 @@ int	set_io(t_command *command, int pipefds[][2])
 	return (1);
 }
 
-int	run(t_command *list, char **env)
+int	run(t_command *list, t_env *env)
 {
 	t_command	*current;
 	int			id;
@@ -72,18 +72,16 @@ int	run(t_command *list, char **env)
 			}
 			set_io(current, pipefds);
 			close_pipes(pipefds, list_len(list));
-
 			execve(current->exe, current->args, NULL);
 			free_list(list);
-			return (error_return("execve"));
+			return (error_return("execve")); // this might have to be exit
 		}
 		current = current->next;
 	}
 	close_pipes(pipefds, list_len(list));
-	int asd;
 	for (int i = 0; i < list_len(list); ++i)
 	{
-		wait(&asd);
+		wait(&env->exit_value);
 	}
-	return (asd);
+	return (1);
 }
