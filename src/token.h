@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 19:37:31 by mshabano          #+#    #+#             */
-/*   Updated: 2024/10/13 22:23:20 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:37:25 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_node	{
 	t_t_type	type;
 	int		index;
 	char		*value;
-	strust s_node	*prev;
+	struct s_node	*prev;
 	struct s_node	*next;
 }	t_node;
 
