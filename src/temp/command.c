@@ -52,7 +52,8 @@ int	run(t_command *list, char **env)
 
 	if (list->args[0] && (ft_strcmp("cd", list->args[0]) == 0 || ft_strcmp("export", list->args[0]) == 0 || ft_strcmp("unset", list->args[0]) == 0))
 	{
-		run_builtin(list->args, env);
+		(void)env;
+	//	run_builtin(list->args, env);
 		return (1);
 	}
 	if (create_pipes(pipefds, list_len(list)) == 0)

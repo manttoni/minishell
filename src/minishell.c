@@ -1,15 +1,67 @@
 #include "minishell.h"
 
+void skip_spaces(char **line)
+{
+	while(**line == ' ' || **line == 9)
+		*line++;
+	
+}
+
+void find_meta_end(char *input, char meta, char *meta_end)
+{
+	if (meta == '\'')
+	{
+		while (*input != '\'' && *input)
+			input++;
+		if (!input)
+			exit_error("Unclosed quotes");
+		else if (*input == '\'')
+			meta_end = input;
+	}
+	if (meta == '\"')
+	{
+		while (*input != '\"' && *input)
+			input++;
+		if (!input)
+			exit_error("Unclosed quotes");
+		else if (*input == '\"')
+			meta_end = input;
+	}
+	if (meta == '<')
+	{
+		if (*(input + 1) == ' ')
+
+	}
+}
+
 t_command	*create_list(char *input, char **env)
 {
 	char		*ptr;
 	t_command	*new;
 	t_command	*list;
 
+	char *meta;
+	char *meta_end;
+	meta_end = 0;
+	
 	list = NULL;
 	ptr = input;
 	while (*input)
 	{
+		while(*input)
+		{	
+			meta = 0;
+			meta = ft_strchr(META, *input);
+			if (meta)
+			{
+				find_meta_end(input++, *meta, meta_end);
+				break;
+			}
+			input++;
+		}
+
+
+	/*	
 		ptr = ft_strchr(input, '|');
 		if (ptr)
 			new = create_node(ft_substr(input, 0, ptr - input), env);
@@ -24,7 +76,9 @@ t_command	*create_list(char *input, char **env)
 		if (!ptr)
 			break;
 		input = ptr + 1;
+
 	}
+	*/
 	return (list);
 }
 

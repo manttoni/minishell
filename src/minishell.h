@@ -13,6 +13,8 @@
 # include "../lib/libft/libft.h"
 # include "linked_list.h"
 
+#include "token.h"
+
 char	*get_key(char *dollar);
 char	**cmd_split(char *cmd, char **env);
 int		len(char **ar);
