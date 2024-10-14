@@ -2,7 +2,7 @@
 
 char  *skip_spaces(char *s)
 {
-	while (ft_isspace(*s)
+	while (ft_isspace(*s))
 			s++;
 	return (s);
 }
