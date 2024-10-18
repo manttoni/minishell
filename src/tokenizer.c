@@ -6,11 +6,12 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 15:48:11 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/18 17:16:27 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/18 17:24:15 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 void	print_token(t_token *token)
 {
 	while (token)
@@ -75,7 +76,6 @@ char	*get_string(t_token *token, char *line)
 	return (get_word(line));
 }
 
-/* Creates a token, then sets *line to the end of that token */
 t_token	*get_token(char *line)
 {
 	t_token	*token;
@@ -138,7 +138,7 @@ t_token	*create_token_list(char *line)
 			return (NULL);
 		}
 		add_token(&start, new);
-		ptr += ft_strlen(new->string);
+		ptr += ft_strlen(new->string); // move ptr to the start of next token
 		while (*ptr && ft_strchr(" ", *ptr)) // add other space characters
 			ptr++;
 	}
