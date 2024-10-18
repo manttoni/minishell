@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 15:48:11 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/18 17:24:15 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/18 17:33:04 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,10 @@ void	free_token_list(t_token *token)
 	free(token);
 }
 
-int	get_type(char *line)
+e_type	get_type(char *line)
 {
+	if (*line == '$')
+		return (EXPANDABLE);
 	if (*line == '\'')
 		return (SINGLE);
 	if (*line == '\"')
