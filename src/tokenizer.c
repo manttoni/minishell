@@ -64,7 +64,7 @@ char	*get_string(t_token *token, char *line)
 	if (token->type == SINGLE)
 		return (ft_substr(line, 0, (ft_strchr(line + 1, '\'') - line) + 1));
 	if (token->type == DOUBLE)
-		return (ft_substr(line, 0, ft_strchr(line, '\"') - line + 1));
+		return (ft_substr(line, 0, ft_strchr(line + 1, '\"') - line + 1));
 	if (token->type == PIPE)
 		return (ft_strdup("|"));
 	if (token->type == HEREDOC)
