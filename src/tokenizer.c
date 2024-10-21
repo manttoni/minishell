@@ -54,14 +54,34 @@ e_type	get_type(char *line)
 	return (WORD);
 }	
 
-char	*get_word(char *line)
+char	*get_key(char *line)
+{
+	char	*end;
+
+	if (*line != '$')
+		return (NULL);
+	if (ft_isalpha(*(line + 1)) == 0 && *(line + 1) != '_')
+		return (NULL);
+	end = line + 2;
+	while (*end)
+	{
+		if (ft_isalnum(*end) == 0 && *end != '_')
+			return (ft_substr(line, 0, end - line));
+		end++;
+	}
+	return (ft_strdup(line)); //or maybe just return line, have to see
+}
+
+/* word end is a string of chars that the word CANNOT include. 
+ * f.e.	in single quotes it can contain anything except spaces, 
+ * 		in double quotes anything except dollar, 
+ * 		without quotes many chars will end the word*/
+char	*get_word(char *line, char *word_end)
 {
 	char	*ptr;
 
 	ptr = line;
-	if (*ptr == '$') // use get_word for type EXPANDABLE, but skip dollar at i=0
-		ptr++;
-	while (*ptr && ft_strchr("$|<>\"\' ", *ptr) == NULL) // otherwise it will be seen here
+	while (*ptr && ft_strchr(word_end, *ptr) == NULL)
 		ptr++;
 	return (ft_substr(line, 0, ptr - line));
 }
@@ -82,7 +102,9 @@ char	*get_string(t_token *token, char *line)
 		return (ft_strdup(">>"));
 	if (token->type == OUT)
 		return (ft_strdup(">"));
-	return (get_word(line));
+	if (token->type == EXPANDABLE)
+		return (get_key(line));
+	return (get_word(line, "|<>\"\'$ "));
 }
 
 t_token	*get_token(char *line)
@@ -105,6 +127,20 @@ t_token	*get_token(char *line)
 	return (token);
 }
 
+t_token	*list_last(t_token *list)
+{
+	t_token	*last;
+
+	if (list == NULL)
+		return (NULL);
+	last = list;
+	while (last->next)
+	{
+		last = last->next;
+	}
+	return (last);
+}
+
 void	add_token_last(t_token **start, t_token *new)
 {
 	t_token	*last;
@@ -114,10 +150,15 @@ void	add_token_last(t_token **start, t_token *new)
 		*start = new;
 		return ;
 	}
-	last = *start;
-	while (last->next)
-		last = last->next;
+	last = list_last(*start);
 	last->next = new;
+}
+
+char	*skip_spaces(char *string)
+{
+	while (*string && ft_strchr(" \f\v\n\t\r", *string))
+		string++;
+	return (string);
 }
 
 t_token	*tokenize_string(char *line)
@@ -137,15 +178,120 @@ t_token	*tokenize_string(char *line)
 			free(ptr);
 			return (NULL);
 		}
-		if (ft_strlen(new->string) > 0)
-		{
-			line += ft_strlen(new->string);
-			add_token_last(&start, new);
-		}
-		while (*line && ft_strchr(" \f\v\n\t\r", *line))
-			line++;
+		line += ft_strlen(new->string);
+		add_token_last(&start, new);
+		line = skip_spaces(line);
 	}
 	free(ptr);
+	return (start);
+}
+
+t_token	*double_quotes(char *string)
+{
+	t_token	*sublist; //contains WORD or EXPANDABLE
+	t_token	*new;
+	char	*ptr;
+
+	ptr = string;
+	sublist = NULL;
+	while (*ptr)
+	{
+		new = malloc(sizeof(t_token));
+		if (!new)
+		{
+			free_token_list(sublist);
+			return (NULL);
+		}
+		new->next = NULL;
+		if (*ptr == '$')
+		{
+			new->type = EXPANDABLE;
+			new->string = get_key(ptr);
+		}
+		else
+		{
+			new->type = WORD;
+			new->string = get_word(ptr, "$ ");
+		}
+		ptr += ft_strlen(new->string);
+		add_token_last(&sublist, new);
+		ptr = skip_spaces(ptr);
+	}
+	free(string);
+	return (sublist);
+}
+
+t_token	*single_quotes(char *string)
+{
+	t_token	*sublist; // contains only WORD
+	t_token	*new;
+	char	*ptr;
+
+	ptr = string;
+	sublist = NULL;
+	while (*ptr)
+	{
+		new = malloc(sizeof(t_token));
+		if (!new)
+		{
+			free_token_list(sublist);
+			return (NULL);
+		}
+		new->next = NULL;
+		new->type = WORD;
+		new->string = get_word(ptr, " ");
+		ptr += ft_strlen(new->string);
+		add_token_last(&sublist, new);
+		ptr = skip_spaces(ptr);
+	}
+	free(string);
+	return (sublist);
+}
+/*
+void	insert_sublist(t_token **replace, t_token *with)
+{
+	t_token	*last;
+	t_token	*tmp;
+
+	if (!replace || !*replace || !with)
+	{
+		printf("Error in insert sublist\n");
+		return ;
+	}
+	tmp = *replace;
+	*replace = with;
+	last = list_last(with);
+	last->next = tmp->next;
+	free(tmp->string);
+	free(tmp);
+}
+*/
+
+t_token	*handle_quotes(t_token *start)
+{
+	t_token	*current;
+	t_token	*next;
+	t_token	*sublist;
+
+	current = start;
+	while (current && current->next)
+	{
+		next = current->next;
+		if (next->type == DOUBLE)
+			sublist = double_quotes(ft_strtrim(next->string, "\""));
+		else if (next->type == SINGLE)
+			sublist = single_quotes(ft_strtrim(next->string, "\'"));
+		else
+		{
+			current = next;
+			continue ;
+		}
+		if (!sublist)
+			return (NULL);
+		current->next = sublist;
+		list_last(sublist)->next = next->next;
+		current = next->next;
+	}
 	return (start);
 }
 
@@ -155,6 +301,9 @@ int	main(int argc, char **argv)
 
 	tokens = tokenize_string(ft_strdup(argv[1]));
 	printf("List created:\n");
+	print_token(tokens);
+	tokens = handle_quotes(tokens);
+	printf("Quotes handled:\n");
 	print_token(tokens);
 	free_token_list(tokens);
 	return (0);
