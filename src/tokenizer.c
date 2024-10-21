@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-t_token	*tokenize_string(char *line, t_token *start);
-
 void	print_token(t_token *token)
 {
 	if (token == NULL)
@@ -107,68 +105,29 @@ t_token	*get_token(char *line)
 	return (token);
 }
 
-t_token	*get_last(t_token *token)
-{
-	while (token->next)
-		token = token->next;
-	return (token);
-}
-
 void	add_token_last(t_token **start, t_token *new)
 {
 	t_token	*last;
 
 	if (*start == NULL)
 	{
-		printf("List is empty, new token (%s) is now start of list\n", new->string);
 		*start = new;
+		return ;
 	}
-	else
-	{
-		last = get_last(*start);
-		last->next = new;
-		printf("Added %s after %s\n", new->string, last->string);
-	}
+	last = *start;
+	while (last->next)
+		last = last->next;
+	last->next = new;
 }
 
-/* Checks how to add the token, just at the end, or make a sublist? */
-/* Could be used to handle single quotes, but need to figure out how to not expand */
-/* Just by trimming double quotes, making a sublist is simple */
-int	add_token(t_token **start, t_token *new)
+t_token	*tokenize_string(char *line)
 {
-	t_token	*sublist;
-
-	printf("Adding: %s of type: %d\n", new->string, new->type);
-	if (new->type == DOUBLE)
-	{
-		sublist = tokenize_string(ft_strtrim(new->string, "\""), *start); // recursive, adds tokens inside quotes to end of list
-		free(new->string);
-		free(new);
-		if (sublist == NULL) // just checking if it was succesful
-		{
-			free_token_list(*start);
-			return (0);
-		}
-	}
-	else
-		add_token_last(start, new);
-	return (1);
-}
-
-
-/* Creates a linked list where each node is a token
-   A token has attributes:
-   	-type
-	-string
-	-next */
-/* Can be given a list which to modify or NULL to create a new one. */
-t_token	*tokenize_string(char *line, t_token *start)
-{
+	t_token *start;
 	t_token	*new;
 	char	*ptr;
-	printf("Input: %s\n", line);
 
 	ptr = line;
+	start = NULL;
 	while (*line)
 	{
 		new = get_token(line);
@@ -180,14 +139,10 @@ t_token	*tokenize_string(char *line, t_token *start)
 		}
 		if (ft_strlen(new->string) > 0)
 		{
-			line += ft_strlen(new->string); // move pointer to the start of next token
-			if (add_token(&start, new) == 0)
-			{
-				free(ptr);
-				return (NULL);
-			}
+			line += ft_strlen(new->string);
+			add_token_last(&start, new);
 		}
-		while (*line && ft_strchr(" \f\v\n\t\r", *line)) // skip spaces
+		while (*line && ft_strchr(" \f\v\n\t\r", *line))
 			line++;
 	}
 	free(ptr);
@@ -198,7 +153,8 @@ int	main(int argc, char **argv)
 {
 	t_token	*tokens;
 
-	tokens = tokenize_string(ft_strdup(argv[1]), NULL);
+	tokens = tokenize_string(ft_strdup(argv[1]));
+	printf("List created:\n");
 	print_token(tokens);
 	free_token_list(tokens);
 	return (0);
