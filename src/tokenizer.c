@@ -31,6 +31,7 @@ void	free_token_list(t_token *token)
 		return ;
 	if (token->next)
 		free_token_list(token->next);
+	free(token->string);
 	free(token);
 }
 
@@ -62,7 +63,7 @@ char	*get_word(char *line)
 	ptr = line;
 	if (*ptr == '$') // use get_word for type EXPANDABLE, but skip dollar at i=0
 		ptr++;
-	while (*ptr && ft_strchr("$|<>\"\' ", *ptr) == NULL)
+	while (*ptr && ft_strchr("$|<>\"\' ", *ptr) == NULL) // otherwise it will be seen here
 		ptr++;
 	return (ft_substr(line, 0, ptr - line));
 }
@@ -141,6 +142,8 @@ int	add_token(t_token **start, t_token *new)
 	if (new->type == DOUBLE)
 	{
 		sublist = tokenize_string(ft_strtrim(new->string, "\""), *start); // recursive, adds tokens inside quotes to end of list
+		free(new->string);
+		free(new);
 		if (sublist == NULL) // just checking if it was succesful
 		{
 			free_token_list(*start);
@@ -162,25 +165,32 @@ int	add_token(t_token **start, t_token *new)
 t_token	*tokenize_string(char *line, t_token *start)
 {
 	t_token	*new;
+	char	*ptr;
 	printf("Input: %s\n", line);
 
+	ptr = line;
 	while (*line)
 	{
 		new = get_token(line);
 		if (!new)
 		{
 			free_token_list(start);
+			free(ptr);
 			return (NULL);
 		}
 		if (ft_strlen(new->string) > 0)
 		{
-			if (add_token(&start, new) == 0)
-				return (NULL);
 			line += ft_strlen(new->string); // move pointer to the start of next token
+			if (add_token(&start, new) == 0)
+			{
+				free(ptr);
+				return (NULL);
+			}
 		}
 		while (*line && ft_strchr(" \f\v\n\t\r", *line)) // skip spaces
 			line++;
 	}
+	free(ptr);
 	return (start);
 }
 
@@ -188,7 +198,7 @@ int	main(int argc, char **argv)
 {
 	t_token	*tokens;
 
-	tokens = tokenize_string(argv[1], NULL);
+	tokens = tokenize_string(ft_strdup(argv[1]), NULL);
 	print_token(tokens);
 	free_token_list(tokens);
 	return (0);
