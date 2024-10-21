@@ -247,25 +247,6 @@ t_token	*single_quotes(char *string)
 	free(string);
 	return (sublist);
 }
-/*
-void	insert_sublist(t_token **replace, t_token *with)
-{
-	t_token	*last;
-	t_token	*tmp;
-
-	if (!replace || !*replace || !with)
-	{
-		printf("Error in insert sublist\n");
-		return ;
-	}
-	tmp = *replace;
-	*replace = with;
-	last = list_last(with);
-	last->next = tmp->next;
-	free(tmp->string);
-	free(tmp);
-}
-*/
 
 t_token	*handle_quotes(t_token *start)
 {
@@ -291,6 +272,8 @@ t_token	*handle_quotes(t_token *start)
 		current->next = sublist;
 		list_last(sublist)->next = next->next;
 		current = next->next;
+		free(next->string);
+		free(next);
 	}
 	return (start);
 }
