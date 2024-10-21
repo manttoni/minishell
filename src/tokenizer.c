@@ -72,15 +72,13 @@ char	*get_key(char *line)
 	return (ft_strdup(line)); //or maybe just return line, have to see
 }
 
-/* word end is a string of chars that the word CANNOT include. 
- * f.e.	in single quotes it can contain anything except spaces, 
- * 		in double quotes anything except dollar, 
- * 		without quotes many chars will end the word*/
-char	*get_word(char *line, char *word_end)
+char	*get_word(char *line)
 {
 	char	*ptr;
+	char	*word_end;
 
 	ptr = line;
+	word_end = "|<>\"\'$ ";
 	while (*ptr && ft_strchr(word_end, *ptr) == NULL)
 		ptr++;
 	return (ft_substr(line, 0, ptr - line));
@@ -104,7 +102,7 @@ char	*get_string(t_token *token, char *line)
 		return (ft_strdup(">"));
 	if (token->type == EXPANDABLE)
 		return (get_key(line));
-	return (get_word(line, "|<>\"\'$ "));
+	return (get_word(line));
 }
 
 t_token	*get_token(char *line)
@@ -161,7 +159,25 @@ char	*skip_spaces(char *string)
 	return (string);
 }
 
-t_token	*tokenize_string(char *line)
+void	expand(t_token *token, t_env *env)
+{
+	printf("not implemented\n");
+}
+
+void	handle_quotes(t_token *token, t_env *env)
+{
+	if (token->type == DOUBLE && ft_strchr(token->string, '$') != NULL)
+		token->type = EXPANDABLE;
+	if (token->type == DOUBLE || token->type == SINGLE)
+		token->type = WORD;
+	if (token->type == EXPANDABLE)
+	{
+		expand(token, env);
+		token->type = WORD;
+	}
+}
+
+t_token	*tokenize_string(char *line, t_env *env)
 {
 	t_token *start;
 	t_token	*new;
@@ -179,19 +195,7 @@ t_token	*tokenize_string(char *line)
 			return (NULL);
 		}
 		line += ft_strlen(new->string);
-		if (new->type == DOUBLE) // change e_type, quotes were trimmed earlier
-		{
-			if (ft_strchr(new->string, '$'))
-				new->type = EXPANDABLE;
-			else
-				new->type = WORD;
-			line += 2;
-		}
-		else if (new->type == SINGLE)
-		{
-			new->type = WORD;
-			line += 2;
-		}
+		handle_quotes_expand(new, env);
 		add_token_last(&start, new);
 		line = skip_spaces(line);
 	}
@@ -203,7 +207,7 @@ int	main(int argc, char **argv)
 {
 	t_token	*tokens;
 
-	tokens = tokenize_string(ft_strdup(argv[1]));
+	tokens = tokenize_string(ft_strdup(argv[1]), NULL);
 	printf("List created:\n");
 	print_token(tokens);
 	free_token_list(tokens);
