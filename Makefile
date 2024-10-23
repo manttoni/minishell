@@ -21,7 +21,7 @@ clean:
 
 fclean: clean
 	rm $(NAME)
-	$(MAKE) -C fclean
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
