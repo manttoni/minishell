@@ -56,6 +56,20 @@ e_type	get_type(char *line)
 	return (WORD);
 }	
 
+char	*get_expandable(char *line)
+{
+	printf("get_expandable\n");
+	char	*ptr;
+	char	*expa_end;
+
+	ptr = line;
+	expa_end = "|<>\"\'$ ";
+	while (*ptr && (ft_strchr(expa_end, *ptr) == NULL
+			|| ptr == line)) // first $ doesnt count because its part of the expandable
+		ptr++;
+	return (ft_substr(line, 0, ptr - line));
+}
+
 char	*get_word(char *line)
 {
 	printf("get_word\n");
@@ -86,6 +100,8 @@ char	*get_string(t_token *token, char *line)
 		return (ft_strdup(">>"));
 	if (token->type == OUT)
 		return (ft_strdup(">"));
+	if (token->type == EXPANDABLE)
+		return (get_expandable(line));
 	return (get_word(line));
 }
 
@@ -183,7 +199,10 @@ t_token	*tokenize_string(char *line, t_env *env)
 		if (new->type == SINGLE || new->type == DOUBLE)
 			line += 2;
 		handle_quotes_expand(new, env);
-		add_token_last(&start, new);
+		if (ft_strlen(new->string) > 0)
+			add_token_last(&start, new);
+		else
+			free_token_list(new);
 		line = skip_spaces(line);
 	}
 	free(ptr);
