@@ -76,7 +76,6 @@ int	run(t_command *list, t_env *env)
 			}
 			set_io(current, pipefds);
 			close_pipes(pipefds, list_len(list));
-
 			execve(current->exe, current->args, NULL);
 			free_list(list);
 			return (error_return("execve"));

@@ -41,7 +41,7 @@ int	ft_export(char **args, t_env *env)
 			i++;
 			continue ;
 		}
-		env->arr = add(env->arr, args[i]);
+		env->arr = add(env->arr, ft_strdup(args[i]));
 		if (env->arr == NULL)
 			return (error_return("add"));
 		i++;
