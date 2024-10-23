@@ -32,5 +32,7 @@ int	parse_cmd(t_command *command, char *cmd, t_env *env)
 	command->exe = ft_strjoin("/bin/", command->args[0]);
 	if (command->exe == NULL)
 		return (error_return("strjoin"));
+	command->fdin = 0;
+	command->fdout = 1;
 	return (1);
 }
