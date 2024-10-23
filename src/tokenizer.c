@@ -25,7 +25,6 @@ void	print_token(t_token *token)
 
 void	free_token_list(t_token *token)
 {
-	printf("free_token_list\n");
 	if (token == NULL)
 		return ;
 	if (token->next)
@@ -36,7 +35,6 @@ void	free_token_list(t_token *token)
 
 e_type	get_type(char *line)
 {
-	printf("get_type\n");
 	if (*line == '$')
 		return (EXPANDABLE);
 	if (*line == '\'')
@@ -58,7 +56,6 @@ e_type	get_type(char *line)
 
 char	*get_expandable(char *line)
 {
-	printf("get_expandable\n");
 	char	*ptr;
 	char	*expa_end;
 
@@ -72,7 +69,6 @@ char	*get_expandable(char *line)
 
 char	*get_word(char *line)
 {
-	printf("get_word\n");
 	char	*ptr;
 	char	*word_end;
 
@@ -85,7 +81,6 @@ char	*get_word(char *line)
 
 char	*get_string(t_token *token, char *line)
 {
-	printf("get_string\n");
 	if (token->type == SINGLE)
 		return (ft_substr(line, 1, ft_strchr(line + 1, '\'') - 1 - line)); // quotes are trimmed here
 	if (token->type == DOUBLE)
@@ -107,7 +102,6 @@ char	*get_string(t_token *token, char *line)
 
 t_token	*get_token(char *line)
 {
-	printf("get_token from line: %s\n", line);
 	t_token	*token;
 
 	token = malloc(sizeof(t_token));
@@ -128,7 +122,6 @@ t_token	*get_token(char *line)
 
 t_token	*list_last(t_token *list)
 {
-	printf("list_last\n");
 	t_token	*last;
 
 	if (list == NULL)
@@ -143,8 +136,6 @@ t_token	*list_last(t_token *list)
 
 void	add_token_last(t_token **start, t_token *new)
 {
-	printf("add_token_last\n");
-	printf("token->string: %s token->type: %d\n", new->string, new->type);
 	t_token	*last;
 
 	if (*start == NULL)
@@ -165,7 +156,6 @@ char	*skip_spaces(char *string)
 
 void	handle_quotes_expand(t_token *token, t_env *env)
 {
-	printf("handle_quotes_expand(token->string: %s token->type = %d, env)\n", token->string, token->type);
 	if (token->type == DOUBLE && ft_strchr(token->string, '$') != NULL)
 		token->type = EXPANDABLE;
 	if (token->type == DOUBLE || token->type == SINGLE)
@@ -179,7 +169,6 @@ void	handle_quotes_expand(t_token *token, t_env *env)
 
 t_token	*tokenize_string(char *line, t_env *env)
 {
-	printf("tokenize_string(%s, env)\n", line);
 	t_token *start;
 	t_token	*new;
 	char	*ptr;

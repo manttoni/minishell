@@ -67,11 +67,9 @@ char	*expand(char *string, t_env *env)
 	*result = '\0';
 	while (*string)
 	{
-		printf("Result: %s\n", result);
 		if (*string == '$' && string[1]) // dollar without anything after shouldnt be expanded
 		{
 			value = get_value(&string, env);
-			printf("value: %s\n", value);
 			if (value == NULL)
 			{
 				free(ptr);
