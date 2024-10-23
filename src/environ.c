@@ -12,30 +12,79 @@
 
 #include "minishell.h"
 
-char	*ft_getenv(char *key, t_env *env)
+/* Returns key of env variable without dollar-sign */
+char	*get_key(char *line)
 {
-	int	i;
-	int	key_len;
+	char	*end; // end of substring
 
-	key_len = ft_strlen(key);
-	i = 0;
-	while (env->arr[i])
+	if (ft_isalpha(*(line + 1)) == 0 && *(line + 1) != '_') // key has to start with alpha or _
+		return (ft_strdup("$"));
+	end = line + 2; // len would be 2 now ($ + first char of key)
+	while (*end)
 	{
-		if (ft_strncmp(env->arr[i], key, key_len) == 0 && env->arr[i][key_len] == '=')
-			return (ft_strdup(env->arr[i] + key_len + 1));
-		i++;
+		if (ft_isalnum(*end) == 0 && *end != '_') // rest can also include numericals
+			return (ft_substr(line, 1, end - line - 1));
+		end++;
 	}
-	return (NULL);
+	return (ft_strdup(line + 1));
 }
 
-char	*get_key(char *dollar)
+/* Takes a pointer that starts with dollar char,
+ * returns its value from envs array.
+ * Moves dollars value */
+char	*get_value(char **dollar, t_env *env)
 {
-	char	*key_end;
+	char	*key;
+	int		keylen;
+	int		i;
 
-	key_end = dollar + 1;
-	while (ft_strchr(" \"\'\0", *key_end) == NULL)
-		key_end++;
-	if (key_end == NULL)
-		return (ft_strdup(dollar + 1));
-	return (ft_substr(dollar + 1, 0, key_end - dollar - 1));
+	key = get_key(*dollar);
+	if (key == NULL)
+		return (NULL);
+	i = 0;
+	keylen = ft_strlen(key);
+	*dollar += keylen + 1;
+	while (env->arr[i])
+	{
+		if (ft_strncmp(env->arr[i], key, keylen) == 0
+			&& env->arr[i][keylen] == '=') // key matches key of current env element exactly
+		{
+			free(key);
+			return (&env->arr[i][keylen + 1]); // if not working, use strdup
+		}
+		i++;
+	}
+	free(key);
+	return ("");
+}
+
+/* Expands all env vars in given string */
+char	*expand(char *string, t_env *env)
+{
+	char	*result;
+	char	buffer[2];
+	char	*value;
+
+	buffer[1] = '\0';
+	result = malloc(1);
+	*result = '\0';
+	while (*string)
+	{
+		printf("Result: %s\n", result);
+		if (*string == '$')
+		{
+			value = get_value(&string, env);
+			printf("value: %s\n", value);
+			if (value == NULL)
+				return (NULL);
+			result = ft_strjoin(result, value); //doesnt free result, better join needed
+			if (result == NULL)
+				return (NULL);
+			continue ;
+		}
+		buffer[0] = *string;
+		result = ft_strjoin(result, buffer);
+		string++;
+	}
+	return (result);
 }

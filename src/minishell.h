@@ -14,19 +14,20 @@
 # include "linked_list.h"
 # include "token.h"
 
-char	*get_key(char *dollar);
-char	**cmd_split(char *cmd, char **env);
+typedef struct s_env
+{
+	char	**arr;
+}	t_env;
+
 int		len(char **ar);
 char	**find(char **ar, char *str);
 int		ft_remove(char **ar, char *str);
 char	**add(char **ar, char *str);
-char	*ft_getenv(char	*key, char **env);
+char	*expand(char *string, t_env *env);
 int		run_builtin(char **args, char **env);
 int		parse_cmd(t_command *command, char *cmd, char **env);
 int		error_return(char *error_message);
 void	free_array(char **s);
 int		run(t_command *list, char **env);
-char	**extract_filein(char *cmd);
-char	**extract_fileout(char *cmd);
 
 #endif
