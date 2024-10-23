@@ -19,6 +19,9 @@ typedef struct s_env
 	char	**arr;
 }	t_env;
 
+t_token	*get_token(char *line);
+void	free_token_list(t_token *token);
+void	add_token_last(t_token **start, t_token *new);
 char	*get_expandable(char *line);
 int		len(char **ar);
 char	**find(char **ar, char *str);

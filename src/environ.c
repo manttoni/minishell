@@ -19,6 +19,8 @@ char	*get_key(char *line)
 	char	*key;
 
 	expandable = get_expandable(line);
+	if (expandable == NULL)
+		return (NULL);
 	key = ft_strdup(expandable + 1);
 	free(expandable);
 	return (key);
