@@ -93,3 +93,20 @@ char	*expand(char *string, t_env *env)
 	free(ptr);
 	return (result);
 }
+
+char	*ft_getenv(char *key, t_env *env)
+{
+	int	i;
+	int	keylen;
+
+	i = 0;
+	keylen = ft_strlen(key);
+	while (env->arr[i])
+	{
+		if (ft_strncmp(env->arr[i], key, keylen) == 0
+				&& env->arr[i][keylen] == '=')
+			return (ft_strdup(&env->arr[i][keylen + 1]));
+		i++;
+	}
+	return (NULL);
+}

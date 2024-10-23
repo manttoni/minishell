@@ -73,7 +73,7 @@ t_token	*tokenize_string(char *line, t_env *env)
 	free(ptr);
 	return (start);
 }
-
+/*
 int	main(int argc, char **argv)
 {
 	t_token	*tokens;
@@ -89,4 +89,4 @@ int	main(int argc, char **argv)
 	free_array(envtest->arr);
 	free(envtest);
 	return (0);
-}
+}*/

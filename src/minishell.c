@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_command	*create_list(char *input, char **env)
+t_command	*create_list(char *input, t_env *env)
 {
 	char		*ptr;
 	t_command	*new;
@@ -28,21 +28,23 @@ t_command	*create_list(char *input, char **env)
 	return (list);
 }
 
-char	**copy_array(char **ar)
+t_env	*init_env(char **arr)
 {
-	char	**env;
+	t_env	*env;
 	int		i;
 
-	env = malloc((len(ar) + 1) * sizeof(char *));
+	env = malloc(sizeof(t_env));
 	if (env == NULL)
 		return (NULL);
-	i = 0;
-	while (ar[i])
+	env->arr = malloc(sizeof(char *));
+	if (env->arr == NULL)
+		return (NULL);
+	env->arr[0] = NULL;
+	while (*arr)
 	{
-		env[i] = ft_strdup(ar[i]);
-		i++;
+		env->arr = add(env->arr, *arr);
+		arr++;
 	}
-	env[i] = NULL;
 	return (env);
 }
 
@@ -50,6 +52,7 @@ int main(int argc, char **argv, char **env)
 {
 	char		*input;
 	t_command	*list;
+	t_env		*env_struct;
 
 	if (argc != 1)
 	{
@@ -57,7 +60,7 @@ int main(int argc, char **argv, char **env)
 		return (1);
 	}
 	(void) argv;
-	env = copy_array(env);
+	env_struct = init_env(env);
 	if (env == NULL)
 		return (1);
 	while (1)
@@ -69,13 +72,13 @@ int main(int argc, char **argv, char **env)
 		if (*input)
 		{
 			add_history(input);
-			list = create_list(input, env);
+			list = create_list(input, env_struct);
 			if (list == NULL)
 			{
 				printf("create_list\n");
 				continue ;
 			}
-			run(list, env);
+			run(list, env_struct);
 			free_list(list);
 		}
 		free(input);

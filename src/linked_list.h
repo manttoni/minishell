@@ -2,6 +2,7 @@
 # define LINKED_LIST_H
 
 # include <stdlib.h>
+# include "minishell.h"
 
 typedef struct s_command
 {
@@ -15,7 +16,7 @@ typedef struct s_command
 
 int			list_len(t_command *list);
 void		free_list(t_command *list);
-t_command	*create_node(char *cmd, char **env);
+t_command	*create_node(char *cmd, t_env *env);
 void		add_node(t_command **list, t_command *command);
 
 #endif

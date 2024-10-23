@@ -44,7 +44,7 @@ int	set_io(t_command *command, int pipefds[][2])
 	return (1);
 }
 
-int	run(t_command *list, char **env)
+int	run(t_command *list, t_env *env)
 {
 	t_command	*current;
 	int			id;
