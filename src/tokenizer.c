@@ -197,7 +197,7 @@ t_token	*tokenize_string(char *line, t_env *env)
 		}
 		line += ft_strlen(new->string);
 		if (new->type == SINGLE || new->type == DOUBLE)
-			line += 2;
+			line += 2; // add quote x 2 to pointer (trimmed earlier)
 		handle_quotes_expand(new, env);
 		if (ft_strlen(new->string) > 0)
 			add_token_last(&start, new);
@@ -217,6 +217,7 @@ int	main(int argc, char **argv)
 	envtest->arr = testarr;
 
 	tokens = tokenize_string(ft_strdup(argv[1]), envtest);
+	printf("\n-------------\n");
 	printf("List created:\n");
 	print_token(tokens);
 	free_token_list(tokens);

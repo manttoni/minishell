@@ -19,6 +19,7 @@ typedef struct s_env
 	char	**arr;
 }	t_env;
 
+char	*get_expandable(char *line);
 int		len(char **ar);
 char	**find(char **ar, char *str);
 int		ft_remove(char **ar, char *str);
