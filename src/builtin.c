@@ -51,6 +51,8 @@ int	ft_export(char **args, t_env *env)
 
 int	ft_unset(char **args, t_env *env)
 {
+	if (args || env)
+		printf("hello");
 	printf("not done\n");
 	return (0);
 }

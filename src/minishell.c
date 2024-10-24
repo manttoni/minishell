@@ -3,7 +3,6 @@
 t_env	*init_env(char **arr)
 {
 	t_env	*env;
-	int		i;
 
 	env = malloc(sizeof(t_env));
 	if (env == NULL)

@@ -70,7 +70,6 @@ t_token	*tokenize_string(char *line, t_env *env)
 			free_token_list(new);
 		line = skip_spaces(line);
 	}
-	free(ptr);
 	return (start);
 }
 /*

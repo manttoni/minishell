@@ -46,7 +46,7 @@ t_command	*create_list(t_token *tokens)
 	{
 		if (tokens->type == WORD)
 		{
-			current->args = add(current->args, tokens->string);
+			current->args = add(current->args, ft_strdup(tokens->string));
 			if (current->args == NULL)
 			{
 				free_list(start);
@@ -72,6 +72,7 @@ t_command	*create_list(t_token *tokens)
 				printf("getting fd failed\n");
 				return (NULL);
 			}
+			tokens = tokens->next; // jump to file name so next jump jumps to after filename
 		}
 		tokens = tokens->next;
 	}

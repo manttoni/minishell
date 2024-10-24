@@ -7,10 +7,10 @@ OBJ = $(SRC:.c=.o)
 CC = cc
 
 all: $(LIBFT) $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(NAME) -lreadline
+	$(CC) $(LAGS) $(OBJ) $(LIBFT) -o $(NAME) -lreadline
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(FLAGS) -c $< -o $@
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR) all
