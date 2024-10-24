@@ -51,23 +51,8 @@ int	ft_export(char **args, t_env *env)
 
 int	ft_unset(char **args, t_env *env)
 {
-	int		i;
-	char	**str;
-
-	i = 1;
-	while (args[i])
-	{
-		str = find(env->arr, args[i]);
-		if (*str[ft_strlen(args[i])] != '=')
-		{
-			i++;
-			continue ;
-		}
-		if (ft_remove(env->arr, args[i]) == 0)
-			return (error_return("remove"));
-		i++;
-	}
-	return (1);
+	printf("not done\n");
+	return (0);
 }
 
 int	ft_env(t_env *env)
