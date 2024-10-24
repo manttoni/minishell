@@ -1,61 +1,80 @@
 #include "minishell.h"
 
-// gets a command as char *cmd for example: command = "a | b | c" cmd would be a b or c
-// redirection and filename/delimiter for << can be anywhere
-t_command	*create_node(char *cmd, t_env *env)
+int	update_fd(t_command *cmd, t_token *token)
 {
-	t_command	*command;
-
-	command = malloc(sizeof(t_command));
-	memset(command, 0, sizeof(t_command));
-	if (parse_cmd(command, cmd, env) == 0)
+	if (token->type == IN || token->type == HEREDOC)
 	{
-		printf("parse_cmd\n");
-		return (NULL);
+		if (cmd->fdin > 2)
+			close(cmd->fdin);
+		if (token->type == IN)
+			cmd->fdin = open(token->next->string, O_RDONLY);
+		else
+		{
+			printf("heredoc not implemented yet\nneed to do some studying about it\n");
+			return (0);
+		}
+		if (cmd->fdin < 0)
+			return (0);
+		return (1);
 	}
-	command->next = NULL;
-	return (command);
+	if (cmd->fdout > 2)
+		close(cmd->fdout);
+	if (token->type == OUT)
+		cmd->fdout = open(token->next->string, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else
+		cmd->fdout = open(token->next->string, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (cmd->fdout < 0)
+		return (0);
+	return (1);
 }
 
-int	list_len(t_command *list)
+t_command	*create_list(t_token *tokens)
 {
-	int	len;
-
-	len = 0;
-	while (list)
-	{
-		len++;
-		list = list->next;
-	}
-	return (len);
-}
-
-void	add_node(t_command **list, t_command *new)
-{
+	t_command	*start;
 	t_command	*current;
+	int			i;
 
-	current = *list;
-	new->index = list_len(current);
-	if (current == NULL)
+	if (tokens == NULL)
+		return (NULL);
+	start = init_node();
+	if (start == NULL)
+		return (NULL);
+	current = start;
+	i = 0;
+	start->index = i;
+	while (tokens)
 	{
-		*list = new;
-		return ;
+		if (tokens->type == WORD)
+		{
+			current->args = add(current->args, ft_strdup(tokens->string));
+			if (current->args == NULL)
+			{
+				free_list(start);
+				return (NULL);
+			}
+		}
+		else if (tokens->type == PIPE)
+		{
+			current->next = init_node();
+			if (current->next == NULL)
+			{
+				free_list(start);
+				return (NULL);
+			}
+			current = current->next;
+			current->index = ++i;
+		}
+		else // IN, OUT, APPEND, HEREDOC
+		{
+			if (update_fd(current, tokens) == 0)
+			{
+				free_list(start);
+				printf("getting fd failed\n");
+				return (NULL);
+			}
+			tokens = tokens->next; // jump to file name so next jump jumps to after filename
+		}
+		tokens = tokens->next;
 	}
-	while (current->next)
-		current = current->next;
-	current->next = new;
-}
-
-void	free_node(t_command *node)
-{
-	free_array(node->args);
-	free(node->exe);
-	free(node);
-}
-
-void	free_list(t_command *list)
-{
-	if (list->next)
-		free_list(list->next);
-	free_node(list);
+	return (start);
 }

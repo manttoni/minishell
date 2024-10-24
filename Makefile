@@ -1,6 +1,6 @@
 NAME = minishell
-FLAGS = -g -Wall -Wextra -Werror
-LIBFT_DIR = /lib/libft
+FLAGS = -Wall -Wextra -Werror -g
+LIBFT_DIR = lib/libft
 LIBFT = lib/libft/libft.a
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:.c=.o)
@@ -10,17 +10,17 @@ all: $(LIBFT) $(OBJ)
 	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(NAME) -lreadline
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(FLAGS) -c $< -o $@
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR) all
 
 clean:
-	rm $(OBJ)
+	rm -f $(OBJ)
 	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm $(NAME)
+	rm -f $(NAME)
 	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all

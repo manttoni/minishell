@@ -1,37 +1,8 @@
 #include "minishell.h"
 
-t_command	*create_list(char *input, t_env *env)
-{
-	char		*ptr;
-	t_command	*new;
-	t_command	*list;
-
-	list = NULL;
-	ptr = input;
-	while (*input)
-	{
-		ptr = ft_strchr(input, '|');
-		if (ptr)
-			new = create_node(ft_substr(input, 0, ptr - input), env);
-		else
-			new = create_node(ft_strdup(input), env);
-		if (new == NULL)
-		{
-			printf("Error creating node\n");
-			return (NULL);
-		}
-		add_node(&list, new);
-		if (!ptr)
-			break;
-		input = ptr + 1;
-	}
-	return (list);
-}
-
 t_env	*init_env(char **arr)
 {
 	t_env	*env;
-	int		i;
 
 	env = malloc(sizeof(t_env));
 	if (env == NULL)
@@ -53,6 +24,7 @@ int main(int argc, char **argv, char **env)
 	char		*input;
 	t_command	*list;
 	t_env		*env_struct;
+	t_token	*tokens;
 
 	if (argc != 1)
 	{
@@ -72,14 +44,19 @@ int main(int argc, char **argv, char **env)
 		if (*input)
 		{
 			add_history(input);
-			list = create_list(input, env_struct);
+			tokens = tokenize_string(input, env_struct);
+			list = create_list(tokens);
 			if (list == NULL)
 			{
-				printf("create_list\n");
-				continue ;
+				free(input);
+				free_array(env_struct->arr);
+				free(env);
+				free_token_list(tokens);
+				return (1);
 			}
 			run(list, env_struct);
 			free_list(list);
+			free_token_list(tokens);
 		}
 		free(input);
 	}
