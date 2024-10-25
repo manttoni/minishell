@@ -1,0 +1,12 @@
+echo hello world
+echo 'hello world'
+echo "hello world"
+echo $HOME
+echo $HOME$HOME
+echo '$HOME'
+echo '$HOME$HOME'
+echo "$HOME"
+echo "$HOME$HOME"
+echo a'b'c
+echo "|<>'"
+echo '|<>"'
