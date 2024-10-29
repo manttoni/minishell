@@ -38,6 +38,11 @@ int main(int argc, char **argv, char **env)
 	while (1)
 	{
 		input = readline("minishell> ");
+		if (unclosed_quotes(input))
+		{
+		//	free_array(env_struct->arr); causes segfault
+			continue;
+		}
 		if (input == NULL)
 			break ;
 		fflush(stdout);

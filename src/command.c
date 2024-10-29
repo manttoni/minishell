@@ -76,7 +76,13 @@ int	run(t_command *list, t_env *env)
 			}
 			set_io(current, pipefds);
 			close_pipes(pipefds, list_len(list));
-			execve(ft_strjoin("/bin/", current->args[0]), current->args, NULL);
+			current->path = find_path(current, env);
+			if (!(current->path))
+			{
+				free_list(list);
+				return (0);
+			}
+			execve(current->path, current->args, NULL);
 			free_list(list);
 			return (error_return("execve"));
 		}
