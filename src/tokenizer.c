@@ -98,17 +98,15 @@ t_token	*tokenize_string(char *line, t_env *env)
 {
 	t_token *start;
 	t_token	*new;
-	char	*ptr;
 
-	ptr = line;
 	start = NULL;
+	line = skip_spaces(line);
 	while (*line)
 	{
 		new = get_token(line);
 		if (!new)
 		{
 			free_token_list(start);
-			free(ptr);
 			return (NULL);
 		}
 		line += ft_strlen(new->string);
