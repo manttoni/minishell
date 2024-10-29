@@ -91,5 +91,6 @@ char *find_path(t_command *cmd, t_env *env)
 	}
 	free(path_var);
 	free_arr(path);
+	free(path);
 	return (result);
 }
