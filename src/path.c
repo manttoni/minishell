@@ -66,7 +66,7 @@ char *find_path(t_command *cmd, t_env *env)
 	char *path_var;
 	char *result;
 	char **path;
-	if (access(cmd->args[0], F_OK | X_OK) == 0)
+	if (.access(cmd->args[0], F_OK | X_OK) == 0)
 		return (cmd->args[0]);
 	path_var = ft_getenv("PATH", env);
 	if (!path_var)
@@ -85,6 +85,7 @@ char *find_path(t_command *cmd, t_env *env)
 	{
 		free(path_var);
 		free_arr(path);
+		free(path);
 		print_error(cmd->args[0], 0);
 		return(print_error(": command not found", 2));
 	}
