@@ -40,7 +40,6 @@ int main(int argc, char **argv, char **env)
 		input = readline("minishell> ");
 		if (unclosed_quotes(input))
 		{
-		//	free_array(env_struct->arr); causes segfault
 			continue;
 		}
 		if (input == NULL)
