@@ -74,14 +74,14 @@ int	run(t_command *list, t_env *env)
 				close_pipes(pipefds, list_len(list));
 				exit(1);
 			}
-			set_io(current, pipefds);
-			close_pipes(pipefds, list_len(list));
 			current->path = find_path(current, env);
 			if (!(current->path))
 			{
 				free_list(list);
 				return (0);
 			}
+			set_io(current, pipefds);
+			close_pipes(pipefds, list_len(list));
 			execve(current->path, current->args, NULL);
 			free_list(list);
 			return (error_return("execve"));
