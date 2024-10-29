@@ -46,7 +46,7 @@ int main(int argc, char **argv, char **env)
 		{
 			add_history(input);
 			if (unclosed_quotes(input))
-			continue;
+				continue;
 			tokens = tokenize_string(input, env_struct);
 			list = create_list(tokens);
 			if (list == NULL)
