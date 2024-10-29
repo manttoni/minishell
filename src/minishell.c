@@ -38,16 +38,15 @@ int main(int argc, char **argv, char **env)
 	while (1)
 	{
 		input = readline("minishell> ");
-		if (unclosed_quotes(input))
-		{
-			continue;
-		}
+		
 		if (input == NULL)
 			break ;
 		fflush(stdout);
 		if (*input)
 		{
 			add_history(input);
+			if (unclosed_quotes(input))
+			continue;
 			tokens = tokenize_string(input, env_struct);
 			list = create_list(tokens);
 			if (list == NULL)
