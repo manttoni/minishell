@@ -6,11 +6,38 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 15:48:11 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/18 17:33:04 by amaula           ###   ########.fr       */
+/*   Updated: 2024/10/25 00:03:57 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*type_to_string(e_type type)
+{
+	switch (type)
+	{
+		case SINGLE:
+			return ("SINGLE");
+		case DOUBLE:
+			return ("DOUBLE");
+		case PIPE:
+			return ("PIPE");
+		case IN:
+			return ("IN");
+		case OUT:
+			return ("OUT");
+		case HEREDOC:
+			return ("HEREDOC");
+		case APPEND:
+			return ("APPEND");
+		case WORD:
+			return ("WORD");
+		case EXPANDABLE:
+			return ("EXPANDABLE");
+		default:
+			return ("UNKNOWN");
+	}
+}
 
 void	print_token(t_token *token)
 {
@@ -18,7 +45,7 @@ void	print_token(t_token *token)
 		printf("List is empty\n");
 	while (token)
 	{
-		printf("type=%d string=%s\n", token->type, token->string);
+		printf("type=%s string=%s\n", type_to_string(token->type), token->string);
 		token = token->next;
 	}
 }

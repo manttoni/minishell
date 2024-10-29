@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <errno.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -11,6 +12,12 @@
 # include <readline/history.h>
 # include <limits.h>
 # include "../lib/libft/libft.h"
+
+typedef struct s_exec_cmd
+{
+	char	*path_part;
+	char	*executable;
+}	t_exec_cmd;
 
 typedef struct s_env
 {
@@ -25,6 +32,7 @@ typedef struct s_command
 	char				*exe;
 	int					fdin;
 	int					fdout;
+	char	*path;
 }	t_command;
 
 typedef enum type
@@ -65,4 +73,6 @@ void		free_array(char **s);
 int			run(t_command *list, t_env *env);
 char		*ft_getenv(char *key, t_env *env);
 
+int     unclosed_quotes(char *s);
+char *find_path(t_command *cmd, t_env *env);
 #endif
