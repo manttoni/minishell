@@ -23,17 +23,18 @@ e_type	get_type(char *line)
 	return (WORD);
 }
 
+/* returns an EXPANDABLE tokens string.
+ * it includes always the first $ and
+ * the next char no matter what it is.
+ * Rest of chars have to be alphanum or _ */
 char	*get_expandable(char *line)
 {
-	char	*ptr;
-	char	*expa_end;
+	char	*end;
 
-	ptr = line;
-	expa_end = "|<>\"\'$ ";
-	while (*ptr && (ft_strchr(expa_end, *ptr) == NULL
-			|| ptr == line)) // first $ doesnt count because its part of the expandable
-		ptr++;
-	return (ft_substr(line, 0, ptr - line));
+	end = line + 2;
+	while (ft_isalnum(*end) || *end == '_')
+		end++;
+	return (ft_substr(line, 0, end - line));
 }
 
 char	*get_word(char *line)

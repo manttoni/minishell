@@ -27,3 +27,14 @@ echo ""
 echo ""hello
 echo "" hello
 echo '' hello
+echo $ASD
+echo $!@#$
+echo "$!@#$"
+echo '$!@#$'
+echo $Q!@#
+echo "$Q!@#"
+echo '$Q!@#'
+echo $H"OME"
+echo $"HOME"
+echo $
+echo $!

@@ -7,6 +7,8 @@ char	*join(char *freeable, char *suffix)
 	char	*new;
 	int		i;
 
+	if (suffix == NULL)
+		return (NULL);
 	new = malloc(ft_strlen(freeable) + ft_strlen(suffix) + 1);
 	if (new == NULL)
 		return (NULL);
