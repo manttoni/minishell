@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+void	remove_next_token(t_token *token)
+{
+	t_token	*next;
+
+	if (token->next == NULL)
+		return ;
+	next = token->next->next;
+	free(token->next->string);
+	free(token->next);
+	token->next = next;
+}
+
 void	free_token_list(t_token *token)
 {
 	if (token == NULL)

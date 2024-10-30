@@ -37,15 +37,16 @@ typedef struct s_command
 
 typedef enum type
 {
-        SINGLE,
-        DOUBLE,
-        PIPE,
-        IN,
-        OUT,
-        HEREDOC,
-        APPEND,
-        WORD,
-        EXPANDABLE
+	SPACE_TOKEN,
+	SINGLE,
+	DOUBLE,
+	PIPE,
+	IN,
+	OUT,
+	HEREDOC,
+	APPEND,
+	WORD,
+	EXPANDABLE
 }       e_type;
 
 typedef struct s_token
@@ -62,6 +63,7 @@ int			list_len(t_command *list);
 void		free_list(t_command *list);
 t_token		*get_token(char *line);
 void		free_token_list(t_token *token);
+void		remove_next_token(t_token *token);
 void		add_token_last(t_token **start, t_token *new);
 char		*get_expandable(char *line);
 int			len(char **ar);
@@ -72,7 +74,7 @@ int			error_return(char *error_message);
 void		free_array(char **s);
 int			run(t_command *list, t_env *env);
 char		*ft_getenv(char *key, t_env *env);
-
+char		*join(char *freeable, char *suffix);
 int     unclosed_quotes(char *s);
 char *find_path(t_command *cmd, t_env *env);
 #endif

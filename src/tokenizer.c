@@ -16,6 +16,8 @@ char	*type_to_string(e_type type)
 {
 	switch (type)
 	{
+		case SPACE_TOKEN:
+			return ("SPACE");
 		case SINGLE:
 			return ("SINGLE");
 		case DOUBLE:
@@ -70,21 +72,41 @@ void	handle_quotes_expand(t_token *token, t_env *env)
 	}
 }
 
+/* recombine args and remove space tokens */
+int	clean_spaces(t_token *token)
+{
+	while (token)
+	{
+		if (token->type == WORD)
+		{
+			while (token->next && token->next->type == WORD)
+			{
+				token->string = join(token->string, token->next->string);
+				if (token->string == NULL)
+					return (0);
+				remove_next_token(token);
+			}
+		}
+		while (token->next && token->next->type == SPACE_TOKEN)
+			remove_next_token(token);
+		token = token->next;
+	}
+	return (1);
+}
+
 t_token	*tokenize_string(char *line, t_env *env)
 {
 	t_token *start;
 	t_token	*new;
-	char	*ptr;
 
-	ptr = line;
 	start = NULL;
+	line = skip_spaces(line);
 	while (*line)
 	{
 		new = get_token(line);
 		if (!new)
 		{
 			free_token_list(start);
-			free(ptr);
 			return (NULL);
 		}
 		line += ft_strlen(new->string);
@@ -95,7 +117,11 @@ t_token	*tokenize_string(char *line, t_env *env)
 			add_token_last(&start, new);
 		else
 			free_token_list(new);
-		line = skip_spaces(line);
+	}
+	if (clean_spaces(start) == 0)
+	{
+		printf("clean spaces\n");
+		return (NULL);
 	}
 	return (start);
 }
