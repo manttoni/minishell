@@ -65,29 +65,25 @@ char	*expand(char *string, t_env *env)
 
 	ptr = string;
 	buffer[1] = '\0';
-	result = malloc(1);
-	*result = '\0';
+	result = ft_calloc(1, 1);
 	while (*string)
 	{
-		if (*string == '$' && string[1]) // dollar without anything after shouldnt be expanded
+		if (*string == '$' && string[1]) // dollar with a following non-null char
 		{
 			value = get_value(&string, env);
-			if (value == NULL)
-			{
-				free(ptr);
-				return (NULL);
-			}
-			result = ft_strjoin(result, value); //doesnt free result, better join needed
-			free(value);
+			result = join(result, value);
 			if (result == NULL)
 			{
+				free(value);
 				free(ptr);
+				free(result);
 				return (NULL);
 			}
+			free(value);
 			continue ;
 		}
 		buffer[0] = *string;
-		result = ft_strjoin(result, buffer);
+		result = join(result, buffer);
 		string++;
 	}
 	free(ptr);
