@@ -113,10 +113,10 @@ t_token	*tokenize_string(char *line, t_env *env)
 		if (new->type == SINGLE || new->type == DOUBLE)
 			line += 2; // add quote x 2 to pointer (trimmed earlier)
 		handle_quotes_expand(new, env);
-		if (ft_strlen(new->string) > 0)
+		//if (ft_strlen(new->string) > 0)
 			add_token_last(&start, new);
-		else
-			free_token_list(new);
+		//else
+		//	free_token_list(new);
 	}
 	if (clean_spaces(start) == 0)
 	{

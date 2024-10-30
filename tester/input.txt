@@ -10,3 +10,20 @@ echo "$HOME$HOME"
 echo a'b'c
 echo "|<>'"
 echo '|<>"'
+ec"ho" h"e"l"l"o
+""echo"" hello
+"echo" hello
+''echo'' hello
+'echo' hello
+"""echo""" hello
+'''echo''' hello
+echo hello" "world
+echo a"b"c""d
+echo hello " " world
+echo "helloworl"d
+echo "" "" "" hello ""
+echo"" """"hello""
+echo ""
+echo ""hello
+echo "" hello
+echo '' hello
