@@ -57,7 +57,7 @@ typedef struct s_token
 }       t_token;
 
 t_command	*init_node();
-t_command	*create_list(t_token *tokens);
+t_command	*create_list(t_token *tokens, t_env *env);
 t_token		*tokenize_string(char	*cmd, t_env *env);
 int			list_len(t_command *list);
 void		free_list(t_command *list);
@@ -77,4 +77,6 @@ char		*ft_getenv(char *key, t_env *env);
 char		*join(char *freeable, char *suffix);
 int     unclosed_quotes(char *s);
 char *find_path(t_command *cmd, t_env *env);
+char *print_error(char *s, int n);
+int handle_heredoc_redirection(t_token *token, t_env *env);
 #endif

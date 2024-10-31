@@ -69,6 +69,7 @@ int	run(t_command *list, t_env *env)
 			return (error_return("fork"));
 		if (id == 0)
 		{
+			unlink(".here_doc");
 			if (current->args[0] == NULL)
 			{
 				close_pipes(pipefds, list_len(list));
