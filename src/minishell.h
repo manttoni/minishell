@@ -56,25 +56,41 @@ typedef struct s_token
         struct s_token  *next;
 }       t_token;
 
+/* Command list */
 t_command	*init_node();
 t_command	*create_list(t_token *tokens);
-t_token		*tokenize_string(char	*cmd, t_env *env);
-int			list_len(t_command *list);
 void		free_list(t_command *list);
+
+/* Tokenizer */
+t_token		*tokenize_string(char	*cmd, t_env *env);
 t_token		*get_token(char *line);
 void		free_token_list(t_token *token);
 void		remove_next_token(t_token *token);
 void		add_token_last(t_token **start, t_token *new);
+
+/* Environment (env) */
 char		*get_expandable(char *line);
+char		*expand(char *string, t_env *env);
+char		*ft_getenv(char *key, t_env *env);
+char		*find_path(t_command *cmd, t_env *env);
+
+/* Execute */
+int			run_builtin(char **args, t_env *env);
+int			run(t_command *list, t_env *env);
+
+/* Errors & validation */
+int			error_return(char *error_message);
+int			unclosed_quotes(char *s);
+
+/* Memory */
+void		free_array(char **s);
+
+/* Utils */
+int			list_len(t_command *list);
 int			len(char **ar);
 char		**add(char **ar, char *str);
-char		*expand(char *string, t_env *env);
-int			run_builtin(char **args, t_env *env);
-int			error_return(char *error_message);
-void		free_array(char **s);
-int			run(t_command *list, t_env *env);
-char		*ft_getenv(char *key, t_env *env);
 char		*join(char *freeable, char *suffix);
-int     unclosed_quotes(char *s);
-char *find_path(t_command *cmd, t_env *env);
+char		*find(char **ar, char *str);
+void		ft_remove(char **ar, char *str);
+
 #endif

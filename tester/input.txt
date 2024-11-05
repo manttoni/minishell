@@ -35,6 +35,5 @@ echo $Q!@#
 echo "$Q!@#"
 echo '$Q!@#'
 echo $H"OME"
-echo $"HOME"
 echo $
 echo $!
