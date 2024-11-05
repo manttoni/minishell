@@ -29,26 +29,39 @@ int	ft_cd(char **args, t_env *env)
 	return (1);
 }
 
+/* Checks if str has only allowed chars until terminator or '=' */
+int	is_valid_key(char *str)
+{
+	if (!ft_isalpha(*str) && *str != '_')
+		return (0);
+	str++;
+	while (ft_isalnum(*str) || *str == '_')
+		str++;
+	if (*str != '=' && *str != '\0')
+		return (0);
+	return (1);
+}
+
 /* For each arg, tries to find all matching results from env->arr
  * if it matches the key exactly, it gets removed from env->arr */
 int	ft_unset(char **args, t_env *env)
 {
-	char	*found;
-	int		len;
+	char	*keyword;
+	char	*env_var;
 
 	while (*args)
 	{
-		len = ft_strlen(*args);
-		found = find(env->arr, *args); // can still be not exact, f.e. "hi" in "hive=42"
-		while (found)
+		if (ft_strchr(*args, '=') != NULL || is_valid_key(*args) == 0)
 		{
-			if (found[len] == '=') // if this is true, then "hive" in "hive=42"
-			{
-				ft_remove(env->arr, found);
-				break ;
-			}
-			found = find(&found + 1, *args); // find the next result
+			args++;
+			continue ;
 		}
+		keyword = ft_strjoin(*args, "=");
+		if (keyword == NULL)
+			return (0);
+		env_var = find(env->arr, keyword);
+		ft_remove(env->arr, env_var);
+		free(keyword);
 		args++;
 	}
 	return (1);
@@ -58,34 +71,32 @@ int	ft_unset(char **args, t_env *env)
  * if it already exists, it first gets removed */
 int	ft_export(char **args, t_env *env)
 {
-	int		i;
-	char	*buf[2]; // a 'vehicle' for something that will be unset
+	char	**key_value;
+	char	*buf[2];
 
 	buf[1] = NULL;
 	while (*args)
 	{
-		i = 0;
-		while ((*args)[i])
+		if (ft_strchr(*args, '=') == NULL)
 		{
-			if (ft_isalpha((*args)[i]) || (*args)[i] == '_' 
-					|| ( i > 0 && ft_isdigit((*args)[i]))) // this char is ok
-				i++;
-			else if ((*args)[i] == '=') // success, arg has valid key and a '='
-			{
-				buf[0] = *args;
-				if (0) ft_unset(buf, env); // remove earlier value if it exists
-				env->arr = add(env->arr, ft_strdup(*args));
-				if (env->arr == NULL)
-					return (0);
-				break ;
-			}
-			else // forbidden character in key
-			{
-				printf("-bash: export: '%s': not a valid identifier\n", *args);
-				break ;
-			}
+			args++;
+			continue ;
 		}
+		key_value = ft_split(*args, '=');
+		if (key_value == NULL)
+			return (0);
+		if (is_valid_key(key_value[0]) == 0)
+		{
+			free_array(key_value);
+			return (0);
+		}
+		buf[0] = key_value[0];
+		ft_unset(buf, env);
+		env->arr = add(env->arr, ft_strdup(*args));
+		if (env->arr == NULL)
+			return (0);
 		args++;
+		free_array(key_value);
 	}
 	return (1);
 }
@@ -106,16 +117,24 @@ int	ft_env(t_env *env)
 int	run_builtin(char **args, t_env *env)
 {
 	if (ft_strcmp("cd", args[0]) == 0)
+	{
 		if (ft_cd(args, env) == 0)
 			return (error_return("ft_cd"));
-	if (ft_strcmp("export", args[0]) == 0)
+	}
+	else if (ft_strcmp("export", args[0]) == 0)
+	{
 		if (ft_export(args + 1, env) == 0)
 			return (error_return("ft_export"));
-	if (ft_strcmp("unset", args[0]) == 0)
+	}
+	else if (ft_strcmp("unset", args[0]) == 0)
+	{
 		if (ft_unset(args + 1, env) == 0)
 			return (error_return("ft_unset"));
-	if (ft_strcmp("env", args[0]) == 0)
+	}
+	else if (ft_strcmp("env", args[0]) == 0)
+	{
 		if (ft_env(env) == 0)
 			return (error_return("ft_env"));
+	}
 	return (1);
 }

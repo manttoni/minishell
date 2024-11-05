@@ -54,14 +54,12 @@ char	*find(char **ar, char *str)
 
 void	ft_remove(char **ar, char *str)
 {
-
+	if (str == NULL)
+		return ;
 	while (*ar)
 	{
 		if (ft_strcmp(*ar, str) == 0)
-		{
-			free(*ar);
 			break ;
-		}
 		ar++;
 	}
 	while (*ar)
