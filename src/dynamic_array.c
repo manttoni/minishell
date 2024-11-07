@@ -40,29 +40,31 @@ char	**add(char **ar, char *str)
 	return (new);
 }
 
-char	**find(char **ar, char *str)
+/* Returns the string where 'str' is found */
+char	*find(char **ar, char *str)
 {
 	while (*ar)
 	{
 		if (ft_strncmp(*ar, str, ft_strlen(str)) == 0)
-			return (ar);
+			return (*ar);
 		ar++;
 	}
 	return (NULL);
 }
 
-int	ft_remove(char **ar, char *str)
+void	ft_remove(char **ar, char *str)
 {
-	char	**remove_pointer;
-
-	remove_pointer = find(ar, str);
-	if (remove_pointer == NULL)
-		return (0);
-	free(*remove_pointer);
-	while (*remove_pointer)
+	if (str == NULL)
+		return ;
+	while (*ar)
 	{
-		*remove_pointer = *(remove_pointer + 1);
-		remove_pointer++;
+		if (ft_strcmp(*ar, str) == 0)
+			break ;
+		ar++;
 	}
-	return (1);
+	while (*ar)
+	{
+		*ar = *(ar + 1);
+		ar++;
+	}
 }
