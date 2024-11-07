@@ -58,6 +58,7 @@ int main(int argc, char **argv, char **env)
 				return (1);
 			}
 			run(list, env_struct);
+			printf("%d\n", env_struct->exit_code);
 			free_list(list);
 			free_token_list(tokens);
 		}

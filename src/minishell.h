@@ -13,6 +13,11 @@
 # include <limits.h>
 # include "../lib/libft/libft.h"
 
+#define SUCCESS 0          // successful completion
+#define ERR_STD 1          // standard error
+#define ERR_EXEC 126       // execution failure
+#define ERR_CMD_NOT_FOUND 127 // command not found
+
 typedef struct s_exec_cmd
 {
 	char	*path_part;
@@ -22,6 +27,7 @@ typedef struct s_exec_cmd
 typedef struct s_env
 {
 	char	**arr;
+	int		exit_code;
 }	t_env;
 
 typedef struct s_command
@@ -77,4 +83,5 @@ char		*ft_getenv(char *key, t_env *env);
 char		*join(char *freeable, char *suffix);
 int     unclosed_quotes(char *s);
 char *find_path(t_command *cmd, t_env *env);
+int wait_for_children(int num_processes);
 #endif
