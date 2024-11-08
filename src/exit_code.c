@@ -20,7 +20,6 @@ int wait_for_children(int num_processes)
             }
         }
     }
-
     return last_exit_code;
 }
 
