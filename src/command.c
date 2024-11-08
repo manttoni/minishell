@@ -49,6 +49,8 @@ int run(t_command *list, t_env *env)
     t_command *current;
     int id;
     int pipefds[list_len(list)][2];
+    int i = 0;
+    int status;
 
     if (list->args[0] 
             && (ft_strcmp("cd", list->args[0]) == 0 
@@ -61,13 +63,14 @@ int run(t_command *list, t_env *env)
     }
     if (create_pipes(pipefds, list_len(list)) == 0)
         return (error_return("create_pipes"));
-    
+
     current = list;
     while (current)
     {
         id = fork();
         if (id == -1)
             return (error_return("fork"));
+
         if (id == 0)
         {
             if (current->args[0] == NULL)
@@ -78,21 +81,23 @@ int run(t_command *list, t_env *env)
             current->path = find_path(current, env);
             if (!(current->path))
             {
-                free_list(list);
-                exit (ERR_CMD_NOT_FOUND);
+                close_pipes(pipefds, list_len(list));
+                exit(ERR_CMD_NOT_FOUND);
             }
             set_io(current, pipefds);
             close_pipes(pipefds, list_len(list));
-            if (execve(current->path, current->args, env->arr) == -1)
-            {
-                free_list(list);
-                exit (ERR_EXEC);
-            }
-            
+            execve(current->path, current->args, env->arr);
+            exit(ERR_EXEC);
         }
+        waitpid(id, &status, 0);
+        i++;
         current = current->next;
-    }   
+    }
     close_pipes(pipefds, list_len(list));
-    env->exit_code = wait_for_children(list_len(list));
+    if (WIFEXITED(status))
+        env->exit_code = WEXITSTATUS(status);
+    else if (WIFSIGNALED(status))
+        env->exit_code = 128 + WTERMSIG(status);
     return (1);
 }
+
