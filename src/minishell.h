@@ -13,6 +13,11 @@
 # include <limits.h>
 # include "../lib/libft/libft.h"
 
+#define SUCCESS 0          // successful completion
+#define ERR_STD 1          // standard error
+#define ERR_EXEC 126       // execution failure
+#define ERR_CMD_NOT_FOUND 127 // command not found
+
 typedef struct s_exec_cmd
 {
 	char	*path_part;
@@ -22,6 +27,7 @@ typedef struct s_exec_cmd
 typedef struct s_env
 {
 	char	**arr;
+	int		exit_code;
 }	t_env;
 
 typedef struct s_command
@@ -58,7 +64,9 @@ typedef struct s_token
 
 /* Command list */
 t_command	*init_node();
-t_command	*create_list(t_token *tokens);
+t_command	*create_list(t_token *tokens, t_env *env);
+t_token		*tokenize_string(char	*cmd, t_env *env);
+int			list_len(t_command *list);
 void		free_list(t_command *list);
 
 /* Tokenizer */
@@ -90,6 +98,11 @@ int			list_len(t_command *list);
 int			len(char **ar);
 char		**add(char **ar, char *str);
 char		*join(char *freeable, char *suffix);
+
+int     unclosed_quotes(char *s);
+char *find_path(t_command *cmd, t_env *env);
+int wait_for_children(int num_processes);
+int handle_heredoc_redirection(t_token *token, t_env *env);
 char		*find(char **ar, char *str);
 void		ft_remove(char **ar, char *str);
 

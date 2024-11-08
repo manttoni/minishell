@@ -44,55 +44,60 @@ int	set_io(t_command *command, int pipefds[][2])
 	return (1);
 }
 
-int	run(t_command *list, t_env *env)
+int run(t_command *list, t_env *env)
 {
-	t_command	*current;
-	int			id;
-	int			pipefds[list_len(list)][2];
+    t_command *current;
+    int id;
+    int pipefds[list_len(list)][2];
+    int i = 0;
+    int status;
 
-	if (list->args[0] 
-			&& (ft_strcmp("cd", list->args[0]) == 0 
-			|| ft_strcmp("export", list->args[0]) == 0 
-			|| ft_strcmp("unset", list->args[0]) == 0
-			|| ft_strcmp("env", list->args[0]) == 0))
-	{
-		run_builtin(list->args, env);
-		return (1);
-	}
-	if (create_pipes(pipefds, list_len(list)) == 0)
-		return (error_return("create_pipes"));
-	current = list;
-	while (current)
-	{
-		id = fork();
-		if (id == -1)
-			return (error_return("fork"));
-		if (id == 0)
-		{
-			if (current->args[0] == NULL)
-			{
-				close_pipes(pipefds, list_len(list));
-				exit(1);
-			}
-			current->path = find_path(current, env);
-			if (!(current->path))
-			{
-				free_list(list);
-				return (0);
-			}
-			set_io(current, pipefds);
-			close_pipes(pipefds, list_len(list));
-			execve(current->path, current->args, NULL);
-			free_list(list);
-			return (error_return("execve"));
-		}
-		current = current->next;
-	}
-	close_pipes(pipefds, list_len(list));
-	int asd;
-	for (int i = 0; i < list_len(list); ++i)
-	{
-		wait(&asd);
-	}
-	return (asd);
+    if (list->args[0] 
+            && (ft_strcmp("cd", list->args[0]) == 0 
+            || ft_strcmp("export", list->args[0]) == 0 
+            || ft_strcmp("unset", list->args[0]) == 0
+            || ft_strcmp("env", list->args[0]) == 0))
+    {
+        run_builtin(list->args, env);
+        return (1);
+    }
+    if (create_pipes(pipefds, list_len(list)) == 0)
+        return (error_return("create_pipes"));
+
+    current = list;
+    while (current)
+    {
+        id = fork();
+        if (id == -1)
+            return (error_return("fork"));
+
+        if (id == 0)
+        {
+            if (current->args[0] == NULL)
+            {
+                close_pipes(pipefds, list_len(list));
+                exit(1);
+            }
+            current->path = find_path(current, env);
+            if (!(current->path))
+            {
+                close_pipes(pipefds, list_len(list));
+                exit(ERR_CMD_NOT_FOUND);
+            }
+            set_io(current, pipefds);
+            close_pipes(pipefds, list_len(list));
+            execve(current->path, current->args, env->arr);
+            exit(ERR_EXEC);
+        }
+        waitpid(id, &status, 0);
+        i++;
+        current = current->next;
+    }
+    close_pipes(pipefds, list_len(list));
+    if (WIFEXITED(status))
+        env->exit_code = WEXITSTATUS(status);
+    else if (WIFSIGNALED(status))
+        env->exit_code = 128 + WTERMSIG(status);
+    return (1);
 }
+

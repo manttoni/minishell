@@ -48,7 +48,7 @@ int main(int argc, char **argv, char **env)
 			if (unclosed_quotes(input))
 				continue;
 			tokens = tokenize_string(input, env_struct);
-			list = create_list(tokens);
+			list = create_list(tokens, env_struct);
 			if (list == NULL)
 			{
 				free(input);
@@ -58,10 +58,12 @@ int main(int argc, char **argv, char **env)
 				return (1);
 			}
 			run(list, env_struct);
+			printf("%d\n", env_struct->exit_code);
 			free_list(list);
 			free_token_list(tokens);
 		}
 		free(input);
+		unlink(".here_doc");
 	}
 	return (0);
 }
