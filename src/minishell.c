@@ -28,7 +28,7 @@ int main(int argc, char **argv, char **env)
 
 	if (argc != 1)
 	{
-		printf("Too many arguments\n");
+		printf("Too many arguments (%d)\n", argc);
 		return (1);
 	}
 	(void) argv;

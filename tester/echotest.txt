@@ -37,3 +37,7 @@ echo '$Q!@#'
 echo $H"OME"
 echo $
 echo $!
+asd 2>/dev/null
+asd asd 2>/dev/null
+echo "hello world" | asd 2>/dev/null
+asd 2>/dev/null | echo "hello world"

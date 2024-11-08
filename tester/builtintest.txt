@@ -1,0 +1,17 @@
+unset PATH\nls 2>/dev/null
+unset HOME\ncd 2>/dev/null\npwd
+ls
+cd\nls
+cd\ncd\nls
+cd\ncd\ncd\nls
+pwd
+cd\npwd
+cd\ncd\npwd
+cd\ncd\ncd\npwd
+cd\ncd\ncd\ncd\n\pwd
+export ASD=hello\necho $ASD
+export ASD=hello\nunset ASD\necho $ASD
+export ASD=hello\nunset ASD\nexport ASD=world\necho $ASD
+export ASD=hello\nunset ASD\nexport ASD=world\nunset ASD\necho $ASD
+export 123=asd 2>/dev/null\necho $123
+export asd=hello qwe=world\necho $asd $qwe
