@@ -47,57 +47,72 @@ int	set_io(t_command *command, int pipefds[][2])
 int run(t_command *list, t_env *env)
 {
     t_command *current;
-    int id;
+    pid_t pids[list_len(list)];
     int pipefds[list_len(list)][2];
     int i = 0;
     int status;
 
-    if (list->args[0] 
-            && (ft_strcmp("cd", list->args[0]) == 0 
-            || ft_strcmp("export", list->args[0]) == 0 
-            || ft_strcmp("unset", list->args[0]) == 0
-            || ft_strcmp("env", list->args[0]) == 0))
+    if (list->args[0] && (ft_strcmp("cd", list->args[0]) == 0 
+        || ft_strcmp("export", list->args[0]) == 0 
+        || ft_strcmp("unset", list->args[0]) == 0
+        || ft_strcmp("env", list->args[0]) == 0))
     {
         run_builtin(list->args, env);
         return (1);
     }
+
     if (create_pipes(pipefds, list_len(list)) == 0)
         return (0);
 
     current = list;
     while (current)
     {
-        id = fork();
-        if (id == -1)
+        pids[i] = fork();
+        if (pids[i] == -1)
+        {
+            close_pipes(pipefds, list_len(list));
             return (0);
-
-        if (id == 0)
+        }
+        
+        if (pids[i] == 0)
         {
             if (current->args[0] == NULL)
             {
                 close_pipes(pipefds, list_len(list));
                 exit(1);
             }
+            
             current->path = find_path(current, env);
             if (!(current->path))
             {
                 close_pipes(pipefds, list_len(list));
                 exit(ERR_CMD_NOT_FOUND);
             }
+            
             set_io(current, pipefds);
             close_pipes(pipefds, list_len(list));
             execve(current->path, current->args, env->arr);
             exit(ERR_EXEC);
         }
-        waitpid(id, &status, 0);
+        
         i++;
         current = current->next;
     }
     close_pipes(pipefds, list_len(list));
-    if (WIFEXITED(status))
-        env->exit_code = WEXITSTATUS(status);
-    else if (WIFSIGNALED(status))
-        env->exit_code = 128 + WTERMSIG(status);
+    i = 0;
+    while(i < list_len(list))
+    {
+        waitpid(pids[i], &status, 0);
+        if (i == list_len(list) - 1)
+        {
+            if (WIFEXITED(status))
+                env->exit_code = WEXITSTATUS(status);
+            else if (WIFSIGNALED(status))
+                env->exit_code = 128 + WTERMSIG(status);
+        }
+        i++;
+    }
+
     return (1);
 }
 

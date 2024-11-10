@@ -66,7 +66,6 @@ t_command	*create_list(t_token *tokens, t_env *env)
 			if (update_fd(current, tokens, env) == 0)
 			{
 				free_list(start);
-				printf("getting fd failed\n");
 				return (NULL);
 			}
 			tokens = tokens->next; // jump to file name so next jump jumps to after filename
