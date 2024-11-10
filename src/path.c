@@ -12,18 +12,6 @@
 
 #include "minishell.h"
 
-void	free_arr(char **arr)
-{
-	size_t	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-}
-
 char	*fetch_cmd_path(char *cmd, char **path)
 {
 	t_exec_cmd	c;
@@ -79,13 +67,11 @@ char *find_path(t_command *cmd, t_env *env)
 	if (!result)
 	{
 		free(path_var);
-		free_arr(path);
-		free(path);
+		free_array(path);
 		print_error(cmd->args[0], 0);
 		return(print_error(": command not found", 2));
 	}
 	free(path_var);
-	free_arr(path);
-	free(path);
+	free_array(path);
 	return (result);
 }

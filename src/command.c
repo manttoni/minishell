@@ -8,7 +8,7 @@ int	create_pipes(int pipefds[][2], int cmds)
 	while (i < cmds - 1)
 	{
 		if (pipe(pipefds[i]) == -1)
-			return (error_return("pipe"));
+			return (0);
 		i++;
 	}
 	return (1);
@@ -62,14 +62,14 @@ int run(t_command *list, t_env *env)
         return (1);
     }
     if (create_pipes(pipefds, list_len(list)) == 0)
-        return (error_return("create_pipes"));
+        return (0);
 
     current = list;
     while (current)
     {
         id = fork();
         if (id == -1)
-            return (error_return("fork"));
+            return (0);
 
         if (id == 0)
         {

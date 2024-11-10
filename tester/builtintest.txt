@@ -15,3 +15,5 @@ export ASD=hello\nunset ASD\nexport ASD=world\necho $ASD
 export ASD=hello\nunset ASD\nexport ASD=world\nunset ASD\necho $ASD
 export 123=asd 2>/dev/null\necho $123
 export asd=hello qwe=world\necho $asd $qwe
+env
+unset HOME\nenv
