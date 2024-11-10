@@ -32,7 +32,8 @@ char	*get_expandable(char *line)
 	char	*end;
 
 	end = line + 2;
-	while (ft_isalnum(*end) || *end == '_')
+	while ((ft_isalpha(*(line + 1)) || *(line + 1) == '_')
+			&& (ft_isalnum(*end) || *end == '_'))
 		end++;
 	return (ft_substr(line, 0, end - line));
 }

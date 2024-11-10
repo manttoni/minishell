@@ -83,12 +83,13 @@ char		*ft_getenv(char *key, t_env *env);
 char		*find_path(t_command *cmd, t_env *env);
 
 /* Execute */
-int			run_builtin(char **args, t_env *env);
-int			run(t_command *list, t_env *env);
+int	run_builtin(char **args, t_env *env);
+int	run(t_command *list, t_env *env);
 
 /* Errors & validation */
-int			error_return(char *error_message);
-int			unclosed_quotes(char *s);
+int		error_return(char *error_message);
+int		unclosed_quotes(char *s);
+char	*print_error(char *s, int n);
 
 /* Memory */
 void		free_array(char **s);

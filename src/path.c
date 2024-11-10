@@ -24,17 +24,6 @@ void	free_arr(char **arr)
 	}
 }
 
-char *print_error(char *s, int n)
-{
-	if (n == 2)
-		printf("%s\n", s);
-	if (n == 1)
-		printf("-minishell: %s: %s", s, strerror(errno));
-	else if (n == 0)
-		printf("-minishell: %s", s);
-	return (0);
-}
-
 char	*fetch_cmd_path(char *cmd, char **path)
 {
 	t_exec_cmd	c;

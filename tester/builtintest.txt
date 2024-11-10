@@ -8,7 +8,7 @@ pwd
 cd\npwd
 cd\ncd\npwd
 cd\ncd\ncd\npwd
-cd\ncd\ncd\ncd\n\pwd
+cd\ncd\ncd\ncd\npwd
 export ASD=hello\necho $ASD
 export ASD=hello\nunset ASD\necho $ASD
 export ASD=hello\nunset ASD\nexport ASD=world\necho $ASD

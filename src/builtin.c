@@ -23,7 +23,7 @@ int	ft_cd(char **args, t_env *env)
 	if (chdir(path) != 0)
 	{
 		free(path);
-		return (error_return("chdir"));
+		return (0);
 	}
 	free(path);
 	return (1);
@@ -119,22 +119,22 @@ int	run_builtin(char **args, t_env *env)
 	if (ft_strcmp("cd", args[0]) == 0)
 	{
 		if (ft_cd(args, env) == 0)
-			return (error_return("ft_cd"));
+			return (0);
 	}
 	else if (ft_strcmp("export", args[0]) == 0)
 	{
 		if (ft_export(args + 1, env) == 0)
-			return (error_return("ft_export"));
+			return (0);
 	}
 	else if (ft_strcmp("unset", args[0]) == 0)
 	{
 		if (ft_unset(args + 1, env) == 0)
-			return (error_return("ft_unset"));
+			return (0);
 	}
 	else if (ft_strcmp("env", args[0]) == 0)
 	{
 		if (ft_env(env) == 0)
-			return (error_return("ft_env"));
+			return (0);
 	}
 	return (1);
 }
