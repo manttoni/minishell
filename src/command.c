@@ -82,6 +82,10 @@ int run(t_command *list, t_env *env)
             if (!(current->path))
             {
                 close_pipes(pipefds, list_len(list));
+				free_array(env->arr);
+				free(env);
+				free_list(list);
+				clear_history();
                 exit(ERR_CMD_NOT_FOUND);
             }
             set_io(current, pipefds);

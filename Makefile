@@ -1,5 +1,6 @@
 NAME = minishell
 FLAGS = -Wall -Wextra -Werror -g
+#FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT_DIR = lib/libft
 LIBFT = lib/libft/libft.a
 SRC = $(wildcard src/*.c)
@@ -25,4 +26,8 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re #asan
+
+#asan: FLAGS := $(FLAGS) -fsanitize=address
+
+#asan: all

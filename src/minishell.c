@@ -24,7 +24,7 @@ int main(int argc, char **argv, char **env)
 	char		*input;
 	t_command	*list;
 	t_env		*env_struct;
-	t_token	*tokens;
+	t_token		*tokens;
 
 	if (argc != 1)
 	{
@@ -36,13 +36,13 @@ int main(int argc, char **argv, char **env)
 	if (env == NULL)
 		return (1);
 	input = NULL;
-	while (input==NULL)
+	while (1)
 	{
 		input = readline("minishell> ");
 		
 		if (input == NULL)
 			break ;
-		fflush(stdout);
+		fflush(stdout); // was this useless?
 		if (*input)
 		{
 			add_history(input);
@@ -50,22 +50,22 @@ int main(int argc, char **argv, char **env)
 				continue;
 			tokens = tokenize_string(input, env_struct);
 			list = create_list(tokens, env_struct);
+			free_token_list(tokens);
 			if (list == NULL)
 			{
 				free(input);
 				free_array(env_struct->arr);
 				free(env);
-				free_token_list(tokens);
 				return (1);
 			}
 			run(list, env_struct);
 			free_list(list);
-			free_token_list(tokens);
 		}
 		free(input);
 		unlink(".here_doc");
 	}
 	free_array(env_struct->arr);
 	free(env_struct);
+	clear_history();
 	return (0);
 }

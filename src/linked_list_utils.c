@@ -5,7 +5,7 @@ void	free_list(t_command *list)
 	if (list->next)
 		free_list(list->next);
 	free_array(list->args);
-	free(list->exe);
+	free(list->path);
 	if (list->fdin > 2)
 		close(list->fdin);
 	if (list->fdout > 2)
