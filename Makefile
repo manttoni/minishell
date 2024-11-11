@@ -1,5 +1,5 @@
 NAME = minishell
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT_DIR = lib/libft
 LIBFT = lib/libft/libft.a
 SRC = $(wildcard src/*.c)

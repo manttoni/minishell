@@ -13,7 +13,7 @@ t_env	*init_env(char **arr)
 	env->arr[0] = NULL;
 	while (*arr)
 	{
-		env->arr = add(env->arr, *arr);
+		env->arr = add(env->arr, ft_strdup(*arr));
 		arr++;
 	}
 	return (env);
@@ -35,7 +35,8 @@ int main(int argc, char **argv, char **env)
 	env_struct = init_env(env);
 	if (env == NULL)
 		return (1);
-	while (1)
+	input = NULL;
+	while (input==NULL)
 	{
 		input = readline("minishell> ");
 		
@@ -64,5 +65,7 @@ int main(int argc, char **argv, char **env)
 		free(input);
 		unlink(".here_doc");
 	}
+	free_array(env_struct->arr);
+	free(env_struct);
 	return (0);
 }
