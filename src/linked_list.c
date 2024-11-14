@@ -10,6 +10,8 @@ int	update_fd(t_command *cmd, t_token *token, t_env *env)
 			cmd->fdin = open(token->next->string, O_RDONLY);
 		else
 			cmd->fdin = handle_heredoc_redirection(token, env);
+		if (cmd->fdin == -2)
+			return (-2);
 		if (cmd->fdin < 0)
 			return (0);
 		return (1);
@@ -29,7 +31,9 @@ t_command	*create_list(t_token *tokens, t_env *env)
 {
 	t_command	*start;
 	t_command	*current;
+	t_token		*current_token;
 	int			i;
+	int			fd_return;
 
 	if (tokens == NULL)
 		return (NULL);
@@ -37,20 +41,21 @@ t_command	*create_list(t_token *tokens, t_env *env)
 	if (start == NULL)
 		return (NULL);
 	current = start;
+	current_token = tokens;
 	i = 0;
 	start->index = i;
-	while (tokens)
+	while (current_token)
 	{
-		if (tokens->type == WORD)
+		if (current_token->type == WORD)
 		{
-			current->args = add(current->args, ft_strdup(tokens->string));
+			current->args = add(current->args, ft_strdup(current_token->string));
 			if (current->args == NULL)
 			{
 				free_list(start);
 				return (NULL);
 			}
 		}
-		else if (tokens->type == PIPE)
+		else if (current_token->type == PIPE)
 		{
 			current->next = init_node();
 			if (current->next == NULL)
@@ -63,15 +68,23 @@ t_command	*create_list(t_token *tokens, t_env *env)
 		}
 		else // IN, OUT, APPEND, HEREDOC
 		{
-			if (update_fd(current, tokens, env) == 0)
+			fd_return = update_fd(current, current_token, env);
+			if (fd_return == 0)
 			{
 				free_list(start);
-				printf("getting fd failed\n");
 				return (NULL);
 			}
-			tokens = tokens->next; // jump to file name so next jump jumps to after filename
+			else if (fd_return == -2) // child has come to be free
+			{
+				free_array(env->arr);
+				free(env);
+				free_list(start);
+				free_token_list(tokens);
+				exit(130);
+			}
+			current_token = current_token->next; // jump to file name so next jump jumps to after filename
 		}
-		tokens = tokens->next;
+		current_token = current_token->next;
 	}
 	return (start);
 }

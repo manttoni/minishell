@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+volatile sig_atomic_t g_signal = 0;
+
 t_env	*init_env(char **arr)
 {
 	t_env	*env;
@@ -18,7 +20,6 @@ t_env	*init_env(char **arr)
 	}
 	return (env);
 }
-
 int main(int argc, char **argv, char **env)
 {
 	char		*input;
@@ -35,33 +36,23 @@ int main(int argc, char **argv, char **env)
 	env_struct = init_env(env);
 	if (env == NULL)
 		return (1);
-	input = NULL;
 	while (1)
 	{
+		setup_main_signals();
 		input = readline("minishell> ");
-		
 		if (input == NULL)
 			break ;
-		fflush(stdout); // was this useless?
-		if (*input)
-		{
-			add_history(input);
-			if (unclosed_quotes(input))
-				continue;
-			tokens = tokenize_string(input, env_struct);
-			list = create_list(tokens, env_struct);
-			free_token_list(tokens);
-			if (list == NULL)
-			{
-				free(input);
-				free_array(env_struct->arr);
-				free(env);
-				return (1);
-			}
-			run(list, env_struct);
-			free_list(list);
-		}
+		add_history(input);
+		if (unclosed_quotes(input))
+			continue;
+		tokens = tokenize_string(input, env_struct);
 		free(input);
+		list = create_list(tokens, env_struct);
+		free_token_list(tokens);
+		if (list == NULL)
+			continue ;
+		run(list, env_struct);
+		free_list(list);
 		unlink(".here_doc");
 	}
 	free_array(env_struct->arr);

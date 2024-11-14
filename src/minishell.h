@@ -13,6 +13,8 @@
 # include <limits.h>
 # include "../lib/libft/libft.h"
 
+extern volatile sig_atomic_t g_signal;
+
 #define SUCCESS 0          // successful completion
 #define ERR_STD 1          // standard error
 #define ERR_EXEC 126       // execution failure
@@ -103,5 +105,7 @@ void		ft_remove(char **ar, char *str);
 
 
 int handle_heredoc_redirection(t_token *token, t_env *env);
-
+void setup_heredoc_signals(void);
+void setup_main_signals(void);
+void reset_signals(void);
 #endif
