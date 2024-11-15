@@ -25,7 +25,7 @@ int	update_fd(t_command *cmd, t_token *token, t_env *env, t_data data)
 	return (1);
 }
 
-t_data encapsulate(t_command *start, t_token *tokens, t_env *env)
+t_data create_data(t_command *start, t_token *tokens, t_env *env)
 {
 	t_data data;
 
@@ -76,7 +76,7 @@ t_command	*create_list(t_token *tokens, t_env *env)
 		}
 		else // IN, OUT, APPEND, HEREDOC
 		{
-			fd_return = update_fd(current, current_token, env, encapsulate(start, tokens, env));
+			fd_return = update_fd(current, current_token, env, create_data(start, tokens, env));
 			if (fd_return == 0)
 			{
 				free_list(start);
