@@ -54,7 +54,7 @@ fi
 echo "=========================="
 
 ##############################################################################
-# Tests > by making 2 files and executing diff on them
+# Tests > by making 2 files and executing diff on them. Tests with both previous input files
 
 echo "     *** Testing >  ***"
 FAIL=0
@@ -135,3 +135,56 @@ fi
 
 echo "=========================="
 
+#############################################################################
+# Valgrind tests
+
+echo "*** Testing with valgrind ***"
+
+FAIL=0
+log_file=out.log
+while IFS= read -r line; do
+	input=$(echo -e "$line")
+	> $log_file
+	echo -n "."
+	valgrind --suppressions=../supp.supp --log-file=$log_file --leak-check=full --show-leak-kinds=all ../minishell <<< "$input" 2>/dev/null > /dev/null
+	if grep -q "definitely lost: 0 bytes in 0 blocks" $log_file && \
+	   grep -q "indirectly lost: 0 bytes in 0 blocks" $log_file && \
+	   grep -q "possibly lost: 0 bytes in 0 blocks" $log_file && \
+	   grep -q "still reachable: 0 bytes in 0 blocks" $log_file; then
+		FAIL=$FAIL	
+	else
+		FAIL=1
+		echo "Leak detected with input: $input"
+		cat log_file
+	fi
+done < echotest.txt
+
+while IFS= read -r line; do
+	input=$(echo -e "$line")
+	> $log_file
+	echo -n "."
+	valgrind --suppressions=../supp.supp --log-file=$log_file --leak-check=full --show-leak-kinds=all ../minishell <<< "$input" 2>/dev/null > /dev/null
+	if grep -q "definitely lost: 0 bytes in 0 blocks" $log_file && \
+	   grep -q "indirectly lost: 0 bytes in 0 blocks" $log_file && \
+	   grep -q "possibly lost: 0 bytes in 0 blocks" $log_file && \
+	   grep -q "still reachable: 0 bytes in 0 blocks" $log_file; then
+		FAIL=$FAIL	
+	else
+		FAIL=1
+		echo ""
+		echo "Leak detected with input: "
+		echo "-------------------------"
+		echo "$input"
+		echo "-------------------------"
+		cat $log_file
+	fi
+done < builtintest.txt
+
+echo ""
+
+rm $log_file
+if [ $FAIL == 0 ]; then
+	echo " 🥳 All tests passed! 🥳"
+fi
+
+echo "=========================="
