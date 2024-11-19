@@ -34,7 +34,7 @@ char	**add(char **ar, char *str)
 		new[i] = ar[i];
 		i++;
 	}
-	new[i] = str;
+	new[i] = ft_strdup(str);
 	new[i + 1] = NULL;
 	free(ar);
 	return (new);

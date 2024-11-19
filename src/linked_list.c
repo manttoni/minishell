@@ -53,7 +53,7 @@ t_command	*create_list(t_token *tokens, t_env *env)
 	{
 		if (current_token->type == WORD)
 		{
-			current->args = add(current->args, ft_strdup(current_token->string));
+			current->args = add(current->args, current_token->string);
 			if (current->args == NULL)
 			{
 				free_list(start);

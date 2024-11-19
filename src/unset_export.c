@@ -32,6 +32,7 @@ int	ft_unset(char **args, t_env *env)
 			return (0);
 		env_var = find(env->arr, keyword);
 		ft_remove(env->arr, env_var);
+		free(env_var);
 		free(keyword);
 		args++;
 	}
@@ -59,7 +60,7 @@ int	ft_export(char **args, t_env *env)
 		}
 		buf[0] = key_value[0];
 		ft_unset(buf, env);
-		env->arr = add(env->arr, ft_strdup(*args));
+		env->arr = add(env->arr, *args);
 		if (env->arr == NULL)
 			return (0);
 		args++;

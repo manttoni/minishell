@@ -15,7 +15,7 @@ t_env	*init_env(char **arr)
 	env->arr[0] = NULL;
 	while (*arr)
 	{
-		env->arr = add(env->arr, ft_strdup(*arr));
+		env->arr = add(env->arr, *arr);
 		arr++;
 	}
 	return (env);
@@ -55,6 +55,13 @@ static int	handle_input(t_main *main_struct)
 	return (0);
 }
 
+static void	free_main(t_main *main_struct)
+{
+	free_array(main_struct->env->arr);
+	free(main_struct->env);
+	free(main_struct);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	t_main	*main_s;
@@ -78,8 +85,7 @@ int	main(int argc, char **argv, char **env)
 		free_list(main_s->commands);
 		unlink(".here_doc");
 	}
-	free_array(main_s->env->arr);
-	free(main_s->env);
+	free_main(main_s);
 	clear_history();
 	return (0);
 }
