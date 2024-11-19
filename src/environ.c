@@ -42,7 +42,10 @@ char	*get_value(char **dollar, t_env *env)
 	keylen = ft_strlen(key);
 	*dollar += keylen + 1;
 	if (*key == '?' && keylen == 1)
+	{
+		free(key);
 		return (ft_itoa(env->exit_code));
+	}
 	while (env->arr[i])
 	{
 		if (ft_strncmp(env->arr[i], key, keylen) == 0
