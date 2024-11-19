@@ -11,6 +11,7 @@ int	do_fork(t_run *run)
 	}
 	return (1);
 }
+
 void	run_child(t_run *run)
 {
 	run->cmd_curr->path = find_path(run->cmd_curr, run->env);
@@ -25,6 +26,7 @@ void	run_child(t_run *run)
 	free_run(run);
 	exit(ERR_EXEC);
 }
+
 void wait_pids(t_run *run)
 {
 	int	i;

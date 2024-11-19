@@ -23,10 +23,6 @@ static t_run	*init_run(t_command *cmd_list, t_env *env)
 	return (run);
 }
 
-
-
-
-
 int	run_builtin(char **args, t_env *env)
 {
 	if (ft_strcmp("cd", args[0]) == 0)
@@ -46,7 +42,7 @@ int	run(t_command *cmd_list, t_env *env)
 	int		builtin_ret;
 
 	builtin_ret = run_builtin(cmd_list->args, env);
-	if (builtin_ret >= 0) // it was a builtin. if not builtin, returns -1
+	if (builtin_ret >= 0)
 		return (builtin_ret);
 	run = init_run(cmd_list, env);
 	if (run == NULL)

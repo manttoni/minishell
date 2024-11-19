@@ -5,6 +5,7 @@ volatile sig_atomic_t	g_signal = 0;
 t_env	*init_env(char **arr)
 {
 	t_env	*env;
+	char	**buf;
 
 	env = malloc(sizeof(t_env));
 	if (env == NULL)
@@ -18,6 +19,11 @@ t_env	*init_env(char **arr)
 		env->arr = add(env->arr, *arr);
 		arr++;
 	}
+	buf = ft_calloc(3, sizeof(char*));
+	buf[0] = "_";
+	buf[1] = "SHLVL";
+	ft_unset(buf, env);
+	free(buf);
 	return (env);
 }
 

@@ -18,3 +18,7 @@ export asd=hello qwe=world\necho $asd $qwe
 ls\necho $?
 asd\necho $?
 \n
+unset HOME\ncd\necho $?
+cd\necho $?
+export qweasd=asdqwe\necho $?
+unset HOME\necho $?
