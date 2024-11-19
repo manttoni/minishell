@@ -20,14 +20,7 @@ extern volatile sig_atomic_t g_signal;
 #define ERR_EXEC 126       // execution failure
 #define ERR_CMD_NOT_FOUND 127 // command not found
 
-/* struct for variables in main */
-typedef struct s_main
-{
-	t_env		*env;
-	char		*input;
-	t_command	*commands;
-	t_token		*tokens;
-}	t_main;
+
 
 typedef struct s_exec_cmd
 {
@@ -74,12 +67,25 @@ typedef struct s_token
         struct s_token  *next;
 }       t_token;
 
+/* struct for variables in main */
+typedef struct s_main
+{
+	t_env		*env;
+	char		*input;
+	t_command	*commands;
+	t_token		*tokens;
+}	t_main;
+
 typedef struct s_data
 {
 	t_env *env;
 	t_command	*start;
 	t_token *tokens;
 }	t_data;
+
+/* Builtins */
+int	ft_export(char **args, t_env *env);
+int	ft_unset(char **args, t_env *env);
 
 /* Command list */
 t_command	*init_node();

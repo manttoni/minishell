@@ -14,7 +14,7 @@
 
 int	len(char **ar)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (ar[len])
