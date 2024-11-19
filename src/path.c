@@ -15,7 +15,7 @@
 char	*fetch_cmd_path(char *cmd, char **path)
 {
 	t_exec_cmd	c;
-	int	i;
+	int			i;
 
 	i = 0;
 	while (path[i] != NULL)
@@ -38,12 +38,12 @@ char	*fetch_cmd_path(char *cmd, char **path)
 	return (NULL);
 }
 
-char *find_path(t_command *cmd, t_env *env)
+char	*find_path(t_command *cmd, t_env *env)
 {
-	char *path_var;
-	char *result;
-	char **path;
-	
+	char	*path_var;
+	char	*result;
+	char	**path;
+
 	if (access(cmd->args[0], F_OK | X_OK) == 0 && !ft_strncmp(cmd->args[0], "./", 2))
 		return (cmd->args[0]);
 	else if (access(cmd->args[0], F_OK | X_OK) && !ft_strncmp(cmd->args[0], "./", 2))

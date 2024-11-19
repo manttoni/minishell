@@ -47,7 +47,8 @@ void	print_token(t_token *token)
 		printf("List is empty\n");
 	while (token)
 	{
-		printf("type=%s string=%s\n", type_to_string(token->type), token->string);
+		printf("type=%s string=%s\n",
+		...type_to_string(token->type), token->string);
 		token = token->next;
 	}
 }
@@ -96,7 +97,7 @@ int	clean_spaces(t_token *token)
 
 t_token	*tokenize_string(char *line, t_env *env)
 {
-	t_token *start;
+	t_token	*start;
 	t_token	*new;
 
 	start = NULL;
@@ -111,7 +112,7 @@ t_token	*tokenize_string(char *line, t_env *env)
 		}
 		line += ft_strlen(new->string);
 		if (new->type == SINGLE || new->type == DOUBLE)
-			line += 2; // add quote x 2 to pointer (trimmed earlier)
+			line += 2;
 		handle_quotes_expand(new, env);
 		add_token_last(&start, new);
 	}

@@ -33,7 +33,7 @@ char	*get_expandable(char *line)
 
 	end = line + 2;
 	while ((ft_isalpha(*(line + 1)) || *(line + 1) == '_')
-			&& (ft_isalnum(*end) || *end == '_'))
+		&& (ft_isalnum(*end) || *end == '_'))
 		end++;
 	return (ft_substr(line, 0, end - line));
 }
@@ -55,9 +55,9 @@ char	*get_string(t_token *token, char *line)
 	if (token->type == SPACE_TOKEN)
 		return (ft_strdup(" "));
 	if (token->type == SINGLE)
-		return (ft_substr(line, 1, ft_strchr(line + 1, '\'') - 1 - line)); // quotes are trimmed here
+		return (ft_substr(line, 1, ft_strchr(line + 1, '\'') - 1 - line));
 	if (token->type == DOUBLE)
-		return (ft_substr(line, 1, ft_strchr(line + 1, '\"') - 1 - line)); // and here
+		return (ft_substr(line, 1, ft_strchr(line + 1, '\"') - 1 - line));
 	if (token->type == PIPE)
 		return (ft_strdup("|"));
 	if (token->type == HEREDOC)

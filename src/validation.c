@@ -1,5 +1,3 @@
-
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -14,11 +12,13 @@
 
 #include "minishell.h"
 
-int unclosed_quotes(char *s)
+int	unclosed_quotes(char *s)
 {
-	char c = 0;
-	int i = 0;
-	  
+	char	c;
+	int		i;
+
+	c = 0;
+	i = 0;
 	while (s[i])
 	{
 		if (s[i] == '\'' || s[i] == '\"')
@@ -26,16 +26,15 @@ int unclosed_quotes(char *s)
 			c = s[i];
 			i++;
 			while (s[i] && s[i] != c)
-				 i++;
+				i++;
 			if (!s[i])
 			{
 				ft_putstr_fd("syntax error: unclosed quotes\n", 2);
 				return (1);
 			}
-		c = 0;
+			c = 0;
 		}
 		i++;
 	}
 	return (0);
 }
-

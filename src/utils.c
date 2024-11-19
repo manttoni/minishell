@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 /* Like ft_strjoin, but frees the first pointer */
 char	*join(char *freeable, char *suffix)
 {
