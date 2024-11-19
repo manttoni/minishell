@@ -13,10 +13,14 @@
 # include <limits.h>
 # include "../lib/libft/libft.h"
 
+extern volatile sig_atomic_t g_signal;
+
 #define SUCCESS 0          // successful completion
 #define ERR_STD 1          // standard error
 #define ERR_EXEC 126       // execution failure
 #define ERR_CMD_NOT_FOUND 127 // command not found
+
+
 
 typedef struct s_exec_cmd
 {
@@ -35,7 +39,6 @@ typedef struct s_command
 	struct s_command	*next;
 	int					index;
 	char				**args;
-	char				*exe;
 	int					fdin;
 	int					fdout;
 	char	*path;
@@ -61,6 +64,13 @@ typedef struct s_token
         char    *string;
         struct s_token  *next;
 }       t_token;
+
+typedef struct s_data
+{
+	t_env *env;
+	t_command	*start;
+	t_token *tokens;
+}	t_data;
 
 /* Command list */
 t_command	*init_node();
@@ -102,6 +112,8 @@ char		*find(char **ar, char *str);
 void		ft_remove(char **ar, char *str);
 
 
-int handle_heredoc_redirection(t_token *token, t_env *env);
-
+int handle_heredoc_redirection(t_token *token, t_env *env, t_data data);
+void setup_heredoc_signals(void);
+void setup_main_signals(void);
+void reset_signals(void);
 #endif

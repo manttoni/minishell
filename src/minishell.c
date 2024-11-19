@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+volatile sig_atomic_t g_signal = 0;
+
 t_env	*init_env(char **arr)
 {
 	t_env	*env;
@@ -13,56 +15,79 @@ t_env	*init_env(char **arr)
 	env->arr[0] = NULL;
 	while (*arr)
 	{
-		env->arr = add(env->arr, *arr);
+		env->arr = add(env->arr, ft_strdup(*arr));
 		arr++;
 	}
 	return (env);
 }
 
-int main(int argc, char **argv, char **env)
+typedef struct s_main
 {
+	t_env		*env;
 	char		*input;
-	t_command	*list;
-	t_env		*env_struct;
-	t_token	*tokens;
+	t_command	*commands;
+	t_token		*tokens;
+}	t_main;
+
+/* For norminette */
+static t_main	*init_main(int argc, char **argv, char **env)
+{
+	t_main	*main_struct;
 
 	if (argc != 1)
+		return (NULL);
+	main_struct = malloc(sizeof(t_main));
+	if (main_struct == NULL)
+		return (NULL);
+	main_struct->env = init_env(env);
+	if (main_struct->env == NULL)
 	{
-		printf("Too many arguments (%d)\n", argc);
-		return (1);
+		free(main_struct);
+		return (NULL);
 	}
 	(void) argv;
-	env_struct = init_env(env);
-	if (env == NULL)
+	return (main_struct);
+}
+
+/* Return values:
+ * 	- 0: everything ok
+ * 	- 1: main should break, input == NULL
+*/
+static int	handle_input(t_main *main_struct)
+{
+	setup_main_signals();
+	main_struct->input = readline("minishell> ");
+	if (main_struct->input == NULL)
+		return (1);
+	add_history(main_struct->input);
+	return (0);
+}
+
+int main(int argc, char **argv, char **env)
+{
+	t_main	*main_s;
+
+	main_s = init_main(argc, argv, env);
+	if (main_s == NULL)
 		return (1);
 	while (1)
 	{
-		input = readline("minishell> ");
-		
-		if (input == NULL)
+		if (handle_input(main_s) == 1)
 			break ;
-		fflush(stdout);
-		if (*input)
-		{
-			add_history(input);
-			if (unclosed_quotes(input))
-				continue;
-			tokens = tokenize_string(input, env_struct);
-			list = create_list(tokens, env_struct);
-			if (list == NULL)
-			{
-				free(input);
-				free_array(env_struct->arr);
-				free(env);
-				free_token_list(tokens);
-				return (1);
-			}
-			run(list, env_struct);
-			free_list(list);
-			free_token_list(tokens);
-		}
-		free(input);
+		if (unclosed_quotes(main_s->input))
+			continue ;
+		main_s->tokens = tokenize_string(main_s->input, main_s->env);
+		main_s->commands = create_list(main_s->tokens, main_s->env);
+		free(main_s->input);
+		free_token_list(main_s->tokens);
+		if (main_s->commands == NULL)
+			continue ;
+		run(main_s->commands, main_s->env);
+		free_list(main_s->commands);
 		unlink(".here_doc");
 	}
+	free_array(main_s->env->arr);
+	free(main_s->env);
+	clear_history();
 	return (0);
 }

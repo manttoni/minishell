@@ -2,50 +2,50 @@
 FAIL=0
 
 if ls ../ | grep -q "minishell"; then
-	echo "-----------------"
-	echo "Minishell tester:"
-	echo "-----------------"
+	echo "=========================="
+	echo "==  Minishell  tester:  =="
+	echo "=========================="
 else
 	echo "../minishell not found"
 	exit 1
 fi
 
-echo "Testing parser..."
+echo "  *** Testing parser ***"
 
 while IFS= read -r line; do
-	bout=$(bash <<< "$line")
-	mout=$(../minishell <<< "$line" | grep -v "minishell>")
-	if [ "$bout" != "$mout" ]; then
+	bash_out=$(bash <<< "$line" 2>/dev/null)
+	minishell_out=$(../minishell <<< "$line" 2>/dev/null| grep -v "minishell>")
+	if [ "$bash_out" != "$minishell_out" ]; then
 		FAIL=1
 		echo "----------------------------"
 		echo "input: $line"
-		diff <(echo "$bout") <(echo "$mout")
+		diff <(echo "$bash_out") <(echo "$minishell_out")
 	fi
 done < echotest.txt
 if [ $FAIL == 0 ]; then
-	echo "All tests passed!"
+	echo " 🥳 All tests passed! 🥳"
 fi
 
-echo "--------------------"
+echo "=========================="
 
 ###############################################################################
 
-echo "Testing builtins..."
+echo " *** Testing builtins ***"
 FAIL=0
 
 while IFS= read -r line; do
 	input=$(echo -e "$line")
-	bout=$(bash <<< "$input")
-	mout=$(../minishell <<< "$input" | grep -v "minishell>")
-	if [ "$bout" != "$mout" ]; then
+	bash_out=$(bash <<< "$input" 2>/dev/null)
+	minishell_out=$(../minishell <<< "$input" 2>/dev/null | grep -v "minishell>" 2>/dev/null)
+	if [ "$bash_out" != "$minishell_out" ]; then
 		FAIL=1
-		echo "----------------------------"
+		echo "--------------------------"
 		echo "input: $line"
-		diff <(echo "$bout") <(echo "$mout")
+		diff <(echo "$bash_out") <(echo "$minishell_out")
 	fi
 done < builtintest.txt
 if [ $FAIL == 0 ]; then
-	echo "All tests passed!"
+	echo " 🥳 All tests passed! 🥳"
 fi
 
-echo "--------------------"
+echo "=========================="
