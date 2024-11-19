@@ -39,7 +39,6 @@ typedef struct s_command
 	struct s_command	*next;
 	int					index;
 	char				**args;
-	char				*exe;
 	int					fdin;
 	int					fdout;
 	char	*path;
