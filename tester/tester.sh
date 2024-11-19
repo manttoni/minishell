@@ -49,3 +49,27 @@ if [ $FAIL == 0 ]; then
 fi
 
 echo "=========================="
+
+##############################################################################
+
+echo "     *** Testing > ***"
+FAIL=0
+
+while IFS= read -r line; do
+	input=$(echo -e "$line")
+	mkdir testfiles
+	bash <<< "$input" 2>/dev/null > testfiles/bashfdout.txt
+	../minishell <<< "$input" 2>/dev/null | grep -v "minishell>" > testfiles/minishellfdout.txt
+	diff testfiles/bashfdout.txt testfiles/minishellfdout.txt
+	if [ $? -eq 1 ]; then
+		echo "input: $input"
+		FAIL=1
+	fi
+	rm -rf testfiles
+done < builtintest.txt
+if [ $FAIL == 0 ]; then
+	echo " 🥳 All tests passed! 🥳"
+fi
+
+echo "=========================="
+
