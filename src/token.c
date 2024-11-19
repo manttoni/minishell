@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-e_type	get_type(char *line)
+t_type	get_type(char *line)
 {
 	if (*line == ' ')
 		return (SPACE_TOKEN);

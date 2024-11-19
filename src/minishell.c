@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-volatile sig_atomic_t g_signal = 0;
+volatile sig_atomic_t	g_signal = 0;
 
 t_env	*init_env(char **arr)
 {
@@ -55,7 +55,7 @@ static int	handle_input(t_main *main_struct)
 	return (0);
 }
 
-int main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	t_main	*main_s;
 

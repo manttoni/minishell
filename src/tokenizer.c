@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*type_to_string(e_type type)
+/*
+char	*type_to_string(t_type type)
 {
 	switch (type)
 	{
@@ -51,7 +51,7 @@ void	print_token(t_token *token)
 		token = token->next;
 	}
 }
-
+*/
 char	*skip_spaces(char *string)
 {
 	while (*string && ft_strchr(" \f\v\n\t\r", *string))

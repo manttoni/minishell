@@ -27,7 +27,7 @@ t_command	*init_node(int i)
 		return (NULL);
 	node->args[0] = NULL;
 	node->index = i;
-	return node;
+	return (node);
 }
 
 int	list_len(t_command *list)

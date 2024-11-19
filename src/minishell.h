@@ -13,14 +13,12 @@
 # include <limits.h>
 # include "../lib/libft/libft.h"
 
-extern volatile sig_atomic_t g_signal;
+extern volatile sig_atomic_t	g_signal;
 
-#define SUCCESS 0          // successful completion
-#define ERR_STD 1          // standard error
-#define ERR_EXEC 126       // execution failure
-#define ERR_CMD_NOT_FOUND 127 // command not found
-
-
+# define SUCCESS 0          // successful completion
+# define ERR_STD 1          // standard error
+# define ERR_EXEC 126       // execution failure
+# define ERR_CMD_NOT_FOUND 127 // command not found
 
 typedef struct s_exec_cmd
 {
@@ -58,14 +56,14 @@ typedef enum type
 	APPEND,
 	WORD,
 	EXPANDABLE
-}       e_type;
+}	t_type;
 
 typedef struct s_token
 {
-        e_type  type;
-        char    *string;
-        struct s_token  *next;
-}       t_token;
+	t_type			type;
+	char			*string;
+	struct s_token	*next;
+}	t_token;
 
 /* struct for variables in main */
 typedef struct s_main
@@ -78,17 +76,17 @@ typedef struct s_main
 
 typedef struct s_data
 {
-	t_env *env;
+	t_env		*env;
 	t_command	*start;
-	t_token *tokens;
+	t_token		*tokens;
 }	t_data;
 
 /* Builtins */
-int	ft_export(char **args, t_env *env);
-int	ft_unset(char **args, t_env *env);
+int			ft_export(char **args, t_env *env);
+int			ft_unset(char **args, t_env *env);
 
 /* Command list */
-t_command	*init_node();
+t_command	*init_node(int i);
 t_command	*create_list(t_token *tokens, t_env *env);
 t_token		*tokenize_string(char	*cmd, t_env *env);
 int			list_len(t_command *list);
@@ -106,13 +104,13 @@ char		*ft_getenv(char *key, t_env *env);
 char		*find_path(t_command *cmd, t_env *env);
 
 /* Execute */
-int	run_builtin(char **args, t_env *env);
-int	run(t_command *list, t_env *env);
-int wait_for_children(int num_processes);
+int			run_builtin(char **args, t_env *env);
+int			run(t_command *list, t_env *env);
+int			wait_for_children(int num_processes);
 
 /* Errors & validation */
-int		unclosed_quotes(char *s);
-char	*print_error(char *s, int n);
+int			unclosed_quotes(char *s);
+char		*print_error(char *s, int n);
 
 /* Memory */
 void		free_array(char **s);
@@ -126,9 +124,8 @@ char		*join(char *freeable, char *suffix);
 char		*find(char **ar, char *str);
 void		ft_remove(char **ar, char *str);
 
-
-int handle_heredoc_redirection(t_token *token, t_env *env, t_data data);
-void setup_heredoc_signals(void);
-void setup_main_signals(void);
-void reset_signals(void);
+int			handle_heredoc_redirection(t_token *token, t_env *env, t_data data);
+void		setup_heredoc_signals(void);
+void		setup_main_signals(void);
+void		reset_signals(void);
 #endif
