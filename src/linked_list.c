@@ -40,18 +40,15 @@ t_command	*create_list(t_token *tokens, t_env *env)
 	t_command	*start;
 	t_command	*current;
 	t_token		*current_token;
-	int			i;
 	int			fd_return;
 
 	if (tokens == NULL)
 		return (NULL);
-	start = init_node();
+	start = init_node(0);
 	if (start == NULL)
 		return (NULL);
 	current = start;
 	current_token = tokens;
-	i = 0;
-	start->index = i;
 	while (current_token)
 	{
 		if (current_token->type == WORD)
@@ -65,14 +62,13 @@ t_command	*create_list(t_token *tokens, t_env *env)
 		}
 		else if (current_token->type == PIPE)
 		{
-			current->next = init_node();
+			current->next = init_node(current->index + 1);
 			if (current->next == NULL)
 			{
 				free_list(start);
 				return (NULL);
 			}
 			current = current->next;
-			current->index = ++i;
 		}
 		else // IN, OUT, APPEND, HEREDOC
 		{

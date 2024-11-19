@@ -13,7 +13,7 @@ void	free_list(t_command *list)
 	free(list);
 }
 
-t_command	*init_node(void)
+t_command	*init_node(int i)
 {
 	t_command	*node;
 
@@ -26,6 +26,7 @@ t_command	*init_node(void)
 	if (node->args == NULL)
 		return (NULL);
 	node->args[0] = NULL;
+	node->index = i;
 	return node;
 }
 
