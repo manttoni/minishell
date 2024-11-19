@@ -98,6 +98,13 @@ typedef struct s_data
 /* Builtins */
 int			ft_export(char **args, t_env *env);
 int			ft_unset(char **args, t_env *env);
+int			ft_cd(char **args, t_env *env);
+int			ft_env(t_env *env);
+
+/* Process */
+int			do_fork(t_run *run);
+void		run_child(t_run *run);
+void		wait_pids(t_run *run);
 
 /* Command list */
 t_command	*init_node(int i);
@@ -131,6 +138,7 @@ void		free_array(char **s);
 void		free_list(t_command *list);
 void		free_token_list(t_token *token);
 void		free_pipefds(int **pipefds, int len);
+void		free_run(t_run *run);
 
 /* Utils */
 int			len(char **ar);

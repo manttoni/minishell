@@ -23,60 +23,21 @@ static t_run	*init_run(t_command *cmd_list, t_env *env)
 	return (run);
 }
 
-int	do_fork(t_run *run)
-{
-	run->pids[run->i] = fork();
-	if (run->pids[run->i] == -1)
-	{
-		close_pipes(run->pipefds, run->len);
-		free(run->pids);
-		return (0);
-	}
-	return (1);
-}
 
-void	free_run(t_run *run)
-{
-	close_pipes(run->pipefds, run->len);
-	free_array(run->env->arr);
-	free(run->env);
-	free_list(run->cmd_list);
-	clear_history();
-}
 
-void	run_child(t_run *run)
-{
-	run->cmd_curr->path = find_path(run->cmd_curr, run->env);
-	if (!(run->cmd_curr->path))
-	{
-		free_run(run);
-		exit(ERR_CMD_NOT_FOUND);
-	}
-	set_io(run->cmd_curr, run->pipefds);
-	close_pipes(run->pipefds, run->len);
-	execve(run->cmd_curr->path, run->cmd_curr->args, run->env->arr);
-	free_run(run);
-	exit(ERR_EXEC);
-}
 
-void wait_pids(t_run *run)
-{
-	int	i;
 
-	i = 0;
-	while(i < run->len)
-	{
-		waitpid(run->pids[i], &(run->status), 0);
-		if (i == run->len - 1)
-		{
-			if (WIFEXITED(run->status))
-				run->env->exit_code = WEXITSTATUS(run->status);
-			else if (WIFSIGNALED(run->status))
-				run->env->exit_code = 128 + WTERMSIG(run->status);
-		}
-		i++;
-	}
-	free(run->pids);
+int	run_builtin(char **args, t_env *env)
+{
+	if (ft_strcmp("cd", args[0]) == 0)
+		return (ft_cd(args, env));
+	else if (ft_strcmp("export", args[0]) == 0)
+		return (ft_export(args + 1, env));
+	else if (ft_strcmp("unset", args[0]) == 0)
+		return (ft_unset(args + 1, env));
+	else if (ft_strcmp("env", args[0]) == 0)
+		return (ft_env(env));
+	return (-1);
 }
 
 int	run(t_command *cmd_list, t_env *env)

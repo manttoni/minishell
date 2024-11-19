@@ -42,15 +42,4 @@ int	ft_env(t_env *env)
 	return (1);
 }
 
-int	run_builtin(char **args, t_env *env)
-{
-	if (ft_strcmp("cd", args[0]) == 0)
-		return (ft_cd(args, env));
-	else if (ft_strcmp("export", args[0]) == 0)
-		return (ft_export(args + 1, env));
-	else if (ft_strcmp("unset", args[0]) == 0)
-		return (ft_unset(args + 1, env));
-	else if (ft_strcmp("env", args[0]) == 0)
-		return (ft_env(env));
-	return (-1);
-}
+
