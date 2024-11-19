@@ -154,8 +154,12 @@ while IFS= read -r line; do
 		FAIL=$FAIL	
 	else
 		FAIL=1
-		echo "Leak detected with input: $input"
-		cat log_file
+		echo ""
+		echo "Leak detected with input: "
+		echo "-------------------------"
+		echo "$input"
+		echo "-------------------------"
+		cat $log_file
 	fi
 done < echotest.txt
 
