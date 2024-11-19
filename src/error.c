@@ -6,7 +6,7 @@ int	error_return(char *error_message)
 	return (0);
 }
 
-char *print_error(char *s, int n)
+char	*print_error(char *s, int n)
 {
 	if (n == 2)
 	{
