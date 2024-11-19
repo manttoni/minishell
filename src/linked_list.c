@@ -62,6 +62,12 @@ t_command	*create_list(t_token *tokens, t_env *env)
 		}
 		else if (current_token->type == PIPE)
 		{
+			if (current_token->next == NULL)
+			{
+				print_error("syntax error: pipe last", 2);
+				free_list(start);
+				return(NULL);
+			}
 			current->next = init_node(current->index + 1);
 			if (current->next == NULL)
 			{

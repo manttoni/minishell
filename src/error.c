@@ -8,7 +8,7 @@ int	error_return(char *error_message)
 
 char	*print_error(char *s, int n)
 {
-	if (n == 2)
+	if (n == 2 || n == 3)
 	{
 		write(2, s, ft_strlen(s));
 		write(2, "\n", 1);
@@ -24,5 +24,7 @@ char	*print_error(char *s, int n)
 		write(2, "-minishell: ", 12);
 		write(2, s, ft_strlen(s));
 	}
+	if (n == 3)
+		free(s);
 	return (0);
 }

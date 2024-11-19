@@ -54,6 +54,7 @@ int	ft_export(char **args, t_env *env)
 			return (0);
 		if (is_valid_key(key_value[0]) == 0 || ft_countchar(*args, '=') != 1)
 		{
+			print_error(ft_strjoin(*args, ": invalid export"), 3);
 			free_array(key_value);
 			args++;
 			continue ;
