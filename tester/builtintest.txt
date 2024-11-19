@@ -17,3 +17,4 @@ export 123=asd 2>/dev/null\necho $123
 export asd=hello qwe=world\necho $asd $qwe
 ls\necho $?
 asd\necho $?
+\n
