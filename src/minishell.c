@@ -49,15 +49,15 @@ static t_main	*init_main(int argc, char **argv, char **env)
 
 /* Return values:
  * 	- 0: everything ok
- * 	- 1: main should break, input == NULL
+ * 	- 1: main should break, input == NULL or exit
 */
-static int	handle_input(t_main *main_struct)
+static int	handle_input(t_main *main_s)
 {
 	setup_main_signals();
-	main_struct->input = readline("minishell> ");
-	if (main_struct->input == NULL)
+	main_s->input = readline("minishell> ");
+	if (main_s->input == NULL || ft_strcmp(main_s->input, "exit") == 0)
 		return (1);
-	add_history(main_struct->input);
+	add_history(main_s->input);
 	return (0);
 }
 
