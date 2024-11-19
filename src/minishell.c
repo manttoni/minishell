@@ -21,14 +21,6 @@ t_env	*init_env(char **arr)
 	return (env);
 }
 
-typedef struct s_main
-{
-	t_env		*env;
-	char		*input;
-	t_command	*commands;
-	t_token		*tokens;
-}	t_main;
-
 /* For norminette */
 static t_main	*init_main(int argc, char **argv, char **env)
 {
