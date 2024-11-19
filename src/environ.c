@@ -46,7 +46,7 @@ char	*get_value(char **dollar, t_env *env)
 	while (env->arr[i])
 	{
 		if (ft_strncmp(env->arr[i], key, keylen) == 0
-			&& env->arr[i][keylen] == '=') // key matches key of current env element exactly
+			&& env->arr[i][keylen] == '=')
 		{
 			free(key);
 			return (ft_strdup(&env->arr[i][keylen + 1]));
@@ -70,18 +70,13 @@ char	*expand(char *string, t_env *env)
 	result = ft_calloc(1, 1);
 	while (*string)
 	{
-		if (*string == '$' && string[1]) // dollar with a following non-null char
+		if (*string == '$' && string[1])
 		{
 			value = get_value(&string, env);
 			result = join(result, value);
-			if (result == NULL)
-			{
-				free(value);
-				free(ptr);
-				free(result);
-				return (NULL);
-			}
 			free(value);
+			if (result == NULL)
+				break ;
 			continue ;
 		}
 		buffer[0] = *string;
@@ -102,7 +97,7 @@ char	*ft_getenv(char *key, t_env *env)
 	while (env->arr[i])
 	{
 		if (ft_strncmp(env->arr[i], key, keylen) == 0
-				&& env->arr[i][keylen] == '=')
+			&& env->arr[i][keylen] == '=')
 			return (ft_strdup(&env->arr[i][keylen + 1]));
 		i++;
 	}
