@@ -26,5 +26,5 @@ char	*print_error(char *s, int n)
 	}
 	if (n == 3)
 		free(s);
-	return (0);
+	return (NULL);
 }

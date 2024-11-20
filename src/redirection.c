@@ -12,6 +12,7 @@ void	free_pipefds(int **pipefds, int len)
 	}
 	free(pipefds);
 }
+
 int	create_pipes(int **pipefds, int cmds)
 {
 	int	i;
@@ -56,7 +57,6 @@ int	set_io(t_command *command, int **pipefds)
 		close(command->fdout);
 	return (1);
 }
-
 
 int	**allocate_pipefds(int len)
 {

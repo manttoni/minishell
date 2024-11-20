@@ -12,6 +12,7 @@
 # include <readline/history.h>
 # include <limits.h>
 # include "../lib/libft/libft.h"
+# include <dirent.h>
 
 extern volatile sig_atomic_t	g_signal;
 
