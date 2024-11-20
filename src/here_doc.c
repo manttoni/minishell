@@ -23,6 +23,7 @@ void	unexpected_eof(char *i, char *eof)
 	ft_putstr_fd("')\n", 2);
 	free(i);
 }
+
 int	process_heredoc_input(t_data *data)
 {
 	char	*line;
@@ -55,7 +56,7 @@ int	process_heredoc_input(t_data *data)
 		expand_heredoc(line, fd, data->env);
 	}
 	close(fd);
-	return(r_value);
+	return (r_value);
 }
 
 int	handle_heredoc_redirection(t_data *data)

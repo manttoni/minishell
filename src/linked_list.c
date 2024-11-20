@@ -56,7 +56,8 @@ static int	add_command(t_data *data)
 
 t_command	*create_list(t_token *tokens, t_env *env)
 {
-	t_data	*data;
+	t_data		*data;
+	t_command	*list;
 
 	data = init_data(tokens, env);
 	if (data == NULL)
@@ -73,13 +74,11 @@ t_command	*create_list(t_token *tokens, t_env *env)
 			if (add_command(data) == 0)
 				return (NULL);
 		}
-		else
-		{
-			if (update_fd(data) == 0)
-				return (NULL);
-		}
+		else if (update_fd(data) == 0)
+			return (NULL);
 		data->token_curr = data->token_curr->next;
 	}
+	list = data->cmd_list;
 	free(data);
-	return (data->cmd_list);
+	return (list);
 }

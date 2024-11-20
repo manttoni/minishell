@@ -13,7 +13,7 @@ static t_run	*init_run(t_main *main_struct)
 	run->env = main_struct->env;
 	run->pids = malloc(run->len * sizeof(pid_t));
 	run->pipefds = allocate_pipefds(run->len);
-	if (run->pids == NULL || run->pipefds == NULL 
+	if (run->pids == NULL || run->pipefds == NULL
 		|| create_pipes(run->pipefds, run->len) == 0)
 	{
 		free(run->pids);

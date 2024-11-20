@@ -31,16 +31,19 @@ static int	update_fdin(t_fd *fd, t_data *data)
 	return (1);
 }
 
-static int	update_fdout(t_fd *fd)
+static int	update_fdout(t_fd *fdstr)
 {
-	if (fd->command->fdout > 2)
-		close(fd->command->fdout);
-	if (fd->type == OUT)
-		fd->command->fdout = open(fd->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	int	fd;
+
+	if (fdstr->command->fdout > 2)
+		close(fdstr->command->fdout);
+	if (fdstr->type == OUT)
+		fd = open(fdstr->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else
-		fd->command->fdout = open(fd->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd->command->fdout < 0)
+		fd = open(fdstr->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd < 0)
 		return (0);
+	fdstr->command->fdout = fd;
 	return (1);
 }
 
