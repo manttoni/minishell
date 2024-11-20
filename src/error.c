@@ -1,11 +1,5 @@
 #include "minishell.h"
 
-int	error_return(char *error_message)
-{
-	printf("%s\n", error_message);
-	return (0);
-}
-
 char	*print_error(char *s, int n)
 {
 	if (n == 2 || n == 3)
