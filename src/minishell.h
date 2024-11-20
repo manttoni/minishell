@@ -88,12 +88,23 @@ typedef struct s_run
 	int			len;
 }	t_run;
 
+/* struct for variables in create_list() */
 typedef struct s_data
 {
+	t_token		*token_list;
+	t_token		*token_curr;
 	t_env		*env;
-	t_command	*start;
-	t_token		*tokens;
+	t_command	*cmd_list;
+	t_command	*cmd_curr;
 }	t_data;
+
+/* struct for variables in update_fd */
+typedef struct s_fd
+{
+	t_type		type;
+	char		*filename;
+	t_command	*command;
+}	t_fd;
 
 /* Builtins */
 int			ft_export(char **args, t_env *env);
