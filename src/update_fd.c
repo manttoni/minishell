@@ -38,7 +38,7 @@ static int	update_fdin(t_fd *fd, t_data *data)
 	if (fd->type == IN)
 		fd->command->fdin = open(fd->filename, O_RDONLY);
 	else
-		fd->command->fdin = handle_heredoc_redirection(data);
+		fd->command->fdin = handle_heredoc_redirection(fd, data);
 	if (fd->command->fdin < 0)
 		return (0);
 	return (1);
@@ -80,7 +80,9 @@ int	update_fd(t_data *data)
 	if (ret == 0)
 	{
 		print_error("Could not update fd", 2);
+		free_list(data->cmd_list);
 		free(data);
+		return (ret);
 	}
 	data->token_curr = data->token_curr->next;
 	return (ret);

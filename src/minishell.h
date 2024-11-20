@@ -179,11 +179,13 @@ int			set_io(t_command *command, int **pipefds);
 int			**allocate_pipefds(int len);
 
 /* Heredoc */
-int			handle_heredoc_redirection(t_data *data);
+int	handle_heredoc_redirection(t_fd	*fd, t_data *data);
 void		setup_heredoc_signals(void);
 
 /* Signals */
 void		setup_main_signals(void);
 void		reset_signals(void);
+
+void	free_data(t_fd *fd, t_data *data);
 
 #endif

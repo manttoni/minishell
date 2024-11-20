@@ -87,7 +87,11 @@ t_command	*create_list(t_token *tokens, t_env *env)
 				return (NULL);
 		}
 		else if (update_fd(data) == 0)
+		{
+			//free(data);
 			return (NULL);
+		}
+			
 		data->token_curr = data->token_curr->next;
 	}
 	list = data->cmd_list;
