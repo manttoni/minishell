@@ -71,7 +71,7 @@ typedef struct s_main
 {
 	t_env		*env;
 	char		*input;
-	t_command	*commands;
+	t_command	*cmd_list;
 	t_token		*tokens;
 }	t_main;
 
@@ -105,7 +105,7 @@ int			is_valid_key(char *key);
 
 /* Process */
 int			do_fork(t_run *run);
-void		run_child(t_run *run);
+void		run_child(t_run *run, t_main *main_struct);
 void		wait_pids(t_run *run);
 
 /* Command list */
@@ -128,7 +128,7 @@ char		*find_path(t_command *cmd, t_env *env);
 
 /* Execute */
 int			run_builtin(char **args, t_env *env);
-int			run(t_command *list, t_env *env);
+int			run(t_main *main_struct);
 int			wait_for_children(int num_processes);
 
 /* Errors & validation */

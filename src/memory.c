@@ -18,6 +18,8 @@ void	free_run(t_run *run)
 	close_pipes(run->pipefds, run->len);
 	free_array(run->env->arr);
 	free(run->env);
+	free(run->pids);
 	free_list(run->cmd_list);
+	free(run);
 	clear_history();
 }

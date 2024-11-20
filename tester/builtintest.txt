@@ -26,3 +26,4 @@ unset aosuebgaksdjb\necho $?
 cd aoapsioasd\necho $?
 export 123=asd\necho $?
 unset HOME\ncd\necho $?
+asd
