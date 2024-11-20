@@ -19,7 +19,7 @@ static t_fd	*init_fd(t_data *data)
 	if (data->token_curr->next == NULL ||
 		data->token_curr->next->type != WORD)
 	{
-		print_error("syntax error: invalid file name / delimiter", 2);
+		print_error("syntax error: invalid file name / delimiter", 0);
 		return (NULL);
 	}
 	fdstr = malloc(sizeof(t_fd));
@@ -36,7 +36,11 @@ static int	update_fdin(t_fd *fd, t_data *data)
 	if (fd->command->fdin > 2)
 		close(fd->command->fdin);
 	if (fd->type == IN)
+	{
 		fd->command->fdin = open(fd->filename, O_RDONLY);
+		if (fd->command->fdin < 0)
+			print_error(fd->filename, 1);
+	}	
 	else
 		fd->command->fdin = handle_heredoc_redirection(fd, data);
 	if (fd->command->fdin < 0)
@@ -55,7 +59,10 @@ static int	update_fdout(t_fd *fdstr)
 	else
 		fd = open(fdstr->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
+	{
+		print_error(fdstr->filename, 1);
 		return (0);
+	}
 	fdstr->command->fdout = fd;
 	return (1);
 }
@@ -79,7 +86,7 @@ int	update_fd(t_data *data)
 	free(fd);
 	if (ret == 0)
 	{
-		print_error("Could not update fd", 2);
+		//print_error("Could not update fd", 2);
 		free_list(data->cmd_list);
 		free(data);
 		return (ret);

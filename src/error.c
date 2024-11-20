@@ -11,7 +11,9 @@ char	*print_error(char *s, int n)
 	{
 		write(2, "-minishell: ", 12);
 		write(2, s, ft_strlen(s));
+		write(2, ": ", 2);
 		write(2, strerror(errno), ft_strlen(strerror(errno)));
+		write(2, "\n", 1);
 	}
 	else if (n == 0)
 	{
