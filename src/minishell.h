@@ -158,6 +158,7 @@ int			**allocate_pipefds(int len);
 /* Heredoc */
 int			handle_heredoc_redirection(t_token *token, t_env *env, t_data data);
 void		setup_heredoc_signals(void);
+void	free_data(t_data data);
 
 /* Signals */
 void		setup_main_signals(void);

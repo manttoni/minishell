@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+void	free_data(t_data data)
+{
+	free_array(data.env->arr);
+	free(data.env);
+	free_list(data.start);
+	free_token_list(data.tokens);
+}
 /* Like ft_strjoin, but frees the first pointer */
 char	*join(char *freeable, char *suffix)
 {

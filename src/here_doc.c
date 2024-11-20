@@ -26,12 +26,24 @@ void	unexpected_eof(char *i, char *eof)
 	free(i);
 }
 
-void	free_data(t_data data)
+int interrupt_here_doc(char *eof, char *s, int *r_value, int i)
 {
-	free_array(data.env->arr);
-	free(data.env);
-	free_list(data.start);
-	free_token_list(data.tokens);
+	if (g_signal == 2)
+	{
+		*r_value = 130;
+		return (1) ;
+	}
+	if (!s)
+	{
+		unexpected_eof(ft_itoa(i), eof);
+		return (1);
+	}
+	if (!ft_strcmp(s, eof))
+	{
+		free(s);
+		return (1);
+	}
+	return (0);
 }
 
 int	process_heredoc_input(char *eof, t_env *env, t_data data)
@@ -50,22 +62,10 @@ int	process_heredoc_input(char *eof, t_env *env, t_data data)
 	while (42)
 	{
 		s = readline("> ");
-		if (g_signal == 2)
-		{
-			r_value = 130;
-			break ;
-		}
-		if (!s)
-		{
-			unexpected_eof(ft_itoa(i), eof);
-			break ;
-		}
-		if (!ft_strcmp(s, eof))
-		{
-			free(s);
-			break ;
-		}
+		if (interrupt_here_doc(eof, s, &r_value, i))
+			break;
 		expand_heredoc(s, fd, env);
+		i++;
 	}
 	close(fd);
 	free_data(data);
