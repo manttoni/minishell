@@ -123,6 +123,7 @@ t_command	*init_node(int i);
 t_command	*create_list(t_token *tokens, t_env *env);
 t_token		*tokenize_string(char	*cmd, t_env *env);
 int			list_len(t_command *list);
+int			update_fd(t_data *data);
 
 /* Tokenizer */
 t_token		*tokenize_string(char	*cmd, t_env *env);
@@ -166,7 +167,7 @@ int			set_io(t_command *command, int **pipefds);
 int			**allocate_pipefds(int len);
 
 /* Heredoc */
-int			handle_heredoc_redirection(t_token *token, t_env *env, t_data data);
+int			handle_heredoc_redirection(t_data *data);
 void		setup_heredoc_signals(void);
 
 /* Signals */

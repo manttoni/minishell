@@ -4,8 +4,6 @@ static void	expand_heredoc(char *line, int fd, t_env *env)
 {
 	char	*expanded;
 
-	if (!line || fd < 0)
-		return ;
 	expanded = expand(line, env);
 	if (expanded)
 	{
@@ -25,77 +23,45 @@ void	unexpected_eof(char *i, char *eof)
 	ft_putstr_fd("')\n", 2);
 	free(i);
 }
-
-void	free_data(t_data data)
+int	process_heredoc_input(t_data *data)
 {
-	free_array(data.env->arr);
-	free(data.env);
-	free_list(data.start);
-	free_token_list(data.tokens);
-}
-
-int	process_heredoc_input(char *eof, t_env *env, t_data data)
-{
-	int		fd;
-	char	*s;
-	int		i;
+	char	*line;
 	int		r_value;
+	int		fd;
 
+	r_value = 1;
 	setup_heredoc_signals();
-	fd = open(".here_doc", O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0644);
-	if (fd == -1)
-		exit(printf(".here_doc not found"));
-	i = 0;
-	r_value = 0;
+	fd = open(".here_doc", O_CREAT | O_WRONLY | O_APPEND, 0644);
+	if (fd < 0)
+		return (0);
 	while (42)
 	{
-		s = readline("> ");
+		line = readline("> ");
 		if (g_signal == 2)
 		{
 			r_value = 130;
 			break ;
 		}
-		if (!s)
+		if (!line)
 		{
-			unexpected_eof(ft_itoa(i), eof);
+			unexpected_eof(ft_itoa(42), data->token_curr->next->string);
 			break ;
 		}
-		if (!ft_strcmp(s, eof))
+		if (!ft_strcmp(line, data->token_curr->next->string))
 		{
-			free(s);
+			free(line);
 			break ;
 		}
-		expand_heredoc(s, fd, env);
+		expand_heredoc(line, fd, data->env);
 	}
 	close(fd);
-	free_data(data);
-	exit(r_value);
+	return(r_value);
 }
 
-int	handle_heredoc_redirection(t_token *token, t_env *env, t_data data)
+int	handle_heredoc_redirection(t_data *data)
 {
-	pid_t	pid;
-	char	*eof;
-	int		status;
-	int		code;
-
 	signal(SIGINT, SIG_IGN);
-	eof = token->next->string;
-	pid = fork();
-	if (pid < 0)
-		exit(printf("fork has failed"));
-	else if (!pid)
-		if (process_heredoc_input(eof, env, data) < -2)
-			return -2;
-	waitpid(pid, &status, 0);
-	 if (WIFEXITED(status))
-		code = WEXITSTATUS(status);
-	if (code)
-	{
-		env->exit_code = code;
-		g_signal = 0;
-		return (-1);
-	} 
-	else
-		return (open(".here_doc", O_RDONLY));
+	process_heredoc_input(data);
+	g_signal = 0;
+	return (open(".here_doc", O_RDONLY));
 }

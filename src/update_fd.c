@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-
 static t_fd	*init_fd(t_data *data)
 {
 	t_fd	*fdstr;
@@ -27,7 +25,7 @@ static int	update_fdin(t_fd *fd, t_data *data)
 	if (fd->type == IN)
 		fd->command->fdin = open(fd->filename, O_RDONLY);
 	else
-		fd->command->fdin = handle_heredoc_redirection(fd, data);
+		fd->command->fdin = handle_heredoc_redirection(data);
 	if (fd->command->fdin < 0)
 		return (0);
 	return (1);
@@ -45,7 +43,6 @@ static int	update_fdout(t_fd *fd)
 		return (0);
 	return (1);
 }
-
 
 int	update_fd(t_data *data)
 {
@@ -68,5 +65,6 @@ int	update_fd(t_data *data)
 		print_error("Could not update fd", 2);
 		free(data);
 	}
+	data->token_curr = data->token_curr->next;
 	return (ret);
 }

@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-
 static t_data	*init_data(t_token *tokens, t_env *env)
 {
 	t_data	*data;
@@ -27,7 +25,7 @@ static t_data	*init_data(t_token *tokens, t_env *env)
 static int	add_arg(t_data *data)
 {
 	data->cmd_curr->args = add(data->cmd_curr->args, data->token_curr->string);
-	if (data->cmd->curr->args == NULL)
+	if (data->cmd_curr->args == NULL)
 	{
 		free_list(data->cmd_list);
 		free(data);
@@ -66,14 +64,20 @@ t_command	*create_list(t_token *tokens, t_env *env)
 	while (data->token_curr)
 	{
 		if (data->token_curr->type == WORD)
+		{
 			if (add_arg(data) == 0)
 				return (NULL);
+		}
 		else if (data->token_curr->type == PIPE)
+		{
 			if (add_command(data) == 0)
 				return (NULL);
+		}
 		else
+		{
 			if (update_fd(data) == 0)
 				return (NULL);
+		}
 		data->token_curr = data->token_curr->next;
 	}
 	free(data);
