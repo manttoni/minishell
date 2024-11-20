@@ -17,6 +17,7 @@ void	run_child(t_run *run)
 	run->cmd_curr->path = find_path(run->cmd_curr, run->env);
 	if (run->cmd_curr->path == NULL)
 	{
+		fprintf(stderr, "not found yo\n");
 		free_run(run);
 		exit(ERR_CMD_NOT_FOUND);
 	}
@@ -40,8 +41,6 @@ void wait_pids(t_run *run)
 		{
 			if (WIFEXITED(run->status))
 				run->env->exit_code = WEXITSTATUS(run->status);
-			else if (WIFSIGNALED(run->status))
-				run->env->exit_code = 128 + WTERMSIG(run->status);
 		}
 		i++;
 	}
