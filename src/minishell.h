@@ -101,6 +101,7 @@ int			ft_export(char **args, t_env *env);
 int			ft_unset(char **args, t_env *env);
 int			ft_cd(char **args, t_env *env);
 int			ft_env(t_env *env);
+int			is_valid_key(char *key);
 
 /* Process */
 int			do_fork(t_run *run);
