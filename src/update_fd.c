@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:59 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/20 16:34:01 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/20 17:04:12 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static t_fd	*init_fd(t_data *data)
 {
 	t_fd	*fdstr;
 
-	if (data->token_curr->next->type != WORD)
+	if (data->token_curr->next == NULL ||
+		data->token_curr->next->type != WORD)
 	{
 		print_error("syntax error: invalid file name / delimiter", 2);
 		return (NULL);
@@ -67,6 +68,7 @@ int	update_fd(t_data *data)
 	fd = init_fd(data);
 	if (fd == NULL)
 	{
+		free_list(data->cmd_list);
 		free(data);
 		return (0);
 	}
