@@ -67,7 +67,8 @@ while IFS= read -r line; do
 	diff testfiles/bashfdout.txt testfiles/minishellfdout.txt
 	if [ $? -eq 1 ]; then
 		echo "input: $input"
-		FAIL=1
+		FAIL=1		
+		echo "--------------------------"
 	fi
 	rm -rf testfiles
 done < builtintest.txt
@@ -80,7 +81,8 @@ while IFS= read -r line; do
 	diff testfiles/bashfdout.txt testfiles/minishellfdout.txt
 	if [ $? -eq 1 ]; then
 		echo "input: $input"
-		FAIL=1
+		FAIL=1		
+		echo "--------------------------"
 	fi
 	rm -rf testfiles
 done < echotest.txt
@@ -109,7 +111,8 @@ while IFS= read -r line; do
 		echo "input: $input"
 		rm -rf testfiles
 		mkdir testfiles
-		FAIL=1
+		FAIL=1		
+		echo "--------------------------"
 	fi
 	#rm -rf testfiles
 done < builtintest.txt
@@ -123,7 +126,8 @@ while IFS= read -r line; do
 		echo "input: $input"
 		rm -rf testfiles
 		mkdir testfiles
-		FAIL=1
+		FAIL=1		
+		echo "--------------------------"
 	fi
 	#rm -rf testfiles
 done < echotest.txt

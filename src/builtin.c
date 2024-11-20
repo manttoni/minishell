@@ -29,42 +29,27 @@ int	ft_unset(char **args, t_env *env)
 		}
 		keyword = ft_strjoin(*args, "=");
 		if (keyword == NULL)
-			return (0);
+			return (1);
 		env_var = find(env->arr, keyword);
 		ft_remove(env->arr, env_var);
 		free(env_var);
 		free(keyword);
 		args++;
 	}
-	return (1);
+	return (0);
 }
 
-/* Adds or updates the env variables specified by args
- * if it already exists, it first gets removed */
-int	ft_export(char **args, t_env *env)
+int	ft_env(t_env *env)
 {
-	char	**key_value;
-	char	*buf[2];
+	int	i;
 
-	buf[1] = NULL;
-	while (*args)
+	i = 0;
+	while (i < len(env->arr))
 	{
-		key_value = ft_split(*args, '=');
-		if (key_value == NULL)
-			return (0);
-		if (is_valid_key(key_value[0]) == 0 || ft_countchar(*args, '=') != 1)
-		{
-			free_array(key_value);
-			args++;
-			continue ;
-		}
-		buf[0] = key_value[0];
-		ft_unset(buf, env);
-		env->arr = add(env->arr, *args);
-		if (env->arr == NULL)
-			return (0);
-		args++;
-		free_array(key_value);
+		printf("%s\n", env->arr[i]);
+		i++;
 	}
-	return (1);
+	return (0);
 }
+
+

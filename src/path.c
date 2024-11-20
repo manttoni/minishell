@@ -47,7 +47,7 @@ char	*find_path(t_command *cmd, t_env *env)
 	if (access(cmd->args[0], F_OK | X_OK) == 0 && !ft_strncmp(cmd->args[0], "./", 2))
 		return (cmd->args[0]);
 	else if (access(cmd->args[0], F_OK | X_OK) && !ft_strncmp(cmd->args[0], "./", 2))
-	{	
+	{
 		print_error(cmd->args[0], 0);
 		return (print_error(": command not found", 2));
 	}

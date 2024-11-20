@@ -12,6 +12,7 @@
 # include <readline/history.h>
 # include <limits.h>
 # include "../lib/libft/libft.h"
+# include <dirent.h>
 
 extern volatile sig_atomic_t	g_signal;
 
@@ -74,6 +75,20 @@ typedef struct s_main
 	t_token		*tokens;
 }	t_main;
 
+/* struct for variables in run() */
+typedef struct s_run
+{
+	t_env		*env;
+	t_command	*cmd_list;
+	t_command	*cmd_curr;
+	pid_t		*pids;
+	int			**pipefds;
+	int			i;
+	int			status;
+	int			len;
+}	t_run;
+
+
 typedef struct s_data
 {
 	t_env		*env;
@@ -84,6 +99,14 @@ typedef struct s_data
 /* Builtins */
 int			ft_export(char **args, t_env *env);
 int			ft_unset(char **args, t_env *env);
+int			ft_cd(char **args, t_env *env);
+int			ft_env(t_env *env);
+int			is_valid_key(char *key);
+
+/* Process */
+int			do_fork(t_run *run);
+void		run_child(t_run *run);
+void		wait_pids(t_run *run);
 
 /* Command list */
 t_command	*init_node(int i);
@@ -116,6 +139,8 @@ char		*print_error(char *s, int n);
 void		free_array(char **s);
 void		free_list(t_command *list);
 void		free_token_list(t_token *token);
+void		free_pipefds(int **pipefds, int len);
+void		free_run(t_run *run);
 
 /* Utils */
 int			len(char **ar);
@@ -124,8 +149,18 @@ char		*join(char *freeable, char *suffix);
 char		*find(char **ar, char *str);
 void		ft_remove(char **ar, char *str);
 
+/* Redirection / Pipes */
+int			create_pipes(int **pipefds, int cmds);
+void		close_pipes(int **pipefds, int cmds);
+int			set_io(t_command *command, int **pipefds);
+int			**allocate_pipefds(int len);
+
+/* Heredoc */
 int			handle_heredoc_redirection(t_token *token, t_env *env, t_data data);
 void		setup_heredoc_signals(void);
+
+/* Signals */
 void		setup_main_signals(void);
 void		reset_signals(void);
+
 #endif

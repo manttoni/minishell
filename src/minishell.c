@@ -5,6 +5,7 @@ volatile sig_atomic_t	g_signal = 0;
 t_env	*init_env(char **arr)
 {
 	t_env	*env;
+	char	**buf;
 
 	env = malloc(sizeof(t_env));
 	if (env == NULL)
@@ -18,6 +19,11 @@ t_env	*init_env(char **arr)
 		env->arr = add(env->arr, *arr);
 		arr++;
 	}
+	buf = ft_calloc(3, sizeof(char*));
+	buf[0] = "_";
+	buf[1] = "SHLVL";
+	ft_unset(buf, env);
+	free(buf);
 	return (env);
 }
 
@@ -43,15 +49,15 @@ static t_main	*init_main(int argc, char **argv, char **env)
 
 /* Return values:
  * 	- 0: everything ok
- * 	- 1: main should break, input == NULL
+ * 	- 1: main should break, input == NULL or exit
 */
-static int	handle_input(t_main *main_struct)
+static int	handle_input(t_main *main_s)
 {
 	setup_main_signals();
-	main_struct->input = readline("minishell> ");
-	if (main_struct->input == NULL)
+	main_s->input = readline("minishell> ");
+	if (main_s->input == NULL || ft_strcmp(main_s->input, "exit") == 0)
 		return (1);
-	add_history(main_struct->input);
+	add_history(main_s->input);
 	return (0);
 }
 
