@@ -26,26 +26,11 @@ char	*get_key(char *line)
 	return (key);
 }
 
-/* Takes a pointer that starts with dollar char,
- * returns its value from envs array.
- * Moves dollars value */
-char	*get_value(char **dollar, t_env *env)
+static char	*match_keys(t_env *env, char *key, int keylen)
 {
-	char	*key;
-	int		keylen;
-	int		i;
+	int	i;
 
-	key = get_key(*dollar);
-	if (key == NULL)
-		return (NULL);
 	i = 0;
-	keylen = ft_strlen(key);
-	*dollar += keylen + 1;
-	if (*key == '?' && keylen == 1)
-	{
-		free(key);
-		return (ft_itoa(env->exit_code));
-	}
 	while (env->arr[i])
 	{
 		if (ft_strncmp(env->arr[i], key, keylen) == 0
@@ -56,6 +41,31 @@ char	*get_value(char **dollar, t_env *env)
 		}
 		i++;
 	}
+	return (NULL);
+}
+
+/* Takes a pointer that starts with dollar char,
+ * returns its value from envs array.
+ * Moves dollars value */
+char	*get_value(char **dollar, t_env *env)
+{
+	char	*key;
+	int		keylen;
+	char	*value;
+
+	key = get_key(*dollar);
+	if (key == NULL)
+		return (NULL);
+	keylen = ft_strlen(key);
+	*dollar += keylen + 1;
+	if (*key == '?' && keylen == 1)
+	{
+		free(key);
+		return (ft_itoa(env->exit_code));
+	}
+	value = match_keys(env, key, keylen);
+	if (value)
+		return (value);
 	free(key);
 	return (ft_strdup(""));
 }
