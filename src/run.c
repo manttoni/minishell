@@ -54,9 +54,9 @@ int	run(t_main *main_struct)
 		return (0);
 	while (run->cmd_curr)
 	{
-		if (do_fork(run) == -1) // fail
+		if (do_fork(run) == -1)
 			return (0);
-		if (run->pids[run->i] == 0) // child
+		if (run->pids[run->i] == 0)
 			run_child(run, main_struct);
 		run->i++;
 		run->cmd_curr = run->cmd_curr->next;

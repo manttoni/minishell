@@ -29,12 +29,12 @@ void	run_child(t_run *run, t_main *main_struct)
 	exit(ERR_EXEC);
 }
 
-void wait_pids(t_run *run)
+void	wait_pids(t_run *run)
 {
 	int	i;
 
 	i = 0;
-	while(i < run->len)
+	while (i < run->len)
 	{
 		waitpid(run->pids[i], &(run->status), 0);
 		if (i == run->len - 1)
@@ -46,4 +46,3 @@ void wait_pids(t_run *run)
 	}
 	free(run->pids);
 }
-

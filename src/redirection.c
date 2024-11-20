@@ -43,13 +43,13 @@ void	close_pipes(int **pipefds, int cmds)
 
 int	set_io(t_command *command, int **pipefds)
 {
-	if (command->fdin != 0) // command gets input from file
+	if (command->fdin != 0)
 		dup2(command->fdin, STDIN_FILENO);
-	else if (command->index != 0) // command is not the first one
+	else if (command->index != 0)
 		dup2(pipefds[command->index - 1][0], STDIN_FILENO);
-	if (command->fdout != 1) // command outputs into file
+	if (command->fdout != 1)
 		dup2(command->fdout, STDOUT_FILENO);
-	else if (list_len(command) != 1) //command is not the last one
+	else if (list_len(command) != 1)
 		dup2(pipefds[command->index][1], STDOUT_FILENO);
 	if (command->fdin > 1)
 		close(command->fdin);

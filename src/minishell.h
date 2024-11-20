@@ -88,7 +88,6 @@ typedef struct s_run
 	int			len;
 }	t_run;
 
-
 typedef struct s_data
 {
 	t_env		*env;
