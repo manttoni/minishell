@@ -24,13 +24,12 @@ int	do_fork(t_run *run)
 	return (run->pids[run->i]);
 }
 
-void	run_child(t_run *run, t_main *main_struct)
+void	run_child(t_run *run)
 {
 	run->cmd_curr->path = find_path(run->cmd_curr, run->env);
 	if (run->cmd_curr->path == NULL)
 	{
 		free_run(run);
-		free(main_struct);
 		exit(ERR_CMD_NOT_FOUND);
 	}
 	set_io(run->cmd_curr, run->pipefds);

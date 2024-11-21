@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:46:36 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/21 11:17:15 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/21 17:14:19 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int			is_builtin(t_command *cmd);
 
 /* Process */
 int			do_fork(t_run *run);
-void		run_child(t_run *run, t_main *main_struct);
+void		run_child(t_run *run);
 void		wait_pids(t_run *run);
 
 /* Command list */
@@ -183,6 +183,7 @@ int			**allocate_pipefds(int len);
 /* Heredoc */
 int			handle_heredoc_redirection(t_fd	*fd, t_data *data);
 void		setup_heredoc_signals(void);
+int			interrupt_here_doc(char *eof, char *s, int *r_value, int i);
 
 /* Signals */
 void		setup_main_signals(void);

@@ -96,7 +96,7 @@ int	run(t_main *main_struct)
 			if (do_fork(run) == -1)
 				return (0);
 			if (run->pids[run->i] == 0)
-				run_child(run, main_struct);
+				run_child(run);
 			run->i++;
 		}
 		run->cmd_curr = run->cmd_curr->next;
