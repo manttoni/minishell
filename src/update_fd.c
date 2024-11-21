@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:59 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/20 17:04:12 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/21 10:42:26 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ int	update_fd(t_data *data)
 	{
 		//print_error("Could not update fd", 2);
 		free_list(data->cmd_list);
+		data->env->exit_code = 1;
 		free(data);
 		return (ret);
 	}

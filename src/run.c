@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/20 16:33:48 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/21 10:56:22 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,27 +50,47 @@ int	run_builtin(char **args, t_env *env)
 	return (-1);
 }
 
+int	is_builtin(t_command *cmd)
+{
+	char	*builtins[4];
+	int		i;
+
+	builtins[0] = "cd";
+	builtins[1] = "export";
+	builtins[2] = "unset";
+	builtins[3] = "env";
+	i = 0;
+	while (i < 4)
+	{
+		if (ft_strcmp(cmd->args[0], builtins[i]) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	run(t_main *main_struct)
 {
 	t_run	*run;
-	int		builtin_ret;
 
-	builtin_ret = run_builtin(main_struct->cmd_list->args, main_struct->env);
-	if (builtin_ret >= 0)
-	{
-		main_struct->env->exit_code = builtin_ret;
-		return (builtin_ret);
-	}
 	run = init_run(main_struct);
 	if (run == NULL)
 		return (0);
 	while (run->cmd_curr)
 	{
-		if (do_fork(run) == -1)
-			return (0);
-		if (run->pids[run->i] == 0)
-			run_child(run, main_struct);
-		run->i++;
+		if (is_builtin(run->cmd_curr))
+		{
+			if (run->cmd_curr->index == run->len - 1)
+				run->env->exit_code = run_builtin(run->cmd_curr->args, run->env);
+		}
+		else
+		{
+			if (do_fork(run) == -1)
+				return (0);
+			if (run->pids[run->i] == 0)
+				run_child(run, main_struct);
+			run->i++;
+		}
 		run->cmd_curr = run->cmd_curr->next;
 	}
 	close_pipes(run->pipefds, run->len);

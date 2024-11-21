@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:46:36 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/20 16:46:42 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/21 10:55:52 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ int			ft_unset(char **args, t_env *env);
 int			ft_cd(char **args, t_env *env);
 int			ft_env(t_env *env);
 int			is_valid_key(char *key);
+int			is_builtin(t_command *cmd);
 
 /* Process */
 int			do_fork(t_run *run);
@@ -133,7 +134,7 @@ void		wait_pids(t_run *run);
 /* Command list */
 t_command	*init_node(int i);
 t_command	*create_list(t_token *tokens, t_env *env);
-t_token		*tokenize_string(char	*cmd, t_env *env);
+t_command	*last_command(t_command *list);
 int			list_len(t_command *list);
 int			update_fd(t_data *data);
 

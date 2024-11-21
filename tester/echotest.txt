@@ -1,45 +1,45 @@
-echo hello world
-echo 'hello world'
-echo "hello world"
-echo $HOME
-echo $HOME$HOME
-echo '$HOME'
-echo '$HOME$HOME'
-echo "$HOME"
-echo "$HOME$HOME"
-echo a'b'c
-echo "|<>'"
-echo '|<>"'
-ec"ho" h"e"l"l"o
+"""echo""" hello
 ""echo"" hello
 "echo" hello
+'''echo''' hello
 ''echo'' hello
 'echo' hello
-"""echo""" hello
-'''echo''' hello
-echo hello" "world
-echo a"b"c""d
-echo hello " " world
-echo "helloworl"d
-echo "" "" "" hello ""
-echo"" """"hello""
-echo ""
-echo ""hello
-echo "" hello
-echo '' hello
-echo $ASD
-echo $!@#$
-echo "$!@#$"
-echo '$!@#$'
-echo $Q!@#
-echo "$Q!@#"
-echo '$Q!@#'
-echo $H"OME"
-echo $
-echo $!
 asd 2>/dev/null
 asd 2>/dev/null asd 2>/dev/null
-echo "hello world" | asd 2>/dev/null
 asd 2>/dev/null | echo "hello world"
-echo $123
+ec"ho" h"e"l"l"o
+echo ""
+echo "" "" "" hello ""
+echo "" hello
+echo ""hello
+echo "$!@#$"
+echo "$HOME"
+echo "$HOME$HOME"
+echo "$Q!@#"
+echo "hello world"
+echo "hello world" | asd 2>/dev/null
 echo "hello world" | wc
+echo "helloworl"d
+echo "|<>'"
+echo $
+echo $!
+echo $!@#$
+echo $123
+echo $ASD
+echo $H"OME"
+echo $HOME
+echo $HOME$HOME
+echo $Q!@#
+echo '$!@#$'
+echo '$HOME$HOME'
+echo '$HOME'
+echo '$Q!@#'
+echo '' hello
+echo 'hello world'
+echo '|<>"'
+echo a"b"c""d
+echo a'b'c
+echo hello " " world
+echo hello world
+echo hello" "world
+echo"" """"hello""
