@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:46:36 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/21 10:55:52 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/21 11:17:15 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ void		free_list(t_command *list);
 void		free_token_list(t_token *token);
 void		free_pipefds(int **pipefds, int len);
 void		free_run(t_run *run);
+void		free_data(t_fd *fd, t_data *data);
 
 /* Utils */
 int			len(char **ar);
@@ -180,13 +181,11 @@ int			set_io(t_command *command, int **pipefds);
 int			**allocate_pipefds(int len);
 
 /* Heredoc */
-int	handle_heredoc_redirection(t_fd	*fd, t_data *data);
+int			handle_heredoc_redirection(t_fd	*fd, t_data *data);
 void		setup_heredoc_signals(void);
 
 /* Signals */
 void		setup_main_signals(void);
 void		reset_signals(void);
-
-void	free_data(t_fd *fd, t_data *data);
 
 #endif

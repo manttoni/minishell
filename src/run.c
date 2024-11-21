@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/21 10:56:22 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/21 11:20:11 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,17 @@ int	is_builtin(t_command *cmd)
 	return (0);
 }
 
+static void	norm_builtin(t_run *run)
+{
+	int	ec;
+
+	if (run->cmd_curr->index == run->len - 1)
+	{
+		ec = run_builtin(run->cmd_curr->args, run->env);
+		run->env->exit_code = ec;
+	}
+}
+
 int	run(t_main *main_struct)
 {
 	t_run	*run;
@@ -79,10 +90,7 @@ int	run(t_main *main_struct)
 	while (run->cmd_curr)
 	{
 		if (is_builtin(run->cmd_curr))
-		{
-			if (run->cmd_curr->index == run->len - 1)
-				run->env->exit_code = run_builtin(run->cmd_curr->args, run->env);
-		}
+			norm_builtin(run);
 		else
 		{
 			if (do_fork(run) == -1)

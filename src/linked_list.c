@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:34:06 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/20 16:34:08 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/21 11:23:26 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,7 @@ t_command	*create_list(t_token *tokens, t_env *env)
 				return (NULL);
 		}
 		else if (update_fd(data) == 0)
-		{
-			//free(data);
 			return (NULL);
-		}
-			
 		data->token_curr = data->token_curr->next;
 	}
 	list = data->cmd_list;

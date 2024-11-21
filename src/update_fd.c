@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:59 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/21 10:42:26 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/21 11:23:42 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static t_fd	*init_fd(t_data *data)
 {
 	t_fd	*fdstr;
 
-	if (data->token_curr->next == NULL ||
-		data->token_curr->next->type != WORD)
+	if (data->token_curr->next == NULL
+		|| data->token_curr->next->type != WORD)
 	{
 		print_error("syntax error: invalid file name / delimiter", 0);
 		return (NULL);
@@ -40,7 +40,7 @@ static int	update_fdin(t_fd *fd, t_data *data)
 		fd->command->fdin = open(fd->filename, O_RDONLY);
 		if (fd->command->fdin < 0)
 			print_error(fd->filename, 1);
-	}	
+	}
 	else
 		fd->command->fdin = handle_heredoc_redirection(fd, data);
 	if (fd->command->fdin < 0)
@@ -86,7 +86,6 @@ int	update_fd(t_data *data)
 	free(fd);
 	if (ret == 0)
 	{
-		//print_error("Could not update fd", 2);
 		free_list(data->cmd_list);
 		data->env->exit_code = 1;
 		free(data);

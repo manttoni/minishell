@@ -29,7 +29,7 @@ export ASD=hello\nunset ASD\nexport ASD=world\nunset ASD\necho $ASD
 export asd=hello qwe=world\necho $asd $qwe
 export qweasd=asdqwe\necho $?
 ls
-ls >file | ls >> file
+ls >file.test | ls >> file.test
 ls\necho $?
 pwd
 unset " "
@@ -39,3 +39,5 @@ unset HOME\ncd\necho $?
 unset HOME\necho $?
 unset PATH\nls 2>/dev/null
 unset aosuebgaksdjb\necho $?
+cd | echo $? | pwd | cd | ls | echo hello | echo $?
+cat < not_allowed.txt
