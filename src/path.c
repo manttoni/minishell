@@ -57,7 +57,7 @@ int	full_or_relative_path(t_command *cmd, char **result)
 		*result = 0;
 		return (1);
 	}
-	else if (!access(cmd->args[0], F_OK | X_OK) && is_rel(cmd))
+	else if (!access(cmd->args[0], F_OK | X_OK) && !is_rel(cmd))
 	{
 		*result = cmd->args[0];
 		return (1);
