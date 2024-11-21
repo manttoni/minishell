@@ -27,3 +27,18 @@ cd aoapsioasd\necho $?
 export 123=asd\necho $?
 unset HOME\ncd\necho $?
 asd
+cat < echotest.txt
+cat << eof\nhello\nworld\neof
+/bin/ls
+./bin/ls
+<<eof<<eof2 cat
+<<eof cat | <<eof cat
+unset ""
+unset " "
+export ""
+export " "
+echo $$
+cd ../../../../../../ | ls
+<nofile\necho $?
+<nofile cat\necho $?
+ls >file | ls >> file
