@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:34:16 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/20 16:34:18 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/22 12:27:37 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*join(char *freeable, char *suffix)
 	char	*new;
 	int		i;
 
+	if (suffix == NULL)
+		free(freeable);
 	if (suffix == NULL)
 		return (NULL);
 	new = malloc(ft_strlen(freeable) + ft_strlen(suffix) + 1);

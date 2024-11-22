@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:35:17 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/20 16:35:22 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/22 12:13:16 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,8 +97,6 @@ t_token	*get_token(char *line)
 	token->next = NULL;
 	if (!token->string)
 	{
-		free(token->string);
-		free(token->next);
 		free(token);
 		return (NULL);
 	}

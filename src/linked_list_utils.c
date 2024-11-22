@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:19 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/21 10:52:09 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/22 12:19:11 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,6 @@ void	free_list(t_command *list)
 		free_list(list->next);
 	free_array(list->args);
 	free(list->path);
-	if (list->fdin > 2)
-		close(list->fdin);
-	if (list->fdout > 2)
-		close(list->fdout);
 	free(list);
 }
 
@@ -43,7 +39,10 @@ t_command	*init_node(int i)
 	node->fdout = 1;
 	node->args = malloc(sizeof(char *));
 	if (node->args == NULL)
+	{
+		free(node);
 		return (NULL);
+	}
 	node->args[0] = NULL;
 	node->index = i;
 	return (node);
