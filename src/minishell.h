@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:46:36 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/21 17:14:19 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:13:54 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,5 @@ int			interrupt_here_doc(char *eof, char *s, int *r_value, int i);
 
 /* Signals */
 void		setup_main_signals(void);
-void		reset_signals(void);
-
+void fork_sig_handler(int signum);
 #endif
