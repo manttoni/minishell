@@ -6,11 +6,19 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 17:15:45 by mshabano          #+#    #+#             */
-/*   Updated: 2024/11/21 17:15:47 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:13:42 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void fork_sig_handler(int signum)
+{
+	if (signum == SIGQUIT)
+		ft_putstr_fd("Quit (core dumped)\n", 1);
+	if (signum == SIGINT)
+		ft_putchar_fd('\n', 1);
+}
 
 static void	heredoc_sig_handler(int signum)
 {
@@ -43,10 +51,4 @@ void	setup_main_signals(void)
 {
 	signal(SIGINT, main_sig_handler);
 	signal(SIGQUIT, SIG_IGN);
-}
-
-void	reset_signals(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 }
