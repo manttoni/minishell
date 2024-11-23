@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 17:07:13 by mshabano          #+#    #+#             */
-/*   Updated: 2024/11/21 17:07:15 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:07:43 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	interrupt_here_doc(char *eof, char *s, int *r_value, int i)
 	if (g_signal == 2)
 	{
 		*r_value = 130;
-        unlink(".here_doc");
+		unlink(".here_doc");
 		return (1);
 	}
 	if (!s)

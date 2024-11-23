@@ -6,13 +6,13 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 17:15:45 by mshabano          #+#    #+#             */
-/*   Updated: 2024/11/23 13:13:42 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:08:18 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void fork_sig_handler(int signum)
+void	fork_sig_handler(int signum)
 {
 	if (signum == SIGQUIT)
 		ft_putstr_fd("Quit (core dumped)\n", 1);

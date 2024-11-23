@@ -1,17 +1,18 @@
 NAME = minishell
 FLAGS = -Wall -Wextra -Werror -g
-#FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT_DIR = lib/libft
 LIBFT = lib/libft/libft.a
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:.c=.o)
 CC = cc
 
-all: $(LIBFT) $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(NAME) -lreadline
+all: $(NAME)
 
 %.o: %.c
 	$(CC) $(FLAGS) -c $< -o $@
+
+$(NAME): $(OBJ) $(LIBFT)
+	$(CC) $(FLAGS) $(OBJ) $(LIBFT) -o $(NAME) -lreadline
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR) all
@@ -26,8 +27,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re #asan
-
-#asan: FLAGS := $(FLAGS) -fsanitize=address
-
-#asan: all
+.PHONY: all clean fclean re

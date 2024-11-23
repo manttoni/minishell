@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 17:04:40 by mshabano          #+#    #+#             */
-/*   Updated: 2024/11/21 17:15:39 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:57:04 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	handle_heredoc_redirection(t_fd	*fd, t_data *data)
 	int		status;
 	int		code;
 
+	code = 0;
 	signal(SIGINT, SIG_IGN);
 	eof = data->token_curr->next->string;
 	pid = fork();
