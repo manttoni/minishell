@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:35:51 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/21 17:13:52 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:20:31 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_env	*init_env(char **arr)
 	buf[1] = "SHLVL";
 	ft_unset(buf, env);
 	free(buf);
+	env->exit_code = 0;
 	return (env);
 }
 
