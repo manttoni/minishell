@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:34:49 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 14:23:03 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 14:38:41 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,20 @@ void	run_child(t_run *run)
 
 void	wait_pids(t_run *run)
 {
-	int	i;
+	int		i;
+	char	*last_cmd;
 
+	last_cmd = last_command(run->cmd_list)->args[0];
 	i = 0;
 	while (i < run->len)
 	{
 		waitpid(run->pids[i], &(run->status), 0);
 		if (i == run->len - 1)
 		{
-			if (WIFEXITED(run->status))
+			if (ft_strcmp(last_cmd, "cd") != 0
+				&& ft_strcmp(last_cmd, "export") != 0
+				&& ft_strcmp(last_cmd, "unset") != 0
+				&& WIFEXITED(run->status))
 				run->env->exit_code = WEXITSTATUS(run->status);
 		}
 		i++;
