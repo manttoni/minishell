@@ -150,13 +150,8 @@ while IFS= read -r line; do
 	input=$(echo -e "$line")
 	> $log_file
 	echo -n "."
-	valgrind --suppressions=../supp.supp --log-file=$log_file --leak-check=full --show-leak-kinds=all ../minishell <<< "$input" 2>/dev/null > /dev/null
-	if grep -q "definitely lost: 0 bytes in 0 blocks" $log_file && \
-	   grep -q "indirectly lost: 0 bytes in 0 blocks" $log_file && \
-	   grep -q "possibly lost: 0 bytes in 0 blocks" $log_file && \
-	   grep -q "still reachable: 0 bytes in 0 blocks" $log_file; then
-		FAIL=$FAIL	
-	else
+	valgrind -q --suppressions=../supp.supp --log-file=$log_file --leak-check=full --show-leak-kinds=all ../minishell <<< "$input" 2>/dev/null > /dev/null
+	if [ -s $log_file ]; then
 		FAIL=1
 		echo ""
 		echo "Leak detected with input: "
@@ -171,20 +166,15 @@ while IFS= read -r line; do
 	input=$(echo -e "$line")
 	> $log_file
 	echo -n "."
-	valgrind --suppressions=../supp.supp --log-file=$log_file --leak-check=full --show-leak-kinds=all ../minishell <<< "$input" 2>/dev/null > /dev/null
-	if grep -q "definitely lost: 0 bytes in 0 blocks" $log_file && \
-	   grep -q "indirectly lost: 0 bytes in 0 blocks" $log_file && \
-	   grep -q "possibly lost: 0 bytes in 0 blocks" $log_file && \
-	   grep -q "still reachable: 0 bytes in 0 blocks" $log_file; then
-		FAIL=$FAIL	
-	else
+	valgrind -q --suppressions=../supp.supp --log-file=$log_file --leak-check=full --show-leak-kinds=all ../minishell <<< "$input" 2>/dev/null > /dev/null
+	if [ -s out.log ]; then
 		FAIL=1
 		echo ""
 		echo "Leak detected with input: "
 		echo "-------------------------"
 		echo "$input"
 		echo "-------------------------"
-		cat $log_file
+		cat out.log
 	fi
 done < builtintest.txt
 
