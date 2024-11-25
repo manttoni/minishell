@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 15:32:32 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 15:55:55 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	is_builtin(t_command *cmd, t_env *env)
 	builtins[1] = "export";
 	builtins[2] = "unset";
 	i = 0;
-	while (i < 4)
+	while (i < 3)
 	{
 		if (ft_strcmp(cmd->args[0], builtins[i]) == 0)
 		{

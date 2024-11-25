@@ -190,7 +190,6 @@ done < builtintest.txt
 
 echo ""
 
-rm $log_file
 if [ $FAIL == 0 ]; then
 	echo " 🥳 All tests passed! 🥳"
 fi
