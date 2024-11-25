@@ -167,14 +167,14 @@ while IFS= read -r line; do
 	> $log_file
 	echo -n "."
 	valgrind -q --suppressions=../supp.supp --log-file=$log_file --leak-check=full --show-leak-kinds=all ../minishell <<< "$input" 2>/dev/null > /dev/null
-	if [ -s out.log ]; then
+	if [ -s $log_file ]; then
 		FAIL=1
 		echo ""
 		echo "Leak detected with input: "
 		echo "-------------------------"
 		echo "$input"
 		echo "-------------------------"
-		cat out.log
+		cat $log_file
 	fi
 done < builtintest.txt
 
