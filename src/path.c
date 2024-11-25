@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:16:13 by mshabano          #+#    #+#             */
-/*   Updated: 2024/11/20 23:45:29 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/11/23 17:36:36 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*fetch_cmd_path(char *cmd, char **path)
 	t_exec_cmd	c;
 	int			i;
 
+	if (!access(cmd, F_OK | X_OK) && !ft_isalnum(cmd[0]))
+		return (cmd);
 	i = 0;
 	while (path[i] != NULL)
 	{
@@ -45,21 +47,16 @@ int	is_rel(t_command *cmd)
 
 int	full_or_relative_path(t_command *cmd, char **result)
 {
-	if (!access(cmd->args[0], F_OK | X_OK) && is_rel(cmd))
+	if (!access(cmd->args[0], F_OK | X_OK))
 	{
 		*result = cmd->args[0];
 		return (1);
 	}
-	else if (!access(cmd->args[0], F_OK | X_OK) && is_rel(cmd))
+	else if (!access(cmd->args[0], F_OK | X_OK))
 	{
 		print_error(cmd->args[0], 0);
 		print_error(": command not found", 2);
 		*result = 0;
-		return (1);
-	}
-	else if (!access(cmd->args[0], F_OK | X_OK) && !is_rel(cmd))
-	{
-		*result = cmd->args[0];
 		return (1);
 	}
 	return (0);
@@ -97,18 +94,22 @@ char	*find_path(t_command *cmd, t_env *env)
 
 	result = 0;
 	path = 0;
-	if (full_or_relative_path(cmd, &result))
-		return (result);
-	path = split_path_var(cmd, env);
-	if (!path)
-		return (0);
-	result = fetch_cmd_path(cmd->args[0], path);
-	if (!result)
+	if (is_rel(cmd))
+		full_or_relative_path(cmd, &result);
+	else
 	{
+		path = split_path_var(cmd, env);
+		if (!path)
+			return (0);
+		result = fetch_cmd_path(cmd->args[0], path);
 		free_array(path);
+	}
+	if (result)
+		return (result);
+	else
+	{
 		print_error(cmd->args[0], 0);
 		return (print_error(": command not found", 2));
 	}
-	free_array(path);
 	return (result);
 }

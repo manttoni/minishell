@@ -48,6 +48,13 @@ static int	add_arg(t_data *data)
 
 static int	add_command(t_data *data)
 {
+	if (data->token_curr == data->token_list)
+	{
+		print_error("syntax error: pipe first", 2);
+		free_list(data->cmd_list);
+		free(data);
+		return (0);
+	}
 	if (data->token_curr->next == NULL)
 	{
 		print_error("syntax error: pipe last", 2);

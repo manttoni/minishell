@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:46:36 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/23 14:08:06 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/23 16:08:12 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ typedef struct s_fd
 int			ft_export(char **args, t_env *env);
 int			ft_unset(char **args, t_env *env);
 int			ft_cd(char **args, t_env *env);
-int			ft_env(t_env *env);
+int			ft_env(t_command *cmd, t_env *env);
 int			is_valid_key(char *key);
 int			is_builtin(t_command *cmd);
 
@@ -151,7 +151,7 @@ char		*ft_getenv(char *key, t_env *env);
 char		*find_path(t_command *cmd, t_env *env);
 
 /* Execute */
-int			run_builtin(char **args, t_env *env);
+int			run_builtin(t_command *cmd, t_env *env);
 int			run(t_main *main_struct);
 int			wait_for_children(int num_processes);
 

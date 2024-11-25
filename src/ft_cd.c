@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:32:01 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/20 16:32:04 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/23 15:54:04 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,10 @@ static char	*get_cd_path(char *arg, t_env *env)
 	return (path);
 }
 
-int	ft_cd(char **args, t_env *env)
+static int	changedir(char *path)
 {
-	char	*path;
-	DIR		*dir;
+	DIR	*dir;
 
-	path = get_cd_path(args[1], env);
-	if (path == NULL)
-	{
-		print_error("cd: HOME not set", 2);
-		return (1);
-	}
 	dir = opendir(path);
 	if (!dir)
 	{
@@ -53,4 +46,22 @@ int	ft_cd(char **args, t_env *env)
 	}
 	free(path);
 	return (0);
+}
+
+int	ft_cd(char **args, t_env *env)
+{
+	char	*path;
+
+	if (len(args) > 2)
+	{
+		print_error("cd: too many args", 2);
+		return (1);
+	}
+	path = get_cd_path(args[1], env);
+	if (path == NULL)
+	{
+		print_error("cd: HOME not set", 2);
+		return (1);
+	}
+	return (changedir(path));
 }

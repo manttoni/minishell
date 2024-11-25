@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/23 13:14:18 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/11/23 17:29:29 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@ static t_run	*init_run(t_main *main_struct)
 {
 	t_run	*run;
 
+	signal(SIGINT, fork_sig_handler);
+	signal(SIGQUIT, fork_sig_handler);
+	if (!*main_struct->cmd_list->args[0])
+		return (NULL);
 	run = malloc(sizeof(t_run));
 	if (run == NULL)
 		return (NULL);
@@ -37,16 +41,19 @@ static t_run	*init_run(t_main *main_struct)
 	return (run);
 }
 
-int	run_builtin(char **args, t_env *env)
+int	run_builtin(t_command *cmd, t_env *env)
 {
-	if (ft_strcmp("cd", args[0]) == 0)
-		return (ft_cd(args, env));
-	else if (ft_strcmp("export", args[0]) == 0)
-		return (ft_export(args + 1, env));
-	else if (ft_strcmp("unset", args[0]) == 0)
-		return (ft_unset(args + 1, env));
-	else if (ft_strcmp("env", args[0]) == 0)
-		return (ft_env(env));
+	if (ft_strcmp("cd", cmd->args[0]) == 0)
+		return (ft_cd(cmd->args, env));
+	else if (ft_strcmp("export", cmd->args[0]) == 0)
+		return (ft_export(cmd->args + 1, env));
+	else if (ft_strcmp("unset", cmd->args[0]) == 0)
+		return (ft_unset(cmd->args + 1, env));
+	else if (ft_strcmp("env", cmd->args[0]) == 0)
+	{
+		fprintf(stderr, "going to ft_env\n");
+		return (ft_env(cmd, env));
+	}
 	return (-1);
 }
 
@@ -69,30 +76,32 @@ int	is_builtin(t_command *cmd)
 	return (0);
 }
 
-static void	norm_builtin(t_run *run)
+static int	norm_builtin(t_run *run)
 {
 	int	ec;
 
-	if (run->cmd_curr->index == run->len - 1)
+	if (run->cmd_curr->index == run->len - 1
+		|| ft_strcmp(run->cmd_curr->args[0], "env") == 0)
 	{
-		ec = run_builtin(run->cmd_curr->args, run->env);
-		run->env->exit_code = ec;
+		ec = run_builtin(run->cmd_curr, run->env);
+		if (ft_strcmp(run->cmd_curr->args[0], "env") != 0)
+			run->env->exit_code = ec;
 	}
+	return (1);
 }
 
 int	run(t_main *main_struct)
 {
 	t_run	*run;
 
-	signal(SIGINT, fork_sig_handler);
-	signal(SIGQUIT, fork_sig_handler);
 	run = init_run(main_struct);
 	if (run == NULL)
 		return (0);
 	while (run->cmd_curr)
-	{
-		if (is_builtin(run->cmd_curr))
-			norm_builtin(run);
+	{				
+		if (is_builtin(run->cmd_curr) && norm_builtin(run)
+			&& (ft_strcmp(run->cmd_curr->args[0], "echo") == 0))
+			continue ;
 		else
 		{
 			if (do_fork(run) == -1)
