@@ -6,12 +6,26 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 14:43:39 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 15:00:41 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	init_run_norm(t_main *main_struct, t_run *run)
+{
+	run->cmd_curr = main_struct->cmd_list;
+	run->cmd_list = main_struct->cmd_list;
+	run->len = list_len(run->cmd_list);
+	run->env = main_struct->env;
+	run->pids = malloc(run->len * sizeof(pid_t));
+	run->pipefds = allocate_pipefds(run->len);
+}
+
+/* memset pids to -2 explanation:
+ * 	in case of builtin, it stays at -2,
+ * 	then waitpids will not wait for it,
+ * 	because builtins are run in parent process */
 static t_run	*init_run(t_main *main_struct)
 {
 	t_run	*run;
@@ -23,12 +37,7 @@ static t_run	*init_run(t_main *main_struct)
 	run = malloc(sizeof(t_run));
 	if (run == NULL)
 		return (NULL);
-	run->cmd_curr = main_struct->cmd_list;
-	run->cmd_list = main_struct->cmd_list;
-	run->len = list_len(run->cmd_list);
-	run->env = main_struct->env;
-	run->pids = malloc(run->len * sizeof(pid_t));
-	run->pipefds = allocate_pipefds(run->len);
+	init_run_norm(main_struct, run);
 	if (run->pids == NULL || run->pipefds == NULL
 		|| create_pipes(run->pipefds, run->len) == 0)
 	{
@@ -37,6 +46,7 @@ static t_run	*init_run(t_main *main_struct)
 		free(run);
 		return (NULL);
 	}
+	ft_memset(run->pids, -2, run->len * sizeof(pid_t));
 	run->i = 0;
 	return (run);
 }
@@ -109,6 +119,7 @@ int	run(t_main *main_struct)
 		run->cmd_curr = run->cmd_curr->next;
 	}
 	close_pipes(run->pipefds, run->len);
-	wait_pids(run) + free(run);
+	wait_pids(run);
+	free(run);
 	return (1);
 }

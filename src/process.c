@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:34:49 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 14:38:41 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 14:57:39 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	wait_pids(t_run *run)
 	i = 0;
 	while (i < run->len)
 	{
-		waitpid(run->pids[i], &(run->status), 0);
+		if (run->pids[i] >= 0)
+			waitpid(run->pids[i], &(run->status), 0);
 		if (i == run->len - 1)
 		{
 			if (ft_strcmp(last_cmd, "cd") != 0
