@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:46:36 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 14:04:59 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 15:04:12 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_run
 	int			i;
 	int			status;
 	int			len;
+	int			builtin;
 }	t_run;
 
 /* struct for variables in create_list() */

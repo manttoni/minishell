@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 15:00:41 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 15:03:50 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static t_run	*init_run(t_main *main_struct)
 	}
 	ft_memset(run->pids, -2, run->len * sizeof(pid_t));
 	run->i = 0;
+	run->builtin = 0;
 	return (run);
 }
 
@@ -97,18 +98,17 @@ int	is_builtin(t_command *cmd, t_env *env)
 int	run(t_main *main_struct)
 {
 	t_run	*run;
-	int		builtin;
 
 	run = init_run(main_struct);
 	if (run == NULL)
 		return (0);
 	while (run->cmd_curr)
 	{
-		builtin = 0;
+		run->builtin = 0;
 		if (run->cmd_curr->index == run->len - 1
 			|| ft_strcmp(run->cmd_curr->args[0], "env") == 0)
-			builtin = is_builtin(run->cmd_curr, run->env);
-		if (builtin == 0 || builtin == 4)
+			run->builtin = is_builtin(run->cmd_curr, run->env);
+		if (run->builtin == 0 || run->builtin == 4)
 		{
 			if (do_fork(run) == -1)
 				return (0);
