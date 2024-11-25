@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 14:20:58 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 14:31:36 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ int	run(t_main *main_struct)
 		return (0);
 	while (run->cmd_curr)
 	{
-		printf("i: %d, cmd: %s\n", run->i, run->cmd_curr->args[0]);
 		if (run->cmd_curr->index == run->len - 1
 			|| ft_strcmp(run->cmd_curr->args[0], "env") == 0)
 			builtin = is_builtin(run->cmd_curr, run->env);
