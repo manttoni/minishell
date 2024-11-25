@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 14:41:33 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 14:43:39 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ int	run(t_main *main_struct)
 		run->cmd_curr = run->cmd_curr->next;
 	}
 	close_pipes(run->pipefds, run->len);
-	wait_pids(run);
-	free(run);
+	wait_pids(run) + free(run);
 	return (1);
 }
