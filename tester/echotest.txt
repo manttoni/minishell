@@ -1,0 +1,45 @@
+"""echo""" hello
+""echo"" hello
+"echo" hello
+'''echo''' hello
+''echo'' hello
+'echo' hello
+asd 2>/dev/null
+asd 2>/dev/null asd 2>/dev/null
+asd 2>/dev/null | echo "hello world"
+ec"ho" h"e"l"l"o
+echo ""
+echo "" "" "" hello ""
+echo "" hello
+echo ""hello
+echo "$!@#$"
+echo "$HOME"
+echo "$HOME$HOME"
+echo "$Q!@#"
+echo "hello world"
+echo "hello world" | asd 2>/dev/null
+echo "hello world" | wc
+echo "helloworl"d
+echo "|<>'"
+echo $
+echo $!
+echo $!@#$
+echo $123
+echo $ASD
+echo $H"OME"
+echo $HOME
+echo $HOME$HOME
+echo $Q!@#
+echo '$!@#$'
+echo '$HOME$HOME'
+echo '$HOME'
+echo '$Q!@#'
+echo '' hello
+echo 'hello world'
+echo '|<>"'
+echo a"b"c""d
+echo a'b'c
+echo hello " " world
+echo hello world
+echo hello" "world
+echo"" """"hello""

@@ -1,0 +1,43 @@
+./bin/ls
+/bin/ls
+<<eof cat | <<eof cat
+<<eof<<eof2 cat
+<nofile cat\necho $?
+<nofile\necho $?
+\n
+asd
+asd\necho $?
+cat < echotest.txt
+cd ../../../../../../ | ls
+cd aoapsioasd\necho $?
+cd\ncd\ncd\ncd\npwd
+cd\ncd\ncd\nls
+cd\ncd\ncd\npwd
+cd\ncd\nls
+cd\ncd\npwd
+cd\necho $?
+cd\nls
+cd\npwd
+export " "
+export ""
+export 123=asd 2>/dev/null\necho $123
+export 123=asd\necho $?
+export ASD=hello\necho $ASD
+export ASD=hello\nunset ASD\necho $ASD
+export ASD=hello\nunset ASD\nexport ASD=world\necho $ASD
+export ASD=hello\nunset ASD\nexport ASD=world\nunset ASD\necho $ASD
+export asd=hello qwe=world\necho $asd $qwe
+export qweasd=asdqwe\necho $?
+ls
+ls >file.test | ls >> file.test
+ls\necho $?
+pwd
+unset " "
+unset ""
+unset HOME\ncd 2>/dev/null\npwd
+unset HOME\ncd\necho $?
+unset HOME\necho $?
+unset PATH\nls 2>/dev/null
+unset aosuebgaksdjb\necho $?
+cd | echo $? | pwd | cd | ls | echo hello | echo $?
+cat < not_allowed.txt
