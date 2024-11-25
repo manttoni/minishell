@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:32:14 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/23 17:30:34 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 15:29:03 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,32 +49,4 @@ int	ft_unset(char **args, t_env *env)
 		args++;
 	}
 	return (0);
-}
-
-int	ft_env(t_command *cmd, t_env *env)
-{
-	int	i;
-
-	free_array(cmd->args);
-	cmd->args = ft_calloc(1, sizeof(char *));
-	if (cmd->args == NULL)
-		return (0);
-	cmd->args = add(cmd->args, "echo");
-	if (cmd->args == NULL)
-		return (0);
-	cmd->args = add(cmd->args, "");
-	if (cmd->args == NULL)
-		return (0);
-	i = 0;
-	while (env->arr[i])
-	{
-		if (i == len(env->arr) - 1)
-			cmd->args[1] = ft_strjoin(cmd->args[1], env->arr[i]);
-		else
-			cmd->args[1] = join(ft_strjoin(cmd->args[1], env->arr[i]), "\n");
-		if (cmd->args[1] == NULL)
-			return (0);
-		i++;
-	}
-	return (1);
 }

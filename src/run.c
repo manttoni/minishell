@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 15:03:50 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 15:32:32 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ static t_run	*init_run(t_main *main_struct)
 	return (run);
 }
 
-/* Runs a builtin and sets exit_code.
- * env exit_code depends on echo success later */
+/* Runs a builtin and sets exit_code. */
 static void	run_builtin(t_command *cmd, t_env *env)
 {
 	if (ft_strcmp("cd", cmd->args[0]) == 0)
@@ -62,8 +61,6 @@ static void	run_builtin(t_command *cmd, t_env *env)
 		env->exit_code = ft_export(cmd->args + 1, env);
 	else if (ft_strcmp("unset", cmd->args[0]) == 0)
 		env->exit_code = ft_unset(cmd->args + 1, env);
-	else if (ft_strcmp("env", cmd->args[0]) == 0)
-		ft_env(cmd, env);
 }
 
 /* Return values:
@@ -71,7 +68,6 @@ static void	run_builtin(t_command *cmd, t_env *env)
  *	1: cd
  *	2: export
  *	3: unset
- *	4: env 
  */
 int	is_builtin(t_command *cmd, t_env *env)
 {
@@ -81,7 +77,6 @@ int	is_builtin(t_command *cmd, t_env *env)
 	builtins[0] = "cd";
 	builtins[1] = "export";
 	builtins[2] = "unset";
-	builtins[3] = "env";
 	i = 0;
 	while (i < 4)
 	{
@@ -105,10 +100,9 @@ int	run(t_main *main_struct)
 	while (run->cmd_curr)
 	{
 		run->builtin = 0;
-		if (run->cmd_curr->index == run->len - 1
-			|| ft_strcmp(run->cmd_curr->args[0], "env") == 0)
+		if (run->cmd_curr->index == run->len - 1)
 			run->builtin = is_builtin(run->cmd_curr, run->env);
-		if (run->builtin == 0 || run->builtin == 4)
+		if (run->builtin == 0)
 		{
 			if (do_fork(run) == -1)
 				return (0);
