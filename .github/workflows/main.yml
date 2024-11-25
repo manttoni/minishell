@@ -1,0 +1,19 @@
+name: Run tester.sh
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile minishell
+        run: make
+      - name: run tester.sh
+        working-directory: tester
+        run: ./tester.sh
