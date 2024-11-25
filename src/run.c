@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/23 17:29:29 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 14:20:58 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,28 @@ static t_run	*init_run(t_main *main_struct)
 	return (run);
 }
 
-int	run_builtin(t_command *cmd, t_env *env)
+/* Runs a builtin and sets exit_code.
+ * env exit_code depends on echo success later */
+static void	run_builtin(t_command *cmd, t_env *env)
 {
 	if (ft_strcmp("cd", cmd->args[0]) == 0)
-		return (ft_cd(cmd->args, env));
+		env->exit_code = ft_cd(cmd->args, env);
 	else if (ft_strcmp("export", cmd->args[0]) == 0)
-		return (ft_export(cmd->args + 1, env));
+		env->exit_code = ft_export(cmd->args + 1, env);
 	else if (ft_strcmp("unset", cmd->args[0]) == 0)
-		return (ft_unset(cmd->args + 1, env));
+		env->exit_code = ft_unset(cmd->args + 1, env);
 	else if (ft_strcmp("env", cmd->args[0]) == 0)
-	{
-		fprintf(stderr, "going to ft_env\n");
-		return (ft_env(cmd, env));
-	}
-	return (-1);
+		ft_env(cmd, env);
 }
 
-int	is_builtin(t_command *cmd)
+/* Return values:
+ *	0: its not a builtin
+ *	1: cd
+ *	2: export
+ *	3: unset
+ *	4: env 
+ */
+int	is_builtin(t_command *cmd, t_env *env)
 {
 	char	*builtins[4];
 	int		i;
@@ -70,39 +75,31 @@ int	is_builtin(t_command *cmd)
 	while (i < 4)
 	{
 		if (ft_strcmp(cmd->args[0], builtins[i]) == 0)
-			return (1);
+		{
+			run_builtin(cmd, env);
+			return (i + 1);
+		}
 		i++;
 	}
 	return (0);
 }
 
-static int	norm_builtin(t_run *run)
-{
-	int	ec;
-
-	if (run->cmd_curr->index == run->len - 1
-		|| ft_strcmp(run->cmd_curr->args[0], "env") == 0)
-	{
-		ec = run_builtin(run->cmd_curr, run->env);
-		if (ft_strcmp(run->cmd_curr->args[0], "env") != 0)
-			run->env->exit_code = ec;
-	}
-	return (1);
-}
-
 int	run(t_main *main_struct)
 {
 	t_run	*run;
+	int		builtin;
 
+	builtin = 0;
 	run = init_run(main_struct);
 	if (run == NULL)
 		return (0);
 	while (run->cmd_curr)
-	{				
-		if (is_builtin(run->cmd_curr) && norm_builtin(run)
-			&& (ft_strcmp(run->cmd_curr->args[0], "echo") == 0))
-			continue ;
-		else
+	{
+		printf("i: %d, cmd: %s\n", run->i, run->cmd_curr->args[0]);
+		if (run->cmd_curr->index == run->len - 1
+			|| ft_strcmp(run->cmd_curr->args[0], "env") == 0)
+			builtin = is_builtin(run->cmd_curr, run->env);
+		if (builtin == 0 || builtin == 4)
 		{
 			if (do_fork(run) == -1)
 				return (0);

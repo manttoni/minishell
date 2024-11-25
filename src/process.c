@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:34:49 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/21 10:53:43 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/25 14:23:03 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ void	wait_pids(t_run *run)
 		waitpid(run->pids[i], &(run->status), 0);
 		if (i == run->len - 1)
 		{
-			if (!is_builtin(last_command(run->cmd_list))
-				&& WIFEXITED(run->status))
+			if (WIFEXITED(run->status))
 				run->env->exit_code = WEXITSTATUS(run->status);
 		}
 		i++;
