@@ -1,0 +1,94 @@
+"""echo""" hello
+""echo"" hello
+"echo" hello
+'''echo''' hello
+''echo'' hello
+'echo' hello
+./bin/ls
+/bin/ls
+<<eof cat | <<eof cat
+<<eof<<eof2 cat
+<nofile cat\necho $?
+<nofile\necho $?
+\n\n\n\n
+\n\n\n
+\n\n
+\n
+cd logs \n ls >file | ls >> file \n cat file \n rm file
+
+asd
+asd
+asd asd
+asd| echo "hello world"
+asd\necho $?
+cat < echotest.txt
+cat < not_allowed.txt
+cd ../../../../../../ | ls
+cd aoapsioasd\necho $?
+cd | echo $? | pwd | cd | ls | echo hello | echo $?
+cd\ncd\ncd\ncd\npwd
+cd\ncd\ncd\nls
+cd\ncd\ncd\npwd
+cd\ncd\nls
+cd\ncd\npwd
+cd\necho $?
+cd\nls
+cd\npwd
+ec"ho" h"e"l"l"o
+echo ""
+echo "" "" "" hello ""
+echo "" hello
+echo ""hello
+echo "$!@#$"
+echo "$HOME"
+echo "$HOME$HOME"
+echo "$Q!@#"
+echo "hello world"
+echo "hello world" | asd
+echo "hello world" | wc
+echo "helloworl"d
+echo "|<>'"
+echo $
+echo $!
+echo $!@#$
+echo $123
+echo $ASD
+echo $H"OME"
+echo $HOME
+echo $HOME$HOME
+echo $Q!@#
+echo '$!@#$'
+echo '$HOME$HOME'
+echo '$HOME'
+echo '$Q!@#'
+echo '' hello
+echo 'hello world'
+echo '|<>"'
+echo a"b"c""d
+echo a'b'c
+echo hello " " world
+echo hello world
+echo hello" "world
+echo"" """"hello""
+export " "
+export ""
+export 123=asd\necho $123
+export 123=asd\necho $?
+export ASD=hello\necho $ASD
+export ASD=hello\nunset ASD\necho $ASD
+export ASD=hello\nunset ASD\nexport ASD=world\necho $ASD
+export ASD=hello\nunset ASD\nexport ASD=world\nunset ASD\necho $ASD
+export asd=hello qwe=world\necho $asd $qwe
+export qweasd=asdqwe\necho $?
+ls
+ls\necho $?
+pwd
+unset " "
+unset ""
+unset HOME\ncd\npwd
+unset HOME\ncd\necho $?
+unset HOME\necho $?
+unset PATH\nls
+unset aosuebgaksdjb\necho $?
+env | grep HOME
+env | grep USER
