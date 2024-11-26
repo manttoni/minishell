@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:46:36 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 15:04:12 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/26 02:27:50 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,12 @@
 
 # include <errno.h>
 # include <fcntl.h>
-# include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
-# include <sys/types.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <limits.h>
 # include "../lib/libft/libft.h"
-# include <dirent.h>
 
 extern volatile sig_atomic_t	g_signal;
 
