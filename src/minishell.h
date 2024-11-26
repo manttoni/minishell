@@ -184,5 +184,6 @@ int			interrupt_here_doc(char *eof, char *s, int *r_value, int i);
 /* Signals */
 void		setup_main_signals(void);
 void		fork_sig_handler(int signum);
+void		check_interrupt(t_main *main_struct);
 
 #endif

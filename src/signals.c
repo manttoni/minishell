@@ -15,9 +15,12 @@
 void	fork_sig_handler(int signum)
 {
 	if (signum == SIGQUIT)
-		ft_putstr_fd("Quit (core dumped)\n", 1);
+	{
+		ft_putstr_fd("quit:(core dumped)\n", 1);
+		g_signal = 5;
+	}
 	if (signum == SIGINT)
-		ft_putchar_fd('\n', 1);
+		ft_putstr_fd("\n", 1);
 }
 
 static void	heredoc_sig_handler(int signum)

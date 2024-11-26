@@ -24,6 +24,15 @@ int	do_fork(t_run *run)
 	return (run->pids[run->i]);
 }
 
+void	check_interrupt(t_main *main_struct)
+{
+	if (g_signal == 5)
+	{
+		main_struct->env->exit_code = 131;
+		g_signal = 0;
+	}
+}
+
 void	run_child(t_run *run)
 {
 	run->cmd_curr->path = find_path(run->cmd_curr, run->env);

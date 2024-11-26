@@ -115,5 +115,6 @@ int	run(t_main *main_struct)
 	close_pipes(run->pipefds, run->len);
 	wait_pids(run);
 	free(run);
+	check_interrupt(main_struct);
 	return (1);
 }
