@@ -10,21 +10,29 @@
 <<eof<<eof2 cat
 <nofile cat\necho $?
 <nofile\necho $?
-\n\n\n\n
-\n\n\n
-\n\n
 \n
-mkdir td \n cd td \n ls >file.test | ls >> file.test \n cat file.test \n rm file.test \n rm -rf td
-
-asd
+\n\n
+\n\n\n
+\n\n\n\n
 asd
 asd asd
-asd| echo "hello world"
 asd\necho $?
-cat < echotest.txt
-cat < not_allowed.txt
+asd| echo "hello world"
+cat < input.txt
 cd ../../../../../../ | ls
+cd ..\nls
+cd ..\nls -l
+cd ..\nls -la
 cd aoapsioasd\necho $?
+cd td\ncd ..\nls
+cd td\ncd ..\npwd
+cd td\nls
+cd td\nmkdir anotherdir\ncd anotherdir\nls
+cd td\nmkdir subdir\nls\ncd subdir
+cd td\npwd
+cd td\npwd\nls\ncd ..
+cd td\nrm file1\nls
+cd td\ntouch file1\nls
 cd | echo $? | pwd | cd | ls | echo hello | echo $?
 cd\ncd\ncd\ncd\npwd
 cd\ncd\ncd\nls
@@ -34,61 +42,129 @@ cd\ncd\npwd
 cd\necho $?
 cd\nls
 cd\npwd
+cd\npwd
 ec"ho" h"e"l"l"o
+echo ""
+echo ""
 echo ""
 echo "" "" "" hello ""
 echo "" hello
 echo ""hello
+echo "$!"
 echo "$!@#$"
+echo "$"
+echo "$HOME $PATH"
 echo "$HOME"
 echo "$HOME$HOME"
 echo "$Q!@#"
 echo "hello world"
+echo "hello world" "hello again"
 echo "hello world" | asd
 echo "hello world" | wc
 echo "helloworl"d
+echo "this is a long string with spaces and tabs    "
 echo "|<>'"
 echo $
 echo $!
 echo $!@#$
 echo $123
+echo $?
 echo $ASD
 echo $H"OME"
 echo $HOME
+echo $HOME
 echo $HOME$HOME
+echo $PATH
 echo $Q!@#
+echo $USER
+echo $USER | wc
 echo '$!@#$'
+echo '$?'
 echo '$HOME$HOME'
 echo '$HOME'
 echo '$Q!@#'
+echo '$USER'
+echo ''
 echo '' hello
 echo 'hello world'
 echo '|<>"'
+echo a"b"c
 echo a"b"c""d
+echo a'b"c"d
+echo a'b'c
 echo a'b'c
 echo hello " " world
 echo hello world
+echo hello | wc
 echo hello" "world
+echo test
+echo test test test
 echo"" """"hello""
+env | grep HOME
+env | grep HOME
+env | grep NOT_A_VARIABLE
+env | grep OLDPWD
+env | grep PATH
+env | grep PATH
+env | grep PWD
+env | grep SHELL
+env | grep TEST
+env | grep TEST
+env | grep USER
+env | grep USER
 export " "
 export ""
 export 123=asd\necho $123
 export 123=asd\necho $?
+export ABC=123
+export ABC=456\nunset ABC
 export ASD=hello\necho $ASD
 export ASD=hello\nunset ASD\necho $ASD
 export ASD=hello\nunset ASD\nexport ASD=world\necho $ASD
 export ASD=hello\nunset ASD\nexport ASD=world\nunset ASD\necho $ASD
+export DEF="hello world"\necho $DEF
+export EMPTY=\necho $EMPTY
+export LOWER=lowercase\nexport UPPER=UPPERCASE\necho $LOWER $UPPER
+export TEST2=2\necho $TEST2
+export TEST=1
+export TEST_VAR=test_value
+export VAR="complex string with spaces"\necho $VAR
 export asd=hello qwe=world\necho $asd $qwe
 export qweasd=asdqwe\necho $?
+export test=lowercase\necho $test
 ls
+ls
+ls -l
+ls -la td
+ls ..\nls td
+ls td
+ls td\ncd td\nls
 ls\necho $?
+ls\npwd
+cd td \n ls >file.test | ls >> file.test \n cat file.test
+mkdir td/testdir\nls td
 pwd
+pwd\nls
+rm -rf td/testdir\nls td
+rm td/testfile\nls td
+touch td/file1\ncat td/file1
+touch td/file2\nrm td/file2\nls td
+touch td/file3\necho "text" > td/file3\ncat td/file3
+touch td/file4\nls td\nrm td/file4
+touch td/testfile\nls td
 unset " "
 unset ""
-unset HOME\ncd\npwd
+unset EMPTY\necho $EMPTY
 unset HOME\ncd\necho $?
+unset HOME\ncd\npwd
 unset HOME\necho $?
 unset PATH\nls
+unset SHELL\necho "SHELL variable removed"
+unset TEST\ncd td
+unset TEST\necho $?
+unset TEST\nls
+unset TEST\nls td
+unset TEST\nmkdir td\nls td
+unset TEST\npwd
+unset TEST_VAR\necho $TEST_VAR
 unset aosuebgaksdjb\necho $?
-env | grep HOME
-env | grep USER

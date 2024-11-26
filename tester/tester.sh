@@ -9,7 +9,7 @@ if ! ls | grep -q "logs"; then
 	mkdir logs
 fi
 
-rm -rf td # test directory, sandbox for creating files
+mkdir td # test directory, sandbox for creating files
 
 miniout=logs/mini.log
 bashout=logs/bash.log
@@ -59,3 +59,5 @@ fi
 if [ -s "$difflog" ]; then
 	echo "Check logs/diff.log for errors"
 fi
+
+rm -rf td
