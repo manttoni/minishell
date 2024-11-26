@@ -7,6 +7,7 @@ fi
 
 if ! ls | grep "logs"; then
 	mkdir logs
+fi
 
 miniout=logs/mini.log
 bashout=logs/bash.log
