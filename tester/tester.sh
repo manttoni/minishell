@@ -5,7 +5,7 @@ if ! ls ../ | grep -q "minishell"; then
 	exit 1
 fi
 
-if ! ls | grep "logs"; then
+if ! ls | grep -q "logs"; then
 	mkdir logs
 fi
 
@@ -19,7 +19,7 @@ valgout=logs/valgrind.log
 len=$(wc -l < input.txt)
 i=1
 
-while IFS= read -r line; do
+while read -r line; do
 	input=$(echo -e "$line")
 	echo "input: $line" >>$miniout
 	echo "input: $line" >>$bashout
