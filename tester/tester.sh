@@ -20,7 +20,7 @@ len=$(wc -l < input.txt)
 i=1
 
 while IFS= read -r line; do
-	input=$(echo "$line" | sed 's/\\n/\n/g')	
+	input=$(echo -e "$line")
 	echo "input: $line" >>$miniout
 	echo "input: $line" >>$bashout
 
