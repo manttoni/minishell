@@ -5,6 +5,9 @@ if ! ls ../ | grep -q "minishell"; then
 	exit 1
 fi
 
+if ! ls | grep "logs"; then
+	mkdir logs
+
 miniout=logs/mini.log
 bashout=logs/bash.log
 valgout=logs/valgrind.log
