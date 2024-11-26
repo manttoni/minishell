@@ -9,12 +9,18 @@ if ! ls | grep -q "logs"; then
 	mkdir logs
 fi
 
+mkdir td # test directory, sandbox for creating files
+
 miniout=logs/mini.log
 bashout=logs/bash.log
 valgout=logs/valgrind.log
+difflog=logs/diff.log
 >$miniout
 >$bashout
 >$valgout
+>$difflog
+
+testseparator="~~~~~~~~~~~~~~~~~~~~~"
 
 len=$(wc -l < input.txt)
 i=1
@@ -30,19 +36,28 @@ while read -r line; do
 
 	if [ -t 1 ]; then
 		percent=$(( 100 * i / len ))
-		echo -ne "[                        ]\r"
+		errors=$(diff -U 1 "$miniout" "$bashout" | grep input: | wc -l)
+		echo -ne "[                        ] Errors: "$errors"\r"
 		echo -ne "           $percent%\r"
 		echo -ne "[----------$percent%----------]" | head -c $((1 + percent * 24 / 100))
 		echo -ne "\r"
 		i=$((i + 1))
 	fi
+
+	echo "$testseparator" >>$miniout
+	echo "$testseparator" >>$bashout
 done < input.txt
 
 echo -e "\nResults:"
 
-if diff -u "$miniout" "$bashout" && [ ! -s "$valgout" ]; then
+if diff -U 1 "$miniout" "$bashout" > $difflog && [ ! -s "$valgout" ]; then
 	echo "🥳 All tests passed! 🥳   "
 fi
 if [ -s "$valgout" ]; then
 	echo "Check logs/valgrind.log for errors"
 fi
+if [ -s "$difflog" ]; then
+	echo "Check logs/diff.log for errors"
+fi
+
+rm -rf td
