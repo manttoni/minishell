@@ -14,7 +14,7 @@
 \n\n\n
 \n\n
 \n
-cd logs \n ls >file | ls >> file \n cat file \n rm file
+cd logs \n ls >file.test | ls >> file.test \n cat file.test \n rm file.test
 
 asd
 asd
