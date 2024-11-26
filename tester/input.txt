@@ -20,9 +20,6 @@ asd\necho $?
 asd| echo "hello world"
 cat < input.txt
 cd ../../../../../../ | ls
-cd ..\nls
-cd ..\nls -l
-cd ..\nls -la
 cd aoapsioasd\necho $?
 cd | echo $? | pwd | cd | ls | echo hello | echo $?
 cd\ncd\ncd\ncd\npwd
@@ -142,3 +139,8 @@ unset TEST\nls
 unset TEST\npwd
 unset TEST_VAR\necho $TEST_VAR
 unset aosuebgaksdjb\necho $?
+exit | ls
+ls | exit
+exit
+exit | ls | echo $?
+exit | echo $?

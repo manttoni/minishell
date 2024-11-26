@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:35:51 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 17:20:31 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/26 23:27:03 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,16 @@ static int	init_main(int argc, char **argv, char **env, t_main *main_struct)
 	return (0);
 }
 
-/* Return values:
+/*
+ * Return values:
  * 	- 0: everything ok
- * 	- 1: main should break, input == NULL or exit
+ * 	- 1: main should break, input == NULL
 */
 static int	handle_input(t_main *main_s)
 {
 	setup_main_signals();
 	main_s->input = readline("minishell> ");
-	if (main_s->input == NULL || ft_strcmp(main_s->input, "exit") == 0)
+	if (main_s->input == NULL)
 		return (1);
 	add_history(main_s->input);
 	return (0);
@@ -93,8 +94,8 @@ int	main(int argc, char **argv, char **env)
 		free_token_list(main_s.tokens);
 		if (main_s.cmd_list == NULL)
 			continue ;
-		run(&main_s);
-		free_list(main_s.cmd_list);
+		if (run(&main_s) == 0)
+			break ;
 		unlink(".here_doc");
 	}
 	free_main(&main_s);

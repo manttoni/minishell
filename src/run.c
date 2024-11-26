@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 15:55:55 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/26 23:26:24 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,13 @@ static t_run	*init_run(t_main *main_struct)
 	return (run);
 }
 
-/* Runs a builtin and sets exit_code. */
-static void	run_builtin(t_command *cmd, t_env *env)
-{
-	if (ft_strcmp("cd", cmd->args[0]) == 0)
-		env->exit_code = ft_cd(cmd->args, env);
-	else if (ft_strcmp("export", cmd->args[0]) == 0)
-		env->exit_code = ft_export(cmd->args + 1, env);
-	else if (ft_strcmp("unset", cmd->args[0]) == 0)
-		env->exit_code = ft_unset(cmd->args + 1, env);
-}
-
-/* Return values:
+/* If its a builtin, runs it and sets exit_code
+ * Return values:
  *	0: its not a builtin
  *	1: cd
  *	2: export
  *	3: unset
+ *	4: exit, will return 0 from run()
  */
 int	is_builtin(t_command *cmd, t_env *env)
 {
@@ -77,12 +68,18 @@ int	is_builtin(t_command *cmd, t_env *env)
 	builtins[0] = "cd";
 	builtins[1] = "export";
 	builtins[2] = "unset";
+	builtins[3] = "exit";
 	i = 0;
-	while (i < 3)
+	while (i < 4)
 	{
 		if (ft_strcmp(cmd->args[0], builtins[i]) == 0)
 		{
-			run_builtin(cmd, env);
+			if (ft_strcmp("cd", cmd->args[0]) == 0)
+				env->exit_code = ft_cd(cmd->args, env);
+			else if (ft_strcmp("export", cmd->args[0]) == 0)
+				env->exit_code = ft_export(cmd->args + 1, env);
+			else if (ft_strcmp("unset", cmd->args[0]) == 0)
+				env->exit_code = ft_unset(cmd->args + 1, env);
 			return (i + 1);
 		}
 		i++;
@@ -90,14 +87,25 @@ int	is_builtin(t_command *cmd, t_env *env)
 	return (0);
 }
 
+static void	finish_run(t_run *run, t_main *main_struct)
+{
+	close_pipes(run->pipefds, run->len);
+	wait_pids(run);
+	free(run);
+	check_interrupt(main_struct);
+	free_list(main_struct->cmd_list);
+}
+
 int	run(t_main *main_struct)
 {
 	t_run	*run;
+	int		ret;
 
+	ret = 1;
 	run = init_run(main_struct);
 	if (run == NULL)
 		return (0);
-	while (run->cmd_curr)
+	while (run->cmd_curr && ret != 0)
 	{
 		run->builtin = 0;
 		if (run->cmd_curr->index == run->len - 1)
@@ -106,15 +114,12 @@ int	run(t_main *main_struct)
 		{
 			if (do_fork(run) == -1)
 				return (0);
-			if (run->pids[run->i] == 0)
-				run_child(run);
 			run->i++;
 		}
+		else if (run->builtin == 4)
+			ret = 0;
 		run->cmd_curr = run->cmd_curr->next;
 	}
-	close_pipes(run->pipefds, run->len);
-	wait_pids(run);
-	free(run);
-	check_interrupt(main_struct);
-	return (1);
+	finish_run(run, main_struct);
+	return (ret);
 }

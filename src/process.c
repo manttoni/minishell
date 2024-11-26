@@ -6,12 +6,16 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:34:49 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 14:57:39 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/26 23:24:13 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* Fork fail: returns to main and program finishes
+ * Fork success: splits into two processes
+ * child goes to run_child
+ * parent goes to run to make more children */
 int	do_fork(t_run *run)
 {
 	run->pids[run->i] = fork();
@@ -21,6 +25,8 @@ int	do_fork(t_run *run)
 		free_run(run);
 		return (-1);
 	}
+	if (run->pids[run->i] == 0)
+		run_child(run);
 	return (run->pids[run->i]);
 }
 
