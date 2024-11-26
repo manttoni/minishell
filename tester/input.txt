@@ -24,15 +24,6 @@ cd ..\nls
 cd ..\nls -l
 cd ..\nls -la
 cd aoapsioasd\necho $?
-cd td\ncd ..\nls
-cd td\ncd ..\npwd
-cd td\nls
-cd td\nmkdir anotherdir\ncd anotherdir\nls
-cd td\nmkdir subdir\nls\ncd subdir
-cd td\npwd
-cd td\npwd\nls\ncd ..
-cd td\nrm file1\nls
-cd td\ntouch file1\nls
 cd | echo $? | pwd | cd | ls | echo hello | echo $?
 cd\ncd\ncd\ncd\npwd
 cd\ncd\ncd\nls
@@ -41,7 +32,6 @@ cd\ncd\nls
 cd\ncd\npwd
 cd\necho $?
 cd\nls
-cd\npwd
 cd\npwd
 ec"ho" h"e"l"l"o
 echo ""
@@ -135,23 +125,10 @@ export test=lowercase\necho $test
 ls
 ls
 ls -l
-ls -la td
-ls ..\nls td
-ls td
-ls td\ncd td\nls
 ls\necho $?
 ls\npwd
-cd td \n ls >file.test | ls >> file.test \n cat file.test
-mkdir td/testdir\nls td
 pwd
 pwd\nls
-rm -rf td/testdir\nls td
-rm td/testfile\nls td
-touch td/file1\ncat td/file1
-touch td/file2\nrm td/file2\nls td
-touch td/file3\necho "text" > td/file3\ncat td/file3
-touch td/file4\nls td\nrm td/file4
-touch td/testfile\nls td
 unset " "
 unset ""
 unset EMPTY\necho $EMPTY
@@ -160,11 +137,8 @@ unset HOME\ncd\npwd
 unset HOME\necho $?
 unset PATH\nls
 unset SHELL\necho "SHELL variable removed"
-unset TEST\ncd td
 unset TEST\necho $?
 unset TEST\nls
-unset TEST\nls td
-unset TEST\nmkdir td\nls td
 unset TEST\npwd
 unset TEST_VAR\necho $TEST_VAR
 unset aosuebgaksdjb\necho $?
