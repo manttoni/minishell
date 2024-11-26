@@ -9,6 +9,8 @@ if ! ls | grep -q "logs"; then
 	mkdir logs
 fi
 
+rm -rf td # test directory, sandbox for creating files
+
 miniout=logs/mini.log
 bashout=logs/bash.log
 valgout=logs/valgrind.log
@@ -18,7 +20,7 @@ difflog=logs/diff.log
 >$valgout
 >$difflog
 
-rm -rf td # test directory, sandbox for creating files
+testseparator="~~~~~~~~~~~~~~~~~~~~~"
 
 len=$(wc -l < input.txt)
 i=1
@@ -42,8 +44,8 @@ while read -r line; do
 		i=$((i + 1))
 	fi
 
-	echo "=====" >>$miniout
-	echo "=====" >>$bashout
+	echo "$testseparator" >>$miniout
+	echo "$testseparator" >>$bashout
 done < input.txt
 
 echo -e "\nResults:"
