@@ -28,13 +28,14 @@ while read -r line; do
 	valgrind -q --suppressions=../supp.supp --log-file=$valgout --leak-check=full --show-leak-kinds=all ../minishell <<< "$input" >/dev/null 2>/dev/null
 	bash <<< "$input" 2>/dev/null >>$bashout
 
-	percent=$(( 100 * i / len ))
-	echo -ne "[                        ]\r"
-	echo -ne "           $percent%\r"
-	echo -ne "[----------$percent%----------]" | head -c $((1 + percent * 24 / 100))
-	echo -ne "\r"
-
-	i=$((i + 1))
+	if [ -t 1 ]; then
+		percent=$(( 100 * i / len ))
+		echo -ne "[                        ]\r"
+		echo -ne "           $percent%\r"
+		echo -ne "[----------$percent%----------]" | head -c $((1 + percent * 24 / 100))
+		echo -ne "\r"
+		i=$((i + 1))
+	fi
 done < input.txt
 
 echo -e "\nResults:"
