@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/26 23:26:24 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/27 13:03:39 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_run	*init_run(t_main *main_struct)
  *	3: unset
  *	4: exit, will return 0 from run()
  */
-int	is_builtin(t_command *cmd, t_env *env)
+int	run_builtin(t_command *cmd, t_env *env)
 {
 	char	*builtins[4];
 	int		i;
@@ -107,16 +107,16 @@ int	run(t_main *main_struct)
 		return (0);
 	while (run->cmd_curr && ret != 0)
 	{
-		run->builtin = 0;
-		if (run->cmd_curr->index == run->len - 1)
-			run->builtin = is_builtin(run->cmd_curr, run->env);
+		run->builtin = get_builtin_type(run);
+		if (run->builtin && run->cmd_curr->index == run->len - 1)
+			run_builtin(run->cmd_curr, run->env);
 		if (run->builtin == 0)
 		{
 			if (do_fork(run) == -1)
 				return (0);
 			run->i++;
 		}
-		else if (run->builtin == 4)
+		else if (run->builtin == 4 && run->cmd_curr->index == run->len - 1)
 			ret = 0;
 		run->cmd_curr = run->cmd_curr->next;
 	}

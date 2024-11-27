@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:32:14 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 15:29:03 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/27 13:04:06 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,25 @@ int	ft_unset(char **args, t_env *env)
 		free(env_var);
 		free(keyword);
 		args++;
+	}
+	return (0);
+}
+
+int	get_builtin_type(t_run *run)
+{
+	char	*builtins[4];
+	int		i;
+
+	builtins[0] = "cd";
+	builtins[1] = "export";
+	builtins[2] = "unset";
+	builtins[3] = "exit";
+	i = 0;
+	while (i < 4)
+	{
+		if (ft_strcmp(builtins[i], run->cmd_curr->args[0]) == 0)
+			return (i + 1);
+		i++;
 	}
 	return (0);
 }
