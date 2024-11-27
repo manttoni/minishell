@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:34:49 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/26 23:24:13 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/27 12:50:23 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	wait_pids(t_run *run)
 			if (ft_strcmp(last_cmd, "cd") != 0
 				&& ft_strcmp(last_cmd, "export") != 0
 				&& ft_strcmp(last_cmd, "unset") != 0
+				&& ft_strcmp(last_cmd, "exit") != 0
 				&& WIFEXITED(run->status))
 				run->env->exit_code = WEXITSTATUS(run->status);
 		}
