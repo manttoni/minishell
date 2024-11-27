@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/27 13:03:39 by amaula           ###   ########.fr       */
+/*   Updated: 2024/11/27 16:14:03 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	run(t_main *main_struct)
 	while (run->cmd_curr && ret != 0)
 	{
 		run->builtin = get_builtin_type(run);
-		if (run->builtin && run->cmd_curr->index == run->len - 1)
+		if (run->builtin && run->len == 1)
 			run_builtin(run->cmd_curr, run->env);
 		if (run->builtin == 0)
 		{
@@ -116,7 +116,7 @@ int	run(t_main *main_struct)
 				return (0);
 			run->i++;
 		}
-		else if (run->builtin == 4 && run->cmd_curr->index == run->len - 1)
+		else if (run->builtin == 4 && run->len == 1)
 			ret = 0;
 		run->cmd_curr = run->cmd_curr->next;
 	}
