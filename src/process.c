@@ -55,25 +55,38 @@ void	run_child(t_run *run)
 	exit(ERR_EXEC);
 }
 
-void	wait_pids(t_run *run)
+static int	not_a_builtin(t_run *run)
 {
-	int		i;
 	char	*last_cmd;
 
 	last_cmd = last_command(run->cmd_list)->args[0];
+	if (ft_strcmp(last_cmd, "cd") != 0
+		&& ft_strcmp(last_cmd, "export") != 0
+		&& ft_strcmp(last_cmd, "unset") != 0
+		&& ft_strcmp(last_cmd, "exit") != 0)
+		return (1);
+	return (0);
+}
+
+void	wait_pids(t_run *run)
+{
+	int		i;
+	int		signal;
+
 	i = 0;
 	while (i < run->len)
 	{
 		if (run->pids[i] >= 0)
 			waitpid(run->pids[i], &(run->status), 0);
-		if (i == run->len - 1)
+		if (i == run->len - 1 && not_a_builtin(run))
 		{
-			if (ft_strcmp(last_cmd, "cd") != 0
-				&& ft_strcmp(last_cmd, "export") != 0
-				&& ft_strcmp(last_cmd, "unset") != 0
-				&& ft_strcmp(last_cmd, "exit") != 0
-				&& WIFEXITED(run->status))
+			if (WIFEXITED(run->status))
 				run->env->exit_code = WEXITSTATUS(run->status);
+			else if (WIFSIGNALED(run->status))
+			{
+				signal = WTERMSIG(run->status);
+				run->env->exit_code = 128 + signal;
+			}
 		}
 		i++;
 	}
