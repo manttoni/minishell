@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:32:01 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/25 14:23:35 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/03 20:20:47 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	ft_cd(char **args, t_env *env)
 	path = get_cd_path(args[1], env);
 	if (path == NULL)
 	{
-		print_error("-minishell: cd: HOME not set", 2);
+		print_error("-minishell: cd: could not get path", 2);
 		return (1);
 	}
 	return (changedir(path));

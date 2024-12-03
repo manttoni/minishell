@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:34:37 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/20 16:34:39 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/03 20:39:12 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	free_array(char **s)
 {
 	char	**ptr;
 
+	if (s == NULL)
+		return ;
 	ptr = s;
 	while (*ptr)
 	{

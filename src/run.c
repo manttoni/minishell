@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/27 16:14:03 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/03 21:39:15 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,12 @@ int	run_builtin(t_command *cmd, t_env *env)
 
 static void	finish_run(t_run *run, t_main *main_struct)
 {
-	close_pipes(run->pipefds, run->len);
-	wait_pids(run);
-	free(run);
+	if (run)
+	{
+		close_pipes(run->pipefds, run->len);
+		wait_pids(run);
+		free(run);
+	}
 	check_interrupt(main_struct);
 	free_list(main_struct->cmd_list);
 }
@@ -104,7 +107,10 @@ int	run(t_main *main_struct)
 	ret = 1;
 	run = init_run(main_struct);
 	if (run == NULL)
+	{
+		finish_run(run, main_struct);
 		return (0);
+	}
 	while (run->cmd_curr && ret != 0)
 	{
 		run->builtin = get_builtin_type(run);

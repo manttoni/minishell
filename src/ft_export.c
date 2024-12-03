@@ -6,12 +6,12 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:35:09 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/22 12:44:48 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/03 22:14:33 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 static int	invalid_arg(char *arg)
 {
 	char	**key_value;
@@ -26,7 +26,7 @@ static int	invalid_arg(char *arg)
 	}
 	free_array(key_value);
 	return (0);
-}
+}*/
 
 /* Adds or updates the env variables specified by args
  * if it already exists, it first gets removed 
@@ -41,10 +41,10 @@ int	ft_export(char **args, t_env *env)
 	buf[1] = NULL;
 	while (*args)
 	{
-		ret = invalid_arg(*args);
+		ret = !is_valid_key(*args);
 		if (ret != 0)
 		{
-			print_error(ft_strjoin(*args, ": invalid export"), 3);
+			print_error("-minishell: invalid export", 2);
 			args++;
 			continue ;
 		}
