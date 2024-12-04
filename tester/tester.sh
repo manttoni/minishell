@@ -1,5 +1,9 @@
 #!/bin/bash
 
+cd ..
+make re
+cd tester
+
 if ! ls ../ | grep -q "minishell"; then
 	echo "../minishell not found"
 	exit 1

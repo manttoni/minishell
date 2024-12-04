@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:19 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/22 12:19:11 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/03 21:08:07 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 t_command	*last_command(t_command *list)
 {
+	if (list == NULL)
+		return (NULL);
 	while (list->next)
 		list = list->next;
 	return (list);
@@ -21,6 +23,8 @@ t_command	*last_command(t_command *list)
 
 void	free_list(t_command *list)
 {
+	if (list == NULL)
+		return ;
 	if (list->next)
 		free_list(list->next);
 	free_array(list->args);

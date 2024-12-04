@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 17:05:34 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/10 13:28:50 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/03 20:19:00 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,15 @@ char	*expand(char *string, t_env *env)
 	ptr = string;
 	buffer[1] = '\0';
 	result = ft_calloc(1, 1);
+	if (result == NULL)
+		return (NULL);
 	while (*string)
 	{
 		if (*string == '$' && string[1])
 		{
 			value = get_value(&string, env);
+			if (value == NULL)
+				break ;
 			result = join(result, value);
 			free(value);
 			if (result == NULL)
@@ -94,6 +98,8 @@ char	*expand(char *string, t_env *env)
 		}
 		buffer[0] = *string;
 		result = join(result, buffer);
+		if (result == NULL)
+			break ;
 		string++;
 	}
 	free(ptr);

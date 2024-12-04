@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/02 14:56:52 by amaula            #+#    #+#             */
-/*   Updated: 2024/10/02 17:38:56 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/03 22:04:27 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ char	**add(char **ar, char *str)
 	int		i;
 
 	new = malloc((len(ar) + 2) * sizeof(char *));
+	if (new == NULL)
+	{
+		free(ar);
+		return (NULL);
+	}
 	i = 0;
 	while (ar[i])
 	{
@@ -35,6 +40,12 @@ char	**add(char **ar, char *str)
 		i++;
 	}
 	new[i] = ft_strdup(str);
+	if (new[i] == NULL)
+	{
+		free(new);
+		free(ar);
+		return (NULL);
+	}
 	new[i + 1] = NULL;
 	free(ar);
 	return (new);
