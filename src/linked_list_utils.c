@@ -27,6 +27,10 @@ void	free_list(t_command *list)
 		return ;
 	if (list->next)
 		free_list(list->next);
+	if (list->fdin > 2)
+		close(list->fdin);
+	if (list->fdout > 2)
+		close(list->fdout);
 	free_array(list->args);
 	free(list->path);
 	free(list);
