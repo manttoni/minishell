@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:46:36 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/27 13:01:34 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/05 08:06:37 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,5 +186,9 @@ int			interrupt_here_doc(char *eof, char *s, int *r_value, int i);
 void		setup_main_signals(void);
 void		fork_sig_handler(int signum);
 void		check_interrupt(t_main *main_struct);
+
+/* Norminette */
+void		*tokenizer_norm_free(t_token *new, t_token *start);
+void		*free_env(t_env *env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:34:37 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/03 20:39:12 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/05 08:05:33 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,18 @@ void	free_run(t_run *run)
 	free_list(run->cmd_list);
 	free(run);
 	clear_history();
+}
+
+void	*free_env(t_env *env)
+{
+	free_array(env->arr);
+	free(env);
+	return (NULL);
+}
+
+void	*tokenizer_norm_free(t_token *new, t_token *start)
+{
+	free_token_list(start);
+	free(new);
+	return (NULL);
 }

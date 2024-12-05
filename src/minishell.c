@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:35:51 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/03 21:12:39 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/05 07:52:40 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,31 +22,19 @@ t_env	*init_env(char **arr)
 	env = malloc(sizeof(t_env));
 	if (env == NULL)
 		return (NULL);
-	env->arr = malloc(sizeof(char *));
+	env->arr = ft_calloc(1, sizeof(char *));
 	if (env->arr == NULL)
-	{
-		free(env);
-		return (NULL);
-	}
-	env->arr[0] = NULL;
+		return (free_env(env));
 	while (*arr)
 	{
 		env->arr = add(env->arr, *arr);
 		if (env->arr == NULL)
-		{
-			free_array(env->arr);
-			free(env);
-			return (NULL);
-		}
+			return (free_env(env));
 		arr++;
 	}
 	buf = ft_calloc(3, sizeof(char *));
 	if (buf == NULL)
-	{
-		free_array(env->arr);
-		free(env);
-		return (NULL);
-	}
+		return (free_env(env));
 	buf[0] = "_";
 	buf[1] = "SHLVL";
 	ft_unset(buf, env);

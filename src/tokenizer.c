@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 15:48:11 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/03 21:51:19 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/05 08:05:30 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,20 +106,13 @@ t_token	*tokenize_string(char *line, t_env *env)
 	{
 		new = get_token(line);
 		if (!new)
-		{
-			free_token_list(start);
-			return (NULL);
-		}
+			return (tokenizer_norm_free(new, start));
 		line += ft_strlen(new->string);
 		if (new->type == SINGLE || new->type == DOUBLE)
 			line += 2;
 		handle_quotes_expand(new, env);
 		if (new->string == NULL)
-		{
-			free(new);
-			free_token_list(start);
-			return (NULL);
-		}
+			return (tokenizer_norm_free(new, start));
 		add_token_last(&start, new);
 	}
 	if (clean_spaces(start) == 0)

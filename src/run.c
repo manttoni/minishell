@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/03 21:39:15 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/05 07:57:42 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	init_run_norm(t_main *main_struct, t_run *run)
  * 	in case of builtin, it stays at -2,
  * 	then waitpids will not wait for it,
  * 	because builtins are run in parent process */
-static t_run	*init_run(t_main *main_struct)
+static t_run	*init_run(t_main *main_struct, int *ret)
 {
 	t_run	*run;
 
@@ -49,6 +49,7 @@ static t_run	*init_run(t_main *main_struct)
 	ft_memset(run->pids, -2, run->len * sizeof(pid_t));
 	run->i = 0;
 	run->builtin = 0;
+	*ret = 1;
 	return (run);
 }
 
@@ -104,8 +105,7 @@ int	run(t_main *main_struct)
 	t_run	*run;
 	int		ret;
 
-	ret = 1;
-	run = init_run(main_struct);
+	run = init_run(main_struct, &ret);
 	if (run == NULL)
 	{
 		finish_run(run, main_struct);
@@ -117,11 +117,10 @@ int	run(t_main *main_struct)
 		if (run->builtin && run->len == 1)
 			run_builtin(run->cmd_curr, run->env);
 		if (run->builtin == 0)
-		{
 			if (do_fork(run) == -1)
 				return (0);
+		if (run->builtin == 0)
 			run->i++;
-		}
 		else if (run->builtin == 4 && run->len == 1)
 			ret = 0;
 		run->cmd_curr = run->cmd_curr->next;
