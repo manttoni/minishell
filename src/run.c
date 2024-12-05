@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/03 21:39:15 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/05 17:05:25 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,18 @@ static void	init_run_norm(t_main *main_struct, t_run *run)
  * 	in case of builtin, it stays at -2,
  * 	then waitpids will not wait for it,
  * 	because builtins are run in parent process */
-static t_run	*init_run(t_main *main_struct)
+int	init_run(t_main *main_struct, t_run **result)
 {
 	t_run	*run;
 
-	signal(SIGINT, fork_sig_handler);
-	signal(SIGQUIT, fork_sig_handler);
+	run = 0;
+	if (setup_signals(FORK_SIG))
+		return (1);
 	if (!*main_struct->cmd_list->args[0])
-		return (NULL);
+		return (1);
 	run = malloc(sizeof(t_run));
 	if (run == NULL)
-		return (NULL);
+		return (1);
 	init_run_norm(main_struct, run);
 	if (run->pids == NULL || run->pipefds == NULL
 		|| create_pipes(run->pipefds, run->len) == 0)
@@ -44,12 +45,13 @@ static t_run	*init_run(t_main *main_struct)
 		free(run->pids);
 		free_pipefds(run->pipefds, run->len);
 		free(run);
-		return (NULL);
+		return (1);
 	}
 	ft_memset(run->pids, -2, run->len * sizeof(pid_t));
 	run->i = 0;
 	run->builtin = 0;
-	return (run);
+	*result = run;
+	return (0);
 }
 
 /* If its a builtin, runs it and sets exit_code
@@ -87,7 +89,7 @@ int	run_builtin(t_command *cmd, t_env *env)
 	return (0);
 }
 
-static void	finish_run(t_run *run, t_main *main_struct)
+static int	finish_run(t_run *run, t_main *main_struct)
 {
 	if (run)
 	{
@@ -95,8 +97,8 @@ static void	finish_run(t_run *run, t_main *main_struct)
 		wait_pids(run);
 		free(run);
 	}
-	check_interrupt(main_struct);
 	free_list(main_struct->cmd_list);
+	return (1);
 }
 
 int	run(t_main *main_struct)
@@ -105,12 +107,8 @@ int	run(t_main *main_struct)
 	int		ret;
 
 	ret = 1;
-	run = init_run(main_struct);
-	if (run == NULL)
-	{
-		finish_run(run, main_struct);
+	if (init_run(main_struct, &run) && finish_run(run, main_struct))
 		return (0);
-	}
 	while (run->cmd_curr && ret != 0)
 	{
 		run->builtin = get_builtin_type(run);

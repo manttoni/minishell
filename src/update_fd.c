@@ -33,8 +33,8 @@ static t_fd	*init_fd(t_data *data)
 
 static int	update_fdin(t_fd *fd, t_data *data)
 {
-	if (fd->command->fdin > 2)
-		close(fd->command->fdin);
+	if (fd->command->fdin > 2 && close(fd->command->fdin) == -1)
+		print_error("unable to close fd->command->fdin", 0);
 	if (fd->type == IN)
 	{
 		fd->command->fdin = open(fd->filename, O_RDONLY);
@@ -52,8 +52,8 @@ static int	update_fdout(t_fd *fdstr)
 {
 	int	fd;
 
-	if (fdstr->command->fdout > 2)
-		close(fdstr->command->fdout);
+	if (fdstr->command->fdout > 2 && close(fdstr->command->fdout) == -1)
+		print_error("unable to close fd->command->fdout", 0);
 	if (fdstr->type == OUT)
 		fd = open(fdstr->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else

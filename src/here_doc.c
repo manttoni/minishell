@@ -45,7 +45,8 @@ void	free_data(t_fd *fd, t_data *data)
 
 int	init_heredoc( int *fd, int *r_value)
 {
-	setup_heredoc_signals();
+	if (setup_signals(HEREDOC_SIG))
+		return (1);
 	*fd = open(".here_doc", O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0644);
 	*r_value = 0;
 	if (*fd == -1)
@@ -76,7 +77,8 @@ int	process_heredoc_input(char *eof, t_fd *fds, t_data *data)
 			expand_heredoc(s, fd, data->env);
 			i++;
 		}
-		close(fd);
+		if (close(fd) == -1)
+			print_error("unable to close here_doc fd", 0);
 	}
 	free_data(fds, data);
 	exit(r_value);
@@ -85,18 +87,19 @@ int	process_heredoc_input(char *eof, t_fd *fds, t_data *data)
 int	handle_heredoc_redirection(t_fd	*fd, t_data *data)
 {
 	pid_t	pid;
-	char	*eof;
 	int		status;
 	int		code;
 
 	code = 0;
 	signal(SIGINT, SIG_IGN);
-	eof = data->token_curr->next->string;
 	pid = fork();
 	if (pid < 0)
-		exit(printf("fork has failed"));
+	{
+		print_error("fork failed to execute", 0);
+		exit(1);
+	}
 	else if (!pid)
-		process_heredoc_input(eof, fd, data);
+		process_heredoc_input(data->token_curr->next->string, fd, data);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		code = WEXITSTATUS(status);

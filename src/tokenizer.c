@@ -60,7 +60,7 @@ char	*skip_spaces(char *string)
 	return (string);
 }
 
-void	handle_quotes_expand(t_token *token, t_env *env)
+int	handle_quotes_expand(t_token *token, t_env *env, t_token	*start)
 {
 	if (token->type == DOUBLE && ft_strchr(token->string, '$') != NULL)
 		token->type = EXPANDABLE;
@@ -71,6 +71,13 @@ void	handle_quotes_expand(t_token *token, t_env *env)
 		token->string = expand(token->string, env);
 		token->type = WORD;
 	}
+	if (token->string == NULL)
+	{
+		free(token);
+		free_token_list(start);
+		return (1);
+	}
+	return (0);
 }
 
 /* recombine args and remove space tokens */
@@ -84,7 +91,10 @@ int	clean_spaces(t_token *token)
 			{
 				token->string = join(token->string, token->next->string);
 				if (token->string == NULL)
+				{
+					print_error("clean spaces\n", 0);
 					return (0);
+				}
 				remove_next_token(token);
 			}
 		}
@@ -113,20 +123,12 @@ t_token	*tokenize_string(char *line, t_env *env)
 		line += ft_strlen(new->string);
 		if (new->type == SINGLE || new->type == DOUBLE)
 			line += 2;
-		handle_quotes_expand(new, env);
-		if (new->string == NULL)
-		{
-			free(new);
-			free_token_list(start);
+		if (handle_quotes_expand(new, env, start))
 			return (NULL);
-		}
 		add_token_last(&start, new);
 	}
 	if (clean_spaces(start) == 0)
-	{
-		printf("clean spaces\n");
 		return (NULL);
-	}
 	return (start);
 }
 /*

@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:35:51 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/03 21:12:39 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/05 17:04:30 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,10 @@ volatile sig_atomic_t	g_signal = 0;
 t_env	*init_env(char **arr)
 {
 	t_env	*env;
-	char	**buf;
 
 	env = malloc(sizeof(t_env));
-	if (env == NULL)
-		return (NULL);
 	env->arr = malloc(sizeof(char *));
-	if (env->arr == NULL)
+	if (env == NULL || env->arr == NULL)
 	{
 		free(env);
 		return (NULL);
@@ -40,17 +37,7 @@ t_env	*init_env(char **arr)
 		}
 		arr++;
 	}
-	buf = ft_calloc(3, sizeof(char *));
-	if (buf == NULL)
-	{
-		free_array(env->arr);
-		free(env);
-		return (NULL);
-	}
-	buf[0] = "_";
-	buf[1] = "SHLVL";
-	ft_unset(buf, env);
-	free(buf);
+	ft_unset((char *[3]){"_", "SHLVL", 0}, env);
 	env->exit_code = 0;
 	return (env);
 }
@@ -77,7 +64,8 @@ static int	init_main(int argc, char **argv, char **env, t_main *main_struct)
 */
 static int	handle_input(t_main *main_s)
 {
-	setup_main_signals();
+	if (setup_signals(MAIN_SIG))
+		return (1);
 	main_s->input = readline("minishell> ");
 	if (main_s->input == NULL)
 		return (1);
