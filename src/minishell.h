@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:46:36 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/27 13:01:34 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/05 17:03:22 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,13 @@ typedef struct s_fd
 	t_command	*command;
 }	t_fd;
 
+typedef enum e_signal_type
+{
+	FORK_SIG,
+	MAIN_SIG,
+	HEREDOC_SIG,
+}	t_signal_type;
+
 /* Builtins */
 int			ft_export(char **args, t_env *env);
 int			ft_unset(char **args, t_env *env);
@@ -147,10 +154,11 @@ char		*get_expandable(char *line);
 char		*expand(char *string, t_env *env);
 char		*ft_getenv(char *key, t_env *env);
 char		*find_path(t_command *cmd, t_env *env);
+int			process_var_exp(char **string, t_env *env, char **result);
+char		*get_value(char **dollar, t_env *env);
 
 /* Execute */
 int			run(t_main *main_struct);
-int			wait_for_children(int num_processes);
 
 /* Errors & validation */
 int			unclosed_quotes(char *s);
@@ -170,6 +178,7 @@ char		**add(char **ar, char *str);
 char		*join(char *freeable, char *suffix);
 char		*find(char **ar, char *str);
 void		ft_remove(char **ar, char *str);
+int			ft_min(int a, int b);
 
 /* Redirection / Pipes */
 int			create_pipes(int **pipefds, int cmds);
@@ -183,8 +192,6 @@ void		setup_heredoc_signals(void);
 int			interrupt_here_doc(char *eof, char *s, int *r_value, int i);
 
 /* Signals */
-void		setup_main_signals(void);
-void		fork_sig_handler(int signum);
-void		check_interrupt(t_main *main_struct);
+int			setup_signals(t_signal_type sig);
 
 #endif

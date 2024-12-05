@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 17:05:34 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/03 20:19:00 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/05 17:04:57 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ char	*expand(char *string, t_env *env)
 {
 	char	*result;
 	char	buffer[2];
-	char	*value;
 	char	*ptr;
 
 	ptr = string;
@@ -86,21 +85,15 @@ char	*expand(char *string, t_env *env)
 	while (*string)
 	{
 		if (*string == '$' && string[1])
+			process_var_exp(&string, env, &result);
+		else
 		{
-			value = get_value(&string, env);
-			if (value == NULL)
-				break ;
-			result = join(result, value);
-			free(value);
+			buffer[0] = *string;
+			result = join(result, buffer);
 			if (result == NULL)
 				break ;
-			continue ;
+			string++;
 		}
-		buffer[0] = *string;
-		result = join(result, buffer);
-		if (result == NULL)
-			break ;
-		string++;
 	}
 	free(ptr);
 	return (result);

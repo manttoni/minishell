@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 17:15:45 by mshabano          #+#    #+#             */
-/*   Updated: 2024/11/23 14:08:18 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/05 17:05:55 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static void	heredoc_sig_handler(int signum)
 	if (signum == SIGINT)
 	{
 		g_signal = 2;
-		close(0);
+		if (close(0) == -1)
+			print_error("unable to close(0)", 0);
 	}
 }
 
@@ -44,14 +45,39 @@ static void	main_sig_handler(int signum)
 	}
 }
 
-void	setup_heredoc_signals(void)
+void	*is_sig_err(void *a, void *b)
 {
-	signal(SIGINT, heredoc_sig_handler);
-	signal(SIGQUIT, SIG_IGN);
+	if (a == SIG_ERR)
+		return (a);
+	if (b == SIG_ERR)
+		return (b);
+	return (0);
 }
 
-void	setup_main_signals(void)
+int	setup_signals(t_signal_type sig)
 {
-	signal(SIGINT, main_sig_handler);
-	signal(SIGQUIT, SIG_IGN);
+	void	*ret;
+
+	ret = 0;
+	if (sig == MAIN_SIG)
+	{
+		ret = is_sig_err(ret, signal(SIGINT, main_sig_handler));
+		ret = is_sig_err(ret, signal(SIGQUIT, SIG_IGN));
+	}
+	else if (sig == FORK_SIG)
+	{
+		ret = is_sig_err(ret, signal(SIGINT, fork_sig_handler));
+		ret = is_sig_err(ret, signal(SIGQUIT, fork_sig_handler));
+	}
+	else if (sig == HEREDOC_SIG)
+	{
+		ret = is_sig_err(ret, signal(SIGINT, heredoc_sig_handler));
+		ret = is_sig_err(ret, signal(SIGQUIT, SIG_IGN));
+	}
+	if (ret == SIG_ERR)
+	{
+		print_error("unable to set signals", 0);
+		return (1);
+	}
+	return (0);
 }

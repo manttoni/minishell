@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:34:49 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/27 12:50:23 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/05 17:00:12 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,6 @@ int	do_fork(t_run *run)
 	return (run->pids[run->i]);
 }
 
-void	check_interrupt(t_main *main_struct)
-{
-	if (g_signal == 5)
-	{
-		main_struct->env->exit_code = 131;
-		g_signal = 0;
-	}
-}
-
 void	run_child(t_run *run)
 {
 	run->cmd_curr->path = find_path(run->cmd_curr, run->env);
@@ -47,9 +38,11 @@ void	run_child(t_run *run)
 		free_run(run);
 		exit(ERR_CMD_NOT_FOUND);
 	}
-	set_io(run->cmd_curr, run->pipefds);
-	close_pipes(run->pipefds, run->len);
-	execve(run->cmd_curr->path, run->cmd_curr->args, run->env->arr);
+	if (!set_io(run->cmd_curr, run->pipefds))
+	{
+		close_pipes(run->pipefds, run->len);
+		execve(run->cmd_curr->path, run->cmd_curr->args, run->env->arr);
+	}
 	free(run->cmd_curr->path);
 	free_run(run);
 	exit(ERR_EXEC);
@@ -77,7 +70,11 @@ void	wait_pids(t_run *run)
 	while (i < run->len)
 	{
 		if (run->pids[i] >= 0)
-			waitpid(run->pids[i], &(run->status), 0);
+		{
+			if (waitpid(run->pids[i], &(run->status), 0) == -1
+				&&!print_error("waitpid() failed to execute", 0))
+				break ;
+		}
 		if (i == run->len - 1 && not_a_builtin(run))
 		{
 			if (WIFEXITED(run->status))
