@@ -34,7 +34,10 @@ void	free_data(t_fd *fd, t_data *data)
 		free(data->env);
 	}
 	if (data->cmd_list)
+	{
+		printf("asd\n");
 		free_list(data->cmd_list);
+	}
 	if (data->token_list)
 		free_token_list(data->token_list);
 	if (data)
