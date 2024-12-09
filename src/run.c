@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/09 08:54:02 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:14:22 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	run(t_main *main_struct)
 	int		ret;
 
 	ret = 1;
-	if (main_struct->cmd_list->args[0] == NULL)
+	if (main_struct->cmd_list->args[0] == NULL || main_struct->cmd_list->args[0][0] == '\0')
 	{
 		free_list(main_struct->cmd_list);
 		return (1);
