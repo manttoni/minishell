@@ -6,7 +6,7 @@
 /*   By: mshabano <mshabano@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 17:04:40 by mshabano          #+#    #+#             */
-/*   Updated: 2024/11/23 13:57:04 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/09 09:36:25 by mshabano         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ void	free_data(t_fd *fd, t_data *data)
 		free(data->env);
 	}
 	if (data->cmd_list)
-	{
-		printf("asd\n");
 		free_list(data->cmd_list);
-	}
 	if (data->token_list)
 		free_token_list(data->token_list);
 	if (data)
