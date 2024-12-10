@@ -19,7 +19,7 @@ static t_fd	*init_fd(t_data *data)
 	if (data->token_curr->next == NULL
 		|| data->token_curr->next->type != WORD)
 	{
-		print_error("syntax error: invalid file name / delimiter", 0);
+		print_error("syntax error: invalid file name / delimiter\n", 0);
 		return (NULL);
 	}
 	fdstr = malloc(sizeof(t_fd));

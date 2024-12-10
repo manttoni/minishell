@@ -92,13 +92,14 @@ int	main(int argc, char **argv, char **env)
 		if (unclosed_quotes(main_s.input))
 			continue ;
 		main_s.tokens = tokenize_string(main_s.input, main_s.env);
-		main_s.cmd_list = create_list(main_s.tokens, main_s.env);
 		free(main_s.input);
+		main_s.cmd_list = create_list(main_s.tokens, main_s.env);
 		free_token_list(main_s.tokens);
 		if (main_s.cmd_list == NULL)
 			continue ;
 		if (run(&main_s) == 0)
 			break ;
+		
 		unlink(".here_doc");
 	}
 	free_main(&main_s);

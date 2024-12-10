@@ -98,6 +98,7 @@ t_command	*create_list(t_token *tokens, t_env *env)
 		data->token_curr = data->token_curr->next;
 	}
 	list = data->cmd_list;
+
 	free(data);
 	return (list);
 }
