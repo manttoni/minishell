@@ -21,10 +21,10 @@ t_command	*last_command(t_command *list)
 	return (list);
 }
 
-void	free_list(t_command *list)
+int	free_list(t_command *list)
 {
 	if (list == NULL)
-		return ;
+		return (1);
 	if (list->next)
 		free_list(list->next);
 	if (list->fdin > 2)
@@ -34,6 +34,7 @@ void	free_list(t_command *list)
 	free_array(list->args);
 	free(list->path);
 	free(list);
+	return (1);
 }
 
 t_command	*init_node(int i)

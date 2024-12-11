@@ -101,18 +101,15 @@ static int	finish_run(t_run *run, t_main *main_struct)
 	return (1);
 }
 
-int	run(t_main *main_struct)
+int	run(t_main *main_s)
 {
 	t_run	*run;
 	int		ret;
 
 	ret = 1;
-	if (main_struct->cmd_list->args[0] == NULL || main_struct->cmd_list->args[0][0] == '\0')
-	{
-		free_list(main_struct->cmd_list);
-		return (1);
-	}
-	if (init_run(main_struct, &run) && finish_run(run, main_struct))
+	if (main_s->cmd_list->args[0] == 0 || main_s->cmd_list->args[0][0] == 0)
+		return (free_list(main_s->cmd_list));
+	if (init_run(main_s, &run) && finish_run(run, main_s))
 		return (0);
 	while (run->cmd_curr && ret != 0)
 	{
@@ -129,6 +126,6 @@ int	run(t_main *main_struct)
 			ret = 0;
 		run->cmd_curr = run->cmd_curr->next;
 	}
-	finish_run(run, main_struct);
+	finish_run(run, main_s);
 	return (ret);
 }

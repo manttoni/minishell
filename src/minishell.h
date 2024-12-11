@@ -166,7 +166,7 @@ char		*print_error(char *s, int n);
 
 /* Memory */
 void		free_array(char **s);
-void		free_list(t_command *list);
+int			free_list(t_command *list);
 void		free_token_list(t_token *token);
 void		free_pipefds(int **pipefds, int len);
 void		free_run(t_run *run);

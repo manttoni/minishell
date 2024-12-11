@@ -99,9 +99,9 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		if (run(&main_s) == 0)
 			break ;
-		
 		unlink(".here_doc");
 	}
+	unlink(".here_doc");
 	free_main(&main_s);
 	clear_history();
 	return (0);
