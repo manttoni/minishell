@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:45:03 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/12 15:54:01 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/12 16:09:31 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	ft_exit(t_main main_struct, int *ret)
 		return (0);
 	print_too_many_args(main_struct.cmd_list);
 	if (ft_strcmp(last->args[0], "exit") != 0)
+		return (0);
+	if (list_len(main_struct.cmd_list) > 1)
 		return (0);
 	print_error("exit", 2);
 	if (len(last->args) > 2)
