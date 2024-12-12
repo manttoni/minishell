@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/05 17:05:25 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/12/09 11:14:22 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,15 @@ static int	finish_run(t_run *run, t_main *main_struct)
 	return (1);
 }
 
-int	run(t_main *main_struct)
+int	run(t_main *main_s)
 {
 	t_run	*run;
 	int		ret;
 
 	ret = 1;
-	if (init_run(main_struct, &run) && finish_run(run, main_struct))
+	if (main_s->cmd_list->args[0] == 0 || main_s->cmd_list->args[0][0] == 0)
+		return (free_list(main_s->cmd_list));
+	if (init_run(main_s, &run) && finish_run(run, main_s))
 		return (0);
 	while (run->cmd_curr && ret != 0)
 	{
@@ -124,6 +126,6 @@ int	run(t_main *main_struct)
 			ret = 0;
 		run->cmd_curr = run->cmd_curr->next;
 	}
-	finish_run(run, main_struct);
+	finish_run(run, main_s);
 	return (ret);
 }
