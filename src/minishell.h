@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:46:36 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/12 15:00:20 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/12 15:17:42 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ typedef struct s_exec_cmd
 /* struct for environment variables */
 typedef struct s_env
 {
-	char	**arr;
-	int		exit_code;
+	char				**arr;
+	unsigned int		exit_code;
 }	t_env;
 
 /* a node for command-list */

@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:35:51 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/12 14:57:23 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/12 15:18:18 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,5 @@ int	main(int argc, char **argv, char **env)
 	unlink(".here_doc");
 	free_main(&main_s);
 	clear_history();
-	return (ret);
+	return ((unsigned char)ret);
 }
