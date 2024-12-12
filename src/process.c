@@ -35,6 +35,7 @@ void	run_child(t_run *run)
 	run->cmd_curr->path = find_path(run->cmd_curr, run->env);
 	if (run->cmd_curr->path == NULL)
 	{
+		close_pipes(run->pipefds, run->len);
 		free_run(run);
 		exit(ERR_CMD_NOT_FOUND);
 	}
@@ -43,7 +44,8 @@ void	run_child(t_run *run)
 		close_pipes(run->pipefds, run->len);
 		execve(run->cmd_curr->path, run->cmd_curr->args, run->env->arr);
 	}
-	free(run->cmd_curr->path);
+	//if (run)
+	//	free(run->cmd_curr->path);
 	free_run(run);
 	exit(ERR_EXEC);
 }
