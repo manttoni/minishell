@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 14:45:03 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/12 15:07:41 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/12 15:54:01 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_too_many_args(t_command *list)
 {
 	while (list)
-	{
+	{		
 		if (ft_strcmp(list->args[0], "exit") == 0)
 			if (len(list->args) > 2)
 				print_error("-minishell: exit: too many arguments", 2);
@@ -27,8 +27,10 @@ int	ft_exit(t_main main_struct, int *ret)
 {
 	t_command	*last;
 
-	print_too_many_args(main_struct.cmd_list);
 	last = last_command(main_struct.cmd_list);
+	if (last->args == NULL || last->args[0] == NULL)
+		return (0);
+	print_too_many_args(main_struct.cmd_list);
 	if (ft_strcmp(last->args[0], "exit") != 0)
 		return (0);
 	print_error("exit", 2);
