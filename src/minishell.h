@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:46:36 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/05 17:03:22 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:00:20 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int			ft_env(t_command *cmd, t_env *env);
 int			is_valid_key(char *key);
 int			is_builtin(t_command *cmd, t_env *env);
 int			get_builtin_type(t_run *run);
+int			ft_exit(t_main main_struct, int *ret);
 
 /* Process */
 int			do_fork(t_run *run);

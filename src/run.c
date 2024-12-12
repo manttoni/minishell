@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:33:45 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/09 11:14:22 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/12 15:07:21 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,6 @@ int	run(t_main *main_s)
 				return (0);
 			run->i++;
 		}
-		else if (run->builtin == 4 && run->len == 1)
-			ret = 0;
 		run->cmd_curr = run->cmd_curr->next;
 	}
 	finish_run(run, main_s);
