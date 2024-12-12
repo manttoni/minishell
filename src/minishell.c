@@ -80,6 +80,7 @@ static void	free_main(t_main *main_struct)
 {
 	free_array(main_struct->env->arr);
 	free(main_struct->env);
+	unlink(".here_doc");
 }
 
 int	main(int argc, char **argv, char **env)
@@ -102,11 +103,10 @@ int	main(int argc, char **argv, char **env)
 		free_token_list(main_s.tokens);
 		if (main_s.cmd_list == NULL)
 			continue ;
-		if (ft_exit(main_s, &ret) == 1 || run(&main_s) == 0)
+		if (ft_exit(&main_s, &ret) == 1 || run(&main_s) == 0)
 			break ;
 		unlink(".here_doc");
 	}
-	unlink(".here_doc");
 	free_main(&main_s);
 	clear_history();
 	return ((unsigned char)ret);

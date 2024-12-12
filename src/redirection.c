@@ -21,7 +21,7 @@ void	free_pipefds(int **pipefds, int len)
 	i = 0;
 	while (i < len)
 	{
-		if(pipefds + i)
+		if (pipefds + i)
 			free(pipefds[i]);
 		pipefds[i] = 0;
 		i++;

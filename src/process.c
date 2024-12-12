@@ -44,8 +44,6 @@ void	run_child(t_run *run)
 		close_pipes(run->pipefds, run->len);
 		execve(run->cmd_curr->path, run->cmd_curr->args, run->env->arr);
 	}
-	//if (run)
-	//	free(run->cmd_curr->path);
 	free_run(run);
 	exit(ERR_EXEC);
 }

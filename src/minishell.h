@@ -130,7 +130,7 @@ int			ft_env(t_command *cmd, t_env *env);
 int			is_valid_key(char *key);
 int			is_builtin(t_command *cmd, t_env *env);
 int			get_builtin_type(t_run *run);
-int			ft_exit(t_main main_struct, int *ret);
+int			ft_exit(t_main *main_struct, int *ret);
 
 /* Process */
 int			do_fork(t_run *run);
