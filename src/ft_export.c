@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:35:09 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/03 22:14:33 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/12 14:41:54 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_export(char **args, t_env *env)
 	while (*args)
 	{
 		ret = !is_valid_key(*args);
-		if (ret != 0)
+		if (ret != 0 || ft_strchr(*args, '=') == NULL)
 		{
 			print_error("-minishell: invalid export", 2);
 			args++;

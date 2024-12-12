@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:32:14 by amaula            #+#    #+#             */
-/*   Updated: 2024/11/27 13:04:06 by amaula           ###   ########.fr       */
+/*   Updated: 2024/12/12 14:41:22 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 /* Checks if str has only allowed chars until terminator or '=' */
 int	is_valid_key(char *str)
 {
-	if (ft_strchr(str, '=') == NULL)
-		return (0);
 	if (!ft_isalpha(*str) && *str != '_')
 		return (0);
 	str++;
