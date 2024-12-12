@@ -15,6 +15,8 @@
 /* Checks if str has only allowed chars until terminator or '=' */
 int	is_valid_key(char *str)
 {
+	if (ft_strchr(str, '=') == NULL)
+		return (0);
 	if (!ft_isalpha(*str) && *str != '_')
 		return (0);
 	str++;

@@ -49,7 +49,7 @@ int	full_or_relative_path(t_command *cmd, char **result)
 {
 	if (!access(cmd->args[0], F_OK | X_OK))
 	{
-		*result = cmd->args[0];
+		*result = ft_strdup(cmd->args[0]);
 		return (1);
 	}
 	else if (!access(cmd->args[0], F_OK | X_OK))

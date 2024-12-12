@@ -29,7 +29,8 @@ void	free_array(char **s)
 
 void	free_run(t_run *run)
 {
-	close_pipes(run->pipefds, run->len);
+	if (!run)
+		return ;
 	free_array(run->env->arr);
 	free(run->env);
 	free(run->pids);

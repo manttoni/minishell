@@ -21,7 +21,9 @@ void	free_pipefds(int **pipefds, int len)
 	i = 0;
 	while (i < len)
 	{
-		free(pipefds[i]);
+		if(pipefds + i)
+			free(pipefds[i]);
+		pipefds[i] = 0;
 		i++;
 	}
 	free(pipefds);
@@ -53,6 +55,7 @@ void	close_pipes(int **pipefds, int cmds)
 		i++;
 	}
 	free_pipefds(pipefds, cmds);
+	pipefds = 0;
 }
 
 int	set_io(t_command *command, int **pipefds)
