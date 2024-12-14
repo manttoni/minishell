@@ -1,5 +1,5 @@
-<<eof\n<<eof
-export asd=\n$asd
+<<eof\neof\necho $?
+export asd=\n$asd\necho $?
 exit | exit\necho $?
 <Makefile
 <noexist
