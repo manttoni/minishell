@@ -6,7 +6,7 @@
 /*   By: amaula <amaula@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:35:51 by amaula            #+#    #+#             */
-/*   Updated: 2024/12/05 17:04:30 by mshabano         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:43:51 by amaula           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ static int	handle_input(t_main *main_s)
 		return (1);
 	main_s->input = readline("minishell> ");
 	if (main_s->input == NULL)
+	{
+		print_error("exit", 2);
 		return (1);
+	}
 	add_history(main_s->input);
 	return (0);
 }
@@ -77,12 +80,15 @@ static void	free_main(t_main *main_struct)
 {
 	free_array(main_struct->env->arr);
 	free(main_struct->env);
+	unlink(".here_doc");
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_main	main_s;
+	int		ret;
 
+	ret = 0;
 	if (init_main(argc, argv, env, &main_s))
 		return (1);
 	while (1)
@@ -97,12 +103,11 @@ int	main(int argc, char **argv, char **env)
 		free_token_list(main_s.tokens);
 		if (main_s.cmd_list == NULL)
 			continue ;
-		if (run(&main_s) == 0)
+		if (ft_exit(&main_s, &ret) == 1 || run(&main_s) == 0)
 			break ;
 		unlink(".here_doc");
 	}
-	unlink(".here_doc");
 	free_main(&main_s);
 	clear_history();
-	return (0);
+	return ((unsigned char)ret);
 }
