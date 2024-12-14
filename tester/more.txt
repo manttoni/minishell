@@ -1,0 +1,14 @@
+<<eof\n<<eof
+export asd=\n$asd
+exit | exit\necho $?
+<Makefile
+<noexist
+<noexist\n<noexist
+./bin/ls
+/bin/ls
+ls
+asd
+touch a \n chmod a+x a \n ./a \n rm a
+touch ls \n chmod a+x ls \n ./ls \n rm ls
+export asd \n env | grep asd \n $asd
+export asd \n export asd=qwe \n env | grep asd \n $asd

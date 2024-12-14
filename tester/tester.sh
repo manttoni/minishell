@@ -1,8 +1,8 @@
 #!/bin/bash
-
-cd ..
-make re
-cd tester
+input_file=${1:-input.txt}
+#cd ..
+#make re
+#cd tester
 
 if ! ls ../ | grep -q "minishell"; then
 	echo "../minishell not found"
@@ -15,6 +15,7 @@ fi
 
 mkdir td # test directory, sandbox for creating files
 
+
 miniout=logs/mini.log
 bashout=logs/bash.log
 valgout=logs/valgrind.log
@@ -26,7 +27,7 @@ difflog=logs/diff.log
 
 testseparator="~~~~~~~~~~~~~~~~~~~~~"
 
-len=$(wc -l < input.txt)
+len=$(wc -l < $input_file)
 i=1
 
 while read -r line; do
@@ -34,7 +35,7 @@ while read -r line; do
 	echo "input: $line" >>$miniout
 	echo "input: $line" >>$bashout
 
-	../minishell <<< "$input" 2>/dev/null | grep -v "minishell>" >>$miniout
+	../minishell <<< "$input" 2>/dev/null | grep -v "minishell>" | grep -v "^>" >>$miniout
 	valgrind -q --suppressions=../supp.supp --log-file=$valgout --leak-check=full --show-leak-kinds=all ../minishell <<< "$input" >/dev/null 2>/dev/null
 	bash <<< "$input" 2>/dev/null >>$bashout
 
@@ -50,7 +51,7 @@ while read -r line; do
 
 	echo "$testseparator" >>$miniout
 	echo "$testseparator" >>$bashout
-done < input.txt
+done < $input_file
 
 echo -e "\nResults:"
 
