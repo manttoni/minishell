@@ -38,7 +38,31 @@ Run the shell:
 - **Env varibles**: expands $VARNAME to a string that is stored in env. you can add and remove them with export, unset
 - **Redirections**: Input (`<`), Output (`>`), Append (`>>`), Heredoc (`<<`)  
 
+---
 
+## **Testing and Debugging**  
+
+Minishell comes with built-in tools for testing and debugging to ensure reliability and detect memory issues.  
+
+### **Memory Leak Testing with Valgrind**  
+The `valrun.sh` script allows you to run Minishell with Valgrind to detect memory leaks and other issues.  
+
+#### **Usage**  
+```bash
+./valrun.sh
+``` 
+- **Suppressions file**: `supp.supp` ensures that false positives or irrelevant warnings are filtered out for cleaner output.  
+
+---
+
+### **Automated Testing with Tester**  
+The `/tester/` directory includes `tester.sh`, a script that runs over 150 test cases to verify Minishell's functionality.  
+
+#### **Usage**  
+```bash
+cd tester
+./tester.sh
+```  
 ## **Built-in Commands**  
 
 Minishell implements the following built-in commands, mimicking their behavior in Bash:  
