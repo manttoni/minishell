@@ -53,7 +53,6 @@ Minishell implements the following built-in commands, mimicking their behavior i
 | `env`       | Displays all environment variables. No arguments or options are supported. | `env` |  
 | `exit`      | Exits the shell with an optional status code. | `exit 0` |  
 
-Each built-in is implemented to provide basic functionality and adhere to the specified constraints.  
 
 ### **Usage**  
 
