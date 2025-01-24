@@ -30,7 +30,14 @@ Run the shell:
 
 ---
 
-### **Usage**  
+## **Features**  
+
+- **Tokenizer**: Input is tokenized gracefully, breaking it down into manageable pieces for seamless parsing and execution, even for complex commands
+- **Commands**: minishell can execute any command that is located in the directories specified in your $PATH
+- **Pipes**: Combine commands using `|`
+- **Env varibles**: expands $VARNAME to a string that is stored in env. you can add and remove them with export, unset
+- **Redirections**: Input (`<`), Output (`>`), Append (`>>`), Heredoc (`<<`)  
+
 
 ## **Built-in Commands**  
 
@@ -48,9 +55,7 @@ Minishell implements the following built-in commands, mimicking their behavior i
 
 Each built-in is implemented to provide basic functionality and adhere to the specified constraints.  
 
-- **Commands**: minishell can execute any command that is located in the directories specified in your $PATH
-- **Pipes**: Combine commands using `|`  
-- **Redirections**: Input (`<`), Output (`>`), Append (`>>`), Heredoc (`<<`)  
+### **Usage**  
 
 Example:  
 ```bash
