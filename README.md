@@ -1,19 +1,9 @@
 # **Minishell**  
 *"As beautiful as a shell"*  
+
 created by - [Anttoni](https://github.com/manttoni) and [Mark](https://github.com/607mark)  
----
-
-You can add a **Credits** or **Authors** section to your README to include this information. Here's an example:  
 
 ---
-
-## **Credits**  
-Minishell was created with ❤️ by:  
-
-
----
-
-This format is clean, and it ensures proper attribution. You can adjust the heading style or wording as you prefer!
 
 ## **Overview**  
 Minishell is a simple, lightweight Unix shell built from scratch. It replicates the basic functionality of Bash, offering:  
